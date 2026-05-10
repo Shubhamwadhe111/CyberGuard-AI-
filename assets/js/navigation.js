@@ -25,12 +25,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (navActions) {
             if (isLoggedIn) {
                 navActions.innerHTML = `
-                    <a href="dashboard.html" class="btn btn-primary btn-glow">Go to Dashboard</a>
+                    <a href="dashboard.html" class="btn btn-primary">Go to Dashboard →</a>
                 `;
+                // Also update hero CTA for logged-in users
+                const heroCTA = document.getElementById('heroCTABtns');
+                if (heroCTA) {
+                    heroCTA.innerHTML = `
+                        <a href="dashboard.html" class="btn btn-primary btn-lg">Go to Dashboard →</a>
+                        <a href="features.html" class="btn btn-outline-light btn-lg">See Features</a>
+                    `;
+                }
             } else {
                 navActions.innerHTML = `
-                    <a href="login.html" class="btn btn-outline" style="border-color: var(--border-color); color: var(--color-primary);">Sign In</a>
-                    <a href="signup.html" class="btn btn-primary btn-glow">Get Started</a>
+                    <a href="login.html" class="btn btn-outline" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:white;">Sign In</a>
+                    <a href="signup.html" class="btn btn-primary">Get Started</a>
                 `;
             }
         }
