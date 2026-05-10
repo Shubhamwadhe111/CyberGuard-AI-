@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Center - CyberGuard AI</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="public-layout">
+    <!-- Public Navbar -->
+    <header class="top-navbar glass-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard AI
+            </a>
+            <nav class="desktop-nav">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="features.html" class="nav-item">Features</a>
+                <a href="security-tips.html" class="nav-item">Security Tips</a>
+                <a href="support.html" class="nav-item active">Support</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-outline" style="border-color: var(--border-color); color: var(--color-primary);">Sign In</a>
+                <a href="signup.html" class="btn btn-primary btn-glow">Get Started</a>
+            </div>
+            <button class="btn-icon mobile-menu-btn" style="align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Hero Search Section -->
+        <section class="support-hero">
+            <h1>How can we help?</h1>
+            <p>Find answers to common questions about account access, threat scanning, app permissions, and the CyberGuard AI Agent.</p>
+            <div class="support-search-bar">
+                <i class="fa-solid fa-magnifying-glass support-search-icon"></i>
+                <input type="text" id="supportSearch" class="support-search-input" placeholder="Search for articles, guides, or keywords...">
+            </div>
+        </section>
+
+        <!-- Main Content Area -->
+        <section class="support-content">
+            
+            <!-- Category Cards -->
+            <div class="support-categories-grid">
+                <a href="#faq" class="support-category-card category-filter" data-cat="account">
+                    <div class="support-category-icon"><i class="fa-solid fa-user-shield"></i></div>
+                    <div class="support-category-title">Account & Login</div>
+                    <div class="support-category-desc">Issues with OTP, passwords, or recovering your account.</div>
+                </a>
+                <a href="#faq" class="support-category-card category-filter" data-cat="scanning">
+                    <div class="support-category-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+                    <div class="support-category-title">Threat Scanning</div>
+                    <div class="support-category-desc">How scans work and understanding what they detect.</div>
+                </a>
+                <a href="#faq" class="support-category-card category-filter" data-cat="permissions">
+                    <div class="support-category-icon"><i class="fa-solid fa-list-check"></i></div>
+                    <div class="support-category-title">App Permissions</div>
+                    <div class="support-category-desc">Learn how to revoke risky permissions from installed apps.</div>
+                </a>
+                <a href="#faq" class="support-category-card category-filter" data-cat="agent">
+                    <div class="support-category-icon"><i class="fa-solid fa-robot"></i></div>
+                    <div class="support-category-title">AI Agent</div>
+                    <div class="support-category-desc">How to ask the agent for context on security alerts.</div>
+                </a>
+            </div>
+
+            <!-- Two Column Section -->
+            <div class="support-split-grid" id="faq">
+                
+                <!-- Left: FAQ Accordion -->
+                <div>
+                    <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--text-main);">Frequently Asked Questions</h2>
+                    
+                    <div class="faq-container" id="faqContainer">
+                        
+                        <div class="faq-item" data-tags="account login otp verification">
+                            <button class="faq-question">
+                                <span>I'm not receiving my OTP during sign-up. What should I do?</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div class="faq-answer">
+                                <p>Ensure you have a strong cellular connection. If the SMS doesn't arrive within 60 seconds, click the "Resend Code" button. If the issue persists, check if your carrier is blocking shortcode SMS messages, or try signing up via email instead.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-tags="scanning threats alerts">
+                            <button class="faq-question">
+                                <span>How often does CyberGuard scan my phone?</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div class="faq-answer">
+                                <p>CyberGuard performs background checks every 4 hours without draining your battery. However, you can manually trigger a deep scan at any time by navigating to your Dashboard and clicking the "Run Scan" button.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-tags="permissions privacy apps">
+                            <button class="faq-question">
+                                <span>Why did an app get flagged for a "Permission Risk"?</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div class="faq-answer">
+                                <p>Our system flags applications that request permissions completely unrelated to their core functionality. For example, a basic calculator app requesting access to your microphone and contacts is flagged as a high permission risk.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-tags="agent ai chat help">
+                            <button class="faq-question">
+                                <span>How do I use the CyberGuard AI Agent?</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div class="faq-answer">
+                                <p>The AI Agent acts as your personal security advisor. You can paste suspicious messages or links directly into the chat. It will analyze the phrasing, check the URLs against threat databases, and explain why a message might be a phishing attempt.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-tags="privacy data security">
+                            <button class="faq-question">
+                                <span>Does CyberGuard read my personal messages?</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div class="faq-answer">
+                                <p>No. CyberGuard utilizes on-device machine learning models to detect threat patterns (like known phishing links or urgent keywords). We do not upload your personal SMS contents to our servers. Your privacy is strictly maintained.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Right: Contact Form -->
+                <div>
+                    <div class="contact-card">
+                        <h3>Still need help?</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">Fill out the form below and our security support team will get back to you within 24 hours.</p>
+                        
+                        <form id="contactForm" class="contact-form">
+                            <div class="form-group">
+                                <label for="contactName">Full Name</label>
+                                <input type="text" id="contactName" class="form-control" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Email Address</label>
+                                <input type="email" id="contactEmail" class="form-control" required placeholder="john@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactIssue">Issue Category</label>
+                                <select id="contactIssue" class="form-control" required>
+                                    <option value="">Select a category...</option>
+                                    <option value="account">Account & Login</option>
+                                    <option value="billing">Billing & Subscription</option>
+                                    <option value="technical">Technical Issue</option>
+                                    <option value="report">Report a False Positive</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactMessage">Message</label>
+                                <textarea id="contactMessage" class="form-control" rows="4" required placeholder="Please describe your issue in detail..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Submit Request</button>
+                        </form>
+                    </div>
+
+                    <!-- Ticket Demo Panel -->
+                    <div class="ticket-status-panel" id="ticketDemoPanel" style="display: none;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span class="badge" style="background: rgba(245, 158, 11, 0.1); color: var(--color-warning);">Ticket #1024</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">Just now</span>
+                        </div>
+                        <h4 style="font-weight: 600; font-size: 0.95rem; margin: 0 0 0.5rem; color: var(--text-main);">Investigating your report</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Our support team has received your message and will update this ticket shortly.</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: var(--bg-surface); border-top: 1px solid var(--border-color); padding: 4rem 2rem 2rem; margin-top: auto;">
+        <div class="footer-container" style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <div class="logo">
+                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.75rem;"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard AI
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.875rem;">© 2026 CyberGuard AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;"></div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/support.js?v=2"></script>
+</body>
+</html>

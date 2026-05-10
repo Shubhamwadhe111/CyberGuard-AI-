@@ -99,11 +99,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.getElementById('contactForm');
     const ticketDemoPanel = document.getElementById('ticketDemoPanel');
 
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
         e.preventDefault(); // Prevent page reload
 
         // Basic validation happens via HTML5 'required' attributes automatically
         const name = document.getElementById('contactName').value;
+        const category = document.getElementById('contactCategory').value;
+        const message = document.getElementById('contactMessage').value;
         const btn = contactForm.querySelector('button[type="submit"]');
 
         // Loading state
@@ -111,17 +113,35 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Submitting...';
         btn.disabled = true;
 
-        setTimeout(() => {
-            showToast(`Thank you ${name.split(' ')[0]}, your ticket has been submitted.`, 'success');
-            
-            // Show Demo Panel
-            ticketDemoPanel.style.display = 'block';
-            
-            // Reset form
-            contactForm.reset();
+        try {
+            const token = localStorage.getItem('cyberguard_token');
+            const res = await fetch('/api/support/ticket', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': token
+                },
+                body: JSON.stringify({ category, message })
+            });
+
+            if (res.ok) {
+                showToast(`Thank you ${name.split(' ')[0]}, your ticket has been submitted.`, 'success');
+                
+                // Show Demo Panel (You can optionally fetch and update this with real data)
+                ticketDemoPanel.style.display = 'block';
+                
+                // Reset form
+                contactForm.reset();
+            } else {
+                showToast('Failed to submit ticket.', 'error');
+            }
+        } catch (err) {
+            console.error('Error submitting ticket:', err);
+            showToast('An error occurred.', 'error');
+        } finally {
             btn.innerHTML = originalText;
             btn.disabled = false;
-        }, 1200);
+        }
     });
 
     // Category Card Click Smooth Scroll to FAQ

@@ -46,38 +46,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Setting IDs
-    const settingsControls = {
-        'setMsgScan': 'checkbox',
-        'setLinkCheck': 'checkbox',
-        'setAppPerms': 'checkbox',
-        'setAutoScan': 'checkbox',
-        'setScanFreq': 'select',
-        'setSensitivity': 'select',
-        'setPrivacyMode': 'checkbox',
-        'setSaveHistory': 'checkbox',
-        'setRetention': 'select',
-        'setHighRisk': 'checkbox',
-        'setWeeklySummary': 'checkbox',
-        'setTipsAlerts': 'checkbox'
+    // Setting IDs mapping to backend fields
+    const settingsMap = {
+        'setMsgScan': { type: 'checkbox', field: 'message_scan' },
+        'setLinkCheck': { type: 'checkbox', field: 'link_check' },
+        'setAppPerms': { type: 'checkbox', field: 'app_perms' },
+        'setAutoScan': { type: 'checkbox', field: 'auto_scan' },
+        'setScanFreq': { type: 'select', field: 'scan_frequency' },
+        'setPrivacyMode': { type: 'checkbox', field: 'privacy_mode' },
+        'setRetention': { type: 'select', field: 'data_retention' }
     };
 
+    const token = localStorage.getItem('cyberguard_token');
+
     // Load existing settings
-    for (const [id, type] of Object.entries(settingsControls)) {
-        const el = document.getElementById(id);
-        if (!el) continue;
-        
-        const savedVal = localStorage.getItem(`cg_set_${id}`);
-        if (savedVal !== null) {
-            if (type === 'checkbox') {
-                el.checked = (savedVal === 'true');
-            } else if (type === 'select') {
-                el.value = savedVal;
+    async function loadSettings() {
+        try {
+            const res = await fetch('/api/settings', {
+                headers: { 'x-auth-token': token }
+            });
+            
+            if (res.ok) {
+                const data = await res.json();
+                
+                for (const [id, config] of Object.entries(settingsMap)) {
+                    const el = document.getElementById(id);
+                    if (!el) continue;
+                    
+                    if (data[config.field] !== undefined) {
+                        if (config.type === 'checkbox') {
+                            el.checked = data[config.field];
+                        } else if (config.type === 'select') {
+                            el.value = data[config.field];
+                        }
+                    }
+                }
             }
+        } catch (err) {
+            console.error("Failed to load settings", err);
         }
     }
 
+    loadSettings();
+
     // Save Settings Function
-    function saveSettings() {
+    async function saveSettings() {
         let btn1 = document.getElementById('btnSaveTop');
         let btn2 = document.getElementById('btnSaveBottom');
         
@@ -87,23 +100,40 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btn1) { btn1.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...'; btn1.disabled = true; }
         if (btn2) { btn2.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...'; btn2.disabled = true; }
 
-        setTimeout(() => {
-            for (const [id, type] of Object.entries(settingsControls)) {
-                const el = document.getElementById(id);
-                if (el) {
-                    if (type === 'checkbox') {
-                        localStorage.setItem(`cg_set_${id}`, el.checked);
-                    } else if (type === 'select') {
-                        localStorage.setItem(`cg_set_${id}`, el.value);
-                    }
+        const payload = {};
+        for (const [id, config] of Object.entries(settingsMap)) {
+            const el = document.getElementById(id);
+            if (el) {
+                if (config.type === 'checkbox') {
+                    payload[config.field] = el.checked;
+                } else if (config.type === 'select') {
+                    payload[config.field] = el.value;
                 }
             }
+        }
 
+        try {
+            const res = await fetch('/api/settings', {
+                method: 'PUT',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'x-auth-token': token
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                showToast('Settings saved successfully!');
+            } else {
+                showToast('Failed to save settings.', 'error');
+            }
+        } catch (err) {
+            console.error("Failed to save settings", err);
+            showToast('An error occurred while saving.', 'error');
+        } finally {
             if (btn1) { btn1.innerHTML = originalText1; btn1.disabled = false; }
             if (btn2) { btn2.innerHTML = originalText2; btn2.disabled = false; }
-
-            showToast('Settings saved successfully!');
-        }, 600);
+        }
     }
 
     const btnSaveTop = document.getElementById('btnSaveTop');
