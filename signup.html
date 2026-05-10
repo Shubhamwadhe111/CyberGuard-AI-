@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - CyberGuard AI</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-layout">
+        <div class="auth-sidebar">
+            <div class="auth-bg-decoration">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div class="auth-sidebar-content">
+                <a href="index.html" class="logo" style="color: white; margin-bottom: 2rem;">
+                    <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    CyberGuard AI
+                </a>
+                <h2>Start Your Free Trial</h2>
+                <p>Join thousands of users protected by the industry's most advanced autonomous security agent.</p>
+            </div>
+        </div>
+        <div class="auth-main">
+            <a href="index.html" class="auth-back-link"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+            <div class="auth-card" style="max-width: 550px;">
+                <div class="auth-header">
+                    <h1>Create Account</h1>
+                    <p class="text-muted">Fill in your details to get started.</p>
+                </div>
+                
+                <form id="signupForm" novalidate>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group" id="nameGroup">
+                            <label class="form-label" for="fullname">Full Name</label>
+                            <input type="text" id="fullname" class="form-control" placeholder="John Doe" required>
+                            <div class="error-msg">Name is required.</div>
+                        </div>
+                        <div class="form-group" id="phoneGroup">
+                            <label class="form-label" for="phone">Mobile Number</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="+1 (555) 000-0000" required>
+                            <div class="error-msg">Valid number required.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="emailSignupGroup">
+                        <label class="form-label" for="emailSignup">Email Address</label>
+                        <input type="email" id="emailSignup" class="form-control" placeholder="john@example.com" required>
+                        <div class="error-msg">Valid email required.</div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group" id="passSignupGroup">
+                            <label class="form-label" for="passSignup">Password</label>
+                            <input type="password" id="passSignup" class="form-control" placeholder="••••••••" required>
+                            <div class="error-msg">Min 6 characters.</div>
+                        </div>
+                        <div class="form-group" id="confirmPassGroup">
+                            <label class="form-label" for="confirmPass">Confirm Password</label>
+                            <input type="password" id="confirmPass" class="form-control" placeholder="••••••••" required>
+                            <div class="error-msg">Passwords must match.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="termsGroup" style="margin-top: 0.5rem;">
+                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer; font-size: 0.875rem;">
+                            <input type="checkbox" id="terms" style="margin-top: 0.25rem;"> 
+                            <span>I agree to the <a href="#" class="text-accent">Terms of Service</a> and <a href="#" class="text-accent">Privacy Policy</a>.</span>
+                        </label>
+                        <div class="error-msg">You must accept the terms.</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1rem;">Create Account</button>
+                    
+                    <div class="auth-footer">
+                        Already have an account? <a href="login.html" class="text-accent">Sign in</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>

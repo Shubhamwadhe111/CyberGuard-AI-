@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP - CyberGuard AI</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-layout">
+        <div class="auth-sidebar">
+            <div class="auth-bg-decoration">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <div class="auth-sidebar-content">
+                <a href="index.html" class="logo" style="color: white; margin-bottom: 2rem;">
+                    <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    CyberGuard AI
+                </a>
+                <h2>Two-Factor Authentication</h2>
+                <p>We take security seriously. Please verify your identity to access the dashboard.</p>
+            </div>
+        </div>
+        <div class="auth-main">
+            <a href="index.html" class="auth-back-link"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>Verify Your Identity</h1>
+                    <p class="text-muted">We've sent a 6-digit verification code to your device. Enter it below.</p>
+                </div>
+                
+                <form id="otpForm" novalidate>
+                    <div class="form-group" id="otpGroup" style="text-align: center;">
+                        <div class="otp-inputs">
+                            <input type="text" class="otp-input" maxlength="1" autofocus>
+                            <input type="text" class="otp-input" maxlength="1">
+                            <input type="text" class="otp-input" maxlength="1">
+                            <input type="text" class="otp-input" maxlength="1">
+                            <input type="text" class="otp-input" maxlength="1">
+                            <input type="text" class="otp-input" maxlength="1">
+                        </div>
+                        <div class="error-msg">Please enter the complete 6-digit code.</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Verify & Continue</button>
+                    
+                    <div class="text-center" style="text-align: center; font-size: 0.875rem;">
+                        <p class="mb-4">Didn't receive the code? <a href="#" class="text-accent">Resend code</a></p>
+                        <a href="signup.html" class="text-muted"><i class="fa-solid fa-arrow-left"></i> Change number</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>

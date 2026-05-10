@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Details - CyberGuard AI</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- New Top Navbar for Desktop -->
+        <nav class="app-topnav">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard
+            </a>
+            <div class="app-topnav-center desktop-only">
+                <a href="dashboard.html" class="app-nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="scan.html" class="app-nav-item"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
+                <a href="alerts.html" class="app-nav-item"><i class="fa-solid fa-bell"></i> Alerts</a>
+                <a href="ai-agent.html" class="app-nav-item"><i class="fa-solid fa-robot"></i> AI Agent</a>
+                <a href="security-tips.html" class="app-nav-item"><i class="fa-solid fa-lightbulb"></i> Tips</a>
+            </div>
+            <div class="dashboard-header-right desktop-only">
+                <div class="search-box" style="position: relative;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                    <input type="text" class="form-control" placeholder="Search threats..." style="padding-left: 2.5rem; width: 200px; border-radius: 20px;">
+                </div>
+                <a href="alerts.html" style="font-size: 1.25rem; color: var(--text-muted);"><i class="fa-regular fa-bell"></i></a>
+                <a href="profile.html"><img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" style="width: 36px; border-radius: 50%;"></a>
+                <a href="login.html" onclick="localStorage.removeItem('isLoggedIn');" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+            </div>
+        </nav>
+
+        <!-- Mobile App Header -->
+        <header class="mobile-app-header">
+            <div class="logo" style="font-size: 1rem;">
+                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard
+            </div>
+            <div class="header-actions">
+                <a href="profile.html" class="text-main" style="font-size: 1.25rem;"><i class="fa-regular fa-circle-user"></i></a>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            
+
+            <div class="dashboard-content">
+                
+                <div class="threat-details-grid">
+                    <!-- Left Column: Main Details -->
+                    <div class="threat-main-column">
+                        
+                        <div class="threat-header-card">
+                            <div class="threat-badge"><i class="fa-solid fa-triangle-exclamation"></i> High Risk</div>
+                            <div style="color: var(--text-muted); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em;">Phishing Message</div>
+                            <h1 class="threat-title">Suspicious bank verification message</h1>
+                            
+                            <div class="threat-meta mt-3">
+                                <div><i class="fa-regular fa-clock"></i> Detected: Today, 10:45 AM</div>
+                                <div><i class="fa-solid fa-mobile-screen"></i> Source: SMS Messages</div>
+                            </div>
+                        </div>
+
+                        <div class="content-card">
+                            <h3><i class="fa-solid fa-circle-info" style="color: var(--color-primary); margin-right: 0.5rem;"></i> Overview</h3>
+                            <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 0;">
+                                This message uses urgent language and includes an unknown link that may be used to steal account information. The sender claims to be your primary bank requesting immediate account verification to prevent account suspension.
+                            </p>
+                        </div>
+
+                        <div class="content-card">
+                            <h3><i class="fa-solid fa-bug" style="color: var(--color-warning); margin-right: 0.5rem;"></i> Identified Risk Factors</h3>
+                            <ul class="risk-factors-list">
+                                <li>
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    <div>
+                                        <strong>Urgent Wording</strong>
+                                        <div style="font-size: 0.85rem; color: var(--text-muted);">Message creates artificial panic ("Immediate suspension").</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    <div>
+                                        <strong>Unknown Sender</strong>
+                                        <div style="font-size: 0.85rem; color: var(--text-muted);">Number does not match official bank shortcodes.</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    <div>
+                                        <strong>Suspicious Link</strong>
+                                        <div style="font-size: 0.85rem; color: var(--text-muted);">Contains a shortened URL hiding the true destination.</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    <div>
+                                        <strong>Requests Verification</strong>
+                                        <div style="font-size: 0.85rem; color: var(--text-muted);">Banks do not request login via direct SMS links.</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="content-card" style="border-color: rgba(16, 185, 129, 0.3);">
+                            <h3 style="color: var(--color-success); border-bottom-color: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-shield-check" style="margin-right: 0.5rem;"></i> Recommended Actions</h3>
+                            <ul class="recommended-actions-list">
+                                <li>
+                                    <i class="fa-solid fa-ban"></i>
+                                    <div><strong>Do not open the link</strong> - It will redirect to a fraudulent login page.</div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-eye-slash"></i>
+                                    <div><strong>Do not share OTP or password</strong> - Keep your credentials private.</div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-user-xmark"></i>
+                                    <div><strong>Block the sender</strong> - Prevent future messages from this number.</div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-building-columns"></i>
+                                    <div><strong>Use the official app</strong> - Login independently if you need to check account status.</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Side Panel -->
+                    <div class="threat-side-panel">
+                        <div class="side-panel-card">
+                            <h3 style="font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-main);">Actions</h3>
+                            
+                            <div id="statusIndicator" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+                                <span style="color: var(--text-muted); font-weight: 500;">Status</span>
+                                <span class="status-badge status-pending" id="statusBadge">Requires Review</span>
+                            </div>
+
+                            <button id="markReviewedBtn" class="btn btn-primary side-action-btn"><i class="fa-solid fa-check"></i> Mark as Reviewed</button>
+                            <button id="reportBtn" class="btn btn-outline side-action-btn" style="color: var(--color-danger); border-color: rgba(239, 68, 68, 0.3);"><i class="fa-solid fa-flag"></i> Report Phishing</button>
+                            <button id="ignoreBtn" class="btn btn-outline side-action-btn"><i class="fa-solid fa-xmark"></i> Ignore Safely</button>
+                        </div>
+
+                        <div class="ai-explanation-card">
+                            <h3 style="font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-robot"></i> CyberGuard AI</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.25rem;">
+                                Our AI engine has matched this message's text signature with 1,245 known active phishing campaigns. Would you like a deeper analysis?
+                            </p>
+                            <button id="askAgentBtn" class="btn btn-primary btn-block btn-glow" style="background: var(--color-accent); border-color: var(--color-accent);">Ask AI Agent</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Mobile Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="bottom-nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="alerts.html" class="bottom-nav-item active">
+                <i class="fa-solid fa-bell"></i>
+                <span>Alerts</span>
+            </a>
+            <a href="scan.html" class="bottom-nav-scan">
+                <i class="fa-solid fa-satellite-dish"></i>
+            </a>
+            <a href="ai-agent.html" class="bottom-nav-item">
+                <i class="fa-solid fa-robot"></i>
+                <span>AI Agent</span>
+            </a>
+            <a href="settings.html" class="bottom-nav-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;"></div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/threat-details.js"></script>
+</body>
+</html>

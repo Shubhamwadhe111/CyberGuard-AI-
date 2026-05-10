@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CyberGuard AI</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-layout">
+        <div class="auth-sidebar">
+            <div class="auth-bg-decoration">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div class="auth-sidebar-content">
+                <a href="index.html" class="logo" style="color: white; margin-bottom: 2rem;">
+                    <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    CyberGuard AI
+                </a>
+                <h2>Secure Your Digital Identity</h2>
+                <p>Access your personalized dashboard to monitor threats, analyze links, and protect your devices in real-time.</p>
+            </div>
+        </div>
+        <div class="auth-main">
+            <a href="index.html" class="auth-back-link"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="logo d-md-none" style="display: none;">
+                        <!-- For mobile only -->
+                        <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    </div>
+                    <h1>Welcome Back</h1>
+                    <p class="text-muted">Enter your credentials to access your account.</p>
+                </div>
+                
+                <form id="loginForm" novalidate>
+                    <div class="form-group" id="emailGroup">
+                        <label class="form-label" for="email">Email or Mobile Number</label>
+                        <input type="text" id="email" class="form-control" placeholder="admin@example.com" required>
+                        <div class="error-msg">Please enter a valid email or mobile number.</div>
+                    </div>
+                    
+                    <div class="form-group" id="passwordGroup">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                        <div class="error-msg">Please enter your password.</div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox"> Remember me
+                        </label>
+                        <a href="#" class="text-accent">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    
+                    <div class="auth-footer">
+                        Don't have an account? <a href="signup.html" class="text-accent">Create account</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>

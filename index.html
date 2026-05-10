@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard AI - Mobile Threat Intelligence</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="public-layout">
+    
+    <!-- Premium Navbar -->
+    <nav class="glass-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard
+            </a>
+            
+            <div class="desktop-nav">
+                <a href="index.html" class="nav-item active">Home</a>
+                <a href="features.html" class="nav-item">Features</a>
+                <a href="security-tips.html" class="nav-item">Security Tips</a>
+                <a href="support.html" class="nav-item">Support</a>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-outline">Sign In</a>
+                <a href="signup.html" class="btn btn-primary btn-glow">Get Started</a>
+            </div>
+            
+            <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- 1. Hero Section -->
+    <section class="hm-hero">
+        <div class="hm-hero-grid">
+            
+            <!-- Left Side: Copy -->
+            <div style="position: relative; z-index: 10;">
+                <div class="hm-badge">
+                    <i class="fa-solid fa-radar"></i> Mobile Threat Intelligence
+                </div>
+                <h1 class="hm-title">AI-Based Threat Detection for Mobile Safety</h1>
+                <p class="hm-desc">Detect suspicious messages, risky links, unsafe app permissions, and mobile security threats before they cause harm.</p>
+                
+                <div class="hero-buttons" style="display: flex; gap: 1rem;">
+                    <a href="signup.html" class="btn btn-primary btn-lg btn-glow">Get Started</a>
+                    <a href="dashboard.html" class="btn btn-outline btn-lg">View Dashboard</a>
+                </div>
+                
+                <div class="hm-trust-row">
+                    <div class="hm-trust-item"><i class="fa-solid fa-check text-accent"></i> Privacy-first scanning</div>
+                    <div class="hm-trust-item"><i class="fa-solid fa-check text-accent"></i> Real-time alerts</div>
+                    <div class="hm-trust-item"><i class="fa-solid fa-check text-accent"></i> AI explanations</div>
+                </div>
+            </div>
+
+            <!-- Right Side: Product Preview -->
+            <div class="hm-dash-preview">
+                <div class="hm-preview-header">
+                    <div class="hm-score-wrap">
+                        <div class="hm-score">85</div>
+                        <div class="hm-score-max">/100</div>
+                    </div>
+                    <div class="hm-status-badge">
+                        <i class="fa-solid fa-shield-check"></i> Protected
+                    </div>
+                </div>
+                
+                <div class="hm-preview-grid">
+                    <div class="hm-preview-stat warning">
+                        <i class="fa-solid fa-message"></i>
+                        <div class="hm-preview-stat-val">3</div>
+                        <div class="hm-preview-stat-lbl">Suspicious SMS</div>
+                    </div>
+                    <div class="hm-preview-stat warning">
+                        <i class="fa-solid fa-link"></i>
+                        <div class="hm-preview-stat-val">2</div>
+                        <div class="hm-preview-stat-lbl">Risky Links</div>
+                    </div>
+                    <div class="hm-preview-stat danger">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        <div class="hm-preview-stat-val">5</div>
+                        <div class="hm-preview-stat-lbl">Permission Risks</div>
+                    </div>
+                </div>
+
+                <div class="hm-preview-alert" style="margin-bottom: 1rem;">
+                    <i class="fa-solid fa-sparkles text-accent" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem;">AI Recommendation</div>
+                        <div style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">Revoke location access for 2 unused apps.</div>
+                    </div>
+                </div>
+                
+                <div style="font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Recent Alert</div>
+                <div style="display: flex; gap: 1rem; align-items: center; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: var(--radius-md);">
+                    <i class="fa-solid fa-location-crosshairs text-danger"></i>
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.9rem;">Flashlight App requests Location</div>
+                        <div style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">Excessive permission detected</div>
+                    </div>
+                    <div style="margin-left: auto; font-size: 0.75rem; color: rgba(255,255,255,0.4);">2m ago</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 2. Credibility Strip -->
+    <div class="hm-cred-strip">
+        <div class="hm-cred-container">
+            <div class="hm-cred-item">
+                <div class="hm-cred-icon"><i class="fa-solid fa-clock"></i></div>
+                24/7 Monitoring
+            </div>
+            <div class="hm-cred-item">
+                <div class="hm-cred-icon"><i class="fa-solid fa-chart-line"></i></div>
+                Real-time Risk Scoring
+            </div>
+            <div class="hm-cred-item">
+                <div class="hm-cred-icon"><i class="fa-solid fa-user-lock"></i></div>
+                Permission Review
+            </div>
+            <div class="hm-cred-item">
+                <div class="hm-cred-icon"><i class="fa-solid fa-robot"></i></div>
+                AI Safety Guidance
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Problem/Solution Section -->
+    <section class="hm-section" style="background: var(--bg-surface-hover);">
+        <h2 class="hm-section-title">Why Mobile Security Fails</h2>
+        <p class="hm-section-desc">Traditional antivirus apps only scan for malware. They don't protect you from the social engineering tricks used in modern mobile attacks.</p>
+        
+        <div class="hm-prob-sol">
+            <!-- Problem -->
+            <div class="hm-prob-card">
+                <h3>Common Mobile Risks</h3>
+                <p class="text-muted" style="margin-bottom: 1.5rem;">Users are tricked into giving away data because they can't verify the intent behind everyday actions.</p>
+                <ul class="hm-list bad">
+                    <li><i class="fa-solid fa-xmark"></i> Opening fake bank verification links sent via SMS.</li>
+                    <li><i class="fa-solid fa-xmark"></i> Giving camera/microphone access to a simple calculator app.</li>
+                    <li><i class="fa-solid fa-xmark"></i> Ignoring complex security alerts because they lack context.</li>
+                </ul>
+            </div>
+            
+            <!-- Solution -->
+            <div class="hm-sol-card">
+                <h3>How CyberGuard Helps</h3>
+                <p class="text-muted" style="margin-bottom: 1.5rem;">We use AI to read the context of messages and permissions, giving you clear, human-readable advice.</p>
+                <ul class="hm-list good">
+                    <li><i class="fa-solid fa-check"></i> Scans SMS language for urgency, OTP requests, and known phishing URLs.</li>
+                    <li><i class="fa-solid fa-check"></i> Flags apps that request permissions completely unrelated to their function.</li>
+                    <li><i class="fa-solid fa-check"></i> Provides an interactive AI agent to explain exactly why a threat is dangerous.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Feature Highlights -->
+    <section class="hm-section">
+        <h2 class="hm-section-title">Comprehensive Protection</h2>
+        <p class="hm-section-desc">Four core engines working together to keep your mobile device secure.</p>
+        
+        <div class="hm-feat-grid">
+            <div class="hm-feat-card">
+                <div class="hm-feat-icon"><i class="fa-solid fa-message"></i></div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">SMS Threat Detection</h3>
+                <p class="text-muted" style="font-size: 0.95rem;">Analyzes the linguistic patterns of incoming messages to detect urgency, fake rewards, and credential harvesting.</p>
+            </div>
+            <div class="hm-feat-card">
+                <div class="hm-feat-icon"><i class="fa-solid fa-link"></i></div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">Phishing Link Analysis</h3>
+                <p class="text-muted" style="font-size: 0.95rem;">Intercepts and checks URLs against global threat intelligence databases before the browser even opens.</p>
+            </div>
+            <div class="hm-feat-card">
+                <div class="hm-feat-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">App Permission Review</h3>
+                <p class="text-muted" style="font-size: 0.95rem;">Continuously monitors installed applications and warns you about excessive or dangerous permission combinations.</p>
+            </div>
+            <div class="hm-feat-card">
+                <div class="hm-feat-icon"><i class="fa-solid fa-robot"></i></div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">CyberGuard Agent</h3>
+                <p class="text-muted" style="font-size: 0.95rem;">An integrated AI assistant ready to explain complex security concepts and give tailored advice for your exact situation.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. AI Agent Preview -->
+    <section class="hm-section" style="background: var(--bg-surface-hover);">
+        <h2 class="hm-section-title">Meet Your Personal Security Analyst</h2>
+        <p class="hm-section-desc">Not sure if an email is safe? Just ask the CyberGuard Agent.</p>
+        
+        <div class="hm-agent-wrap">
+            <div class="chat-header">
+                <div class="chat-avatar-wrap">
+                    <div class="chat-avatar"><i class="fa-solid fa-robot"></i></div>
+                    <div class="online-indicator"></div>
+                </div>
+                <div>
+                    <h4>CyberGuard Agent</h4>
+                    <div class="status-text">Online and ready to help</div>
+                </div>
+            </div>
+            <div class="chat-body" style="height: 350px;">
+                <div class="chat-message user">
+                    Is this message safe? "URGENT: Your Netflix account is suspended. Update payment details here: http://bit.ly/update-pay-19"
+                </div>
+                <div class="chat-message bot shadow-sm">
+                    <div class="ai-risk-card high" style="margin-top: 0; margin-bottom: 1rem;">
+                        <strong><i class="fa-solid fa-triangle-exclamation"></i> High Risk: Phishing Attempt</strong>
+                    </div>
+                    <p style="font-size: 0.95rem;">This message is highly suspicious. It uses urgent language ("URGENT", "suspended") to create panic. The link provided is a shortened URL (bit.ly) which official companies like Netflix rarely use for billing issues. <strong>Do not click the link or provide any payment details.</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Final CTA Section -->
+    <section class="hm-cta-section">
+        <h2 style="font-size: 3rem; font-weight: 800; margin-bottom: 1.5rem; color: white; letter-spacing: -0.02em;">Ready to secure your mobile life?</h2>
+        <p style="font-size: 1.25rem; color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto 3rem;">Join thousands of users who trust CyberGuard AI to protect their data, privacy, and peace of mind.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="signup.html" class="btn btn-white btn-lg" style="font-size: 1.1rem; padding: 1rem 2.5rem;">Start Protection</a>
+            <a href="features.html" class="btn btn-outline-light btn-lg" style="font-size: 1.1rem; padding: 1rem 2.5rem;">Explore Features</a>
+        </div>
+    </section>
+
+    <!-- Public Footer -->
+    <footer class="public-footer">
+        <div class="footer-container">
+            <div class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard AI
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="security-tips.html">Security Tips</a>
+                <a href="support.html">Support</a>
+                <a href="login.html">Sign In</a>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-github"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem; color: var(--text-inverse-muted); font-size: 0.875rem;">
+            &copy; 2026 CyberGuard AI. A Professional Security Prototype.
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/navigation.js"></script>
+</body>
+</html>

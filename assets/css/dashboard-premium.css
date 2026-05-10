@@ -1,0 +1,253 @@
+/* Dashboard Premium Grid Layout */
+.db-layout-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+@media (max-width: 1024px) {
+    .db-layout-grid { grid-template-columns: 1fr; }
+}
+
+/* 1. Top Summary Hero Panel */
+.db-hero-panel {
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+    border-radius: var(--radius-xl);
+    padding: 2.5rem;
+    color: white;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    grid-column: 1 / -1;
+}
+
+.db-hero-score-wrap {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.db-score-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 6px solid var(--color-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    box-shadow: 0 0 20px rgba(13, 148, 136, 0.4);
+    background: rgba(255,255,255,0.05);
+    position: relative;
+}
+.db-score-circle span { font-size: 1rem; color: rgba(255,255,255,0.7); position: absolute; bottom: 15px; margin-left: 3px; }
+
+.db-hero-info h2 { font-size: 1.75rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;}
+.db-hero-info p { color: rgba(255,255,255,0.8); font-size: 0.95rem; margin-bottom: 0.25rem;}
+.db-hero-info .last-scan { font-size: 0.8rem; color: rgba(255,255,255,0.5); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;}
+
+.db-hero-actions { display: flex; gap: 1rem; }
+@media (max-width: 768px) {
+    .db-hero-panel { flex-direction: column; text-align: center; gap: 2rem; padding: 1.5rem; }
+    .db-hero-score-wrap { flex-direction: column; gap: 1rem; }
+}
+
+/* Base Card */
+.db-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    height: 100%;
+}
+.db-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 2. Risk Intelligence Row */
+.db-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    grid-column: 1 / -1;
+}
+@media (max-width: 768px) {
+    .db-metrics-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.db-metric-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+.db-metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary-light);
+}
+.db-metric-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.db-metric-icon { 
+    width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+}
+.db-metric-icon.warning { background: rgba(245, 158, 11, 0.1); color: var(--color-warning); }
+.db-metric-icon.danger { background: rgba(239, 68, 68, 0.1); color: var(--color-danger); }
+.db-metric-icon.safe { background: rgba(13, 148, 136, 0.1); color: var(--color-accent); }
+
+.db-metric-value { font-size: 1.75rem; font-weight: 800; line-height: 1; margin-bottom: 0.25rem; color: var(--text-main); }
+.db-metric-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+
+/* 3. Threat Timeline */
+.db-timeline {
+    position: relative;
+    padding-left: 1.5rem;
+}
+.db-timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-color);
+}
+.db-timeline-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+.db-timeline-item:last-child { padding-bottom: 0; }
+.db-timeline-dot {
+    position: absolute;
+    left: -1.5rem;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 3px solid var(--bg-surface);
+}
+.db-timeline-dot.danger { background: var(--color-danger); }
+.db-timeline-dot.warning { background: var(--color-warning); }
+.db-timeline-dot.safe { background: var(--color-accent); }
+.db-timeline-content {
+    background: var(--bg-main);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    text-decoration: none;
+    display: block;
+    color: inherit;
+    transition: all 0.2s;
+}
+.db-timeline-content:hover { border-color: var(--color-primary-light); }
+.db-timeline-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; }
+.db-timeline-desc { font-size: 0.85rem; color: var(--text-muted); }
+
+/* 4. Device Protection */
+.db-module-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+.db-module-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+}
+.db-module-name { font-weight: 500; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
+.db-status-pill {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.db-status-pill.active { background: rgba(13, 148, 136, 0.1); color: var(--color-accent); }
+.db-status-pill.review { background: rgba(245, 158, 11, 0.1); color: var(--color-warning); }
+
+/* 5. AI Insight Panel */
+.db-ai-card {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.05) 0%, rgba(13, 148, 136, 0.05) 100%);
+    border: 1px solid rgba(13, 148, 136, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+.db-ai-card::before {
+    content: '\f544';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    font-size: 6rem;
+    opacity: 0.05;
+    color: var(--color-primary);
+}
+.db-ai-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+/* 6. Risk Trend Visual */
+.db-chart-wrap {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 150px;
+    padding-top: 1rem;
+    gap: 0.5rem;
+}
+.db-chart-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    position: relative;
+}
+.db-chart-bar-wrap {
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(0,0,0,0.02);
+    border-radius: 4px;
+}
+.db-chart-bar {
+    width: 80%;
+    max-width: 24px;
+    border-radius: 4px;
+    transition: height 0.5s ease;
+}
+.db-chart-bar.low { background: var(--color-accent); opacity: 0.4; }
+.db-chart-bar.medium { background: var(--color-warning); opacity: 0.8; }
+.db-chart-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}

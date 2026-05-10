@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerts History - CyberGuard AI</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- New Top Navbar for Desktop -->
+        <nav class="app-topnav">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard
+            </a>
+            <div class="app-topnav-center desktop-only">
+                <a href="dashboard.html" class="app-nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="scan.html" class="app-nav-item"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
+                <a href="alerts.html" class="app-nav-item active"><i class="fa-solid fa-bell"></i> Alerts</a>
+                <a href="ai-agent.html" class="app-nav-item"><i class="fa-solid fa-robot"></i> AI Agent</a>
+                <a href="security-tips.html" class="app-nav-item"><i class="fa-solid fa-lightbulb"></i> Tips</a>
+            </div>
+            <div class="dashboard-header-right desktop-only">
+                <div class="search-box" style="position: relative;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                    <input type="text" class="form-control" placeholder="Search threats..." style="padding-left: 2.5rem; width: 200px; border-radius: 20px;">
+                </div>
+                <a href="alerts.html" style="font-size: 1.25rem; color: var(--text-muted);"><i class="fa-regular fa-bell"></i></a>
+                <a href="profile.html"><img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" style="width: 36px; border-radius: 50%;"></a>
+                <a href="login.html" onclick="localStorage.removeItem('isLoggedIn');" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+            </div>
+        </nav>
+
+        <!-- Mobile App Header -->
+        <header class="mobile-app-header">
+            <div class="logo" style="font-size: 1rem;">
+                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard
+            </div>
+            <div class="header-actions">
+                <a href="profile.html" class="text-main" style="font-size: 1.25rem;"><i class="fa-regular fa-circle-user"></i></a>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            
+
+            <div class="dashboard-content">
+                
+                <!-- Summary Cards -->
+                <div class="alerts-summary-grid">
+                    <div class="alert-stat-card danger">
+                        <div class="alert-stat-title">High Risk</div>
+                        <div class="alert-stat-value" id="countHigh">1</div>
+                    </div>
+                    <div class="alert-stat-card warning">
+                        <div class="alert-stat-title">Warning</div>
+                        <div class="alert-stat-value" id="countWarning">2</div>
+                    </div>
+                    <div class="alert-stat-card success">
+                        <div class="alert-stat-title">Resolved</div>
+                        <div class="alert-stat-value" id="countResolved">1</div>
+                    </div>
+                    <div class="alert-stat-card">
+                        <div class="alert-stat-title">Total Alerts</div>
+                        <div class="alert-stat-value" id="countTotal">4</div>
+                    </div>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All</button>
+                    <button class="filter-tab" data-filter="high">High Risk</button>
+                    <button class="filter-tab" data-filter="warning">Warning</button>
+                    <button class="filter-tab" data-filter="resolved">Resolved</button>
+                </div>
+
+                <!-- Alerts List -->
+                <div class="alerts-list" id="alertsList">
+                    <!-- High Risk Alert -->
+                    <div class="alert-list-card high-risk" data-status="high">
+                        <div>
+                            <div class="alert-card-header">
+                                <h3 class="alert-card-title">Suspicious bank verification message</h3>
+                                <span class="badge" style="background: var(--color-danger); color: white; border: none;"><i class="fa-solid fa-triangle-exclamation"></i> High Risk</span>
+                            </div>
+                            <div class="alert-card-meta">
+                                <span><i class="fa-solid fa-shield"></i> Phishing message</span>
+                                <span><i class="fa-regular fa-clock"></i> Today, 10:45 AM</span>
+                            </div>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0; line-height: 1.5;">
+                                This message uses urgent language and includes an unknown link that may be used to steal account information.
+                            </p>
+                        </div>
+                        <div class="alert-card-actions">
+                            <a href="threat-details.html" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">View Details</a>
+                            <button class="btn btn-outline btn-resolve" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-check"></i> Mark Resolved</button>
+                        </div>
+                    </div>
+
+                    <!-- Warning Alert 1 -->
+                    <div class="alert-list-card warning-risk" data-status="warning">
+                        <div>
+                            <div class="alert-card-header">
+                                <h3 class="alert-card-title">Unknown shortened payment link</h3>
+                                <span class="badge" style="background: var(--color-warning); color: white; border: none;"><i class="fa-solid fa-circle-exclamation"></i> Warning</span>
+                            </div>
+                            <div class="alert-card-meta">
+                                <span><i class="fa-solid fa-link"></i> Risky Link</span>
+                                <span><i class="fa-regular fa-clock"></i> Yesterday, 2:15 PM</span>
+                            </div>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0; line-height: 1.5;">
+                                Found a shortened URL (bit.ly) in SMS history pointing to an unknown payment gateway.
+                            </p>
+                        </div>
+                        <div class="alert-card-actions">
+                            <a href="threat-details.html" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">View Details</a>
+                            <button class="btn btn-outline btn-resolve" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-check"></i> Mark Resolved</button>
+                        </div>
+                    </div>
+
+                    <!-- Warning Alert 2 -->
+                    <div class="alert-list-card warning-risk" data-status="warning">
+                        <div>
+                            <div class="alert-card-header">
+                                <h3 class="alert-card-title">App requesting contacts and microphone</h3>
+                                <span class="badge" style="background: var(--color-warning); color: white; border: none;"><i class="fa-solid fa-circle-exclamation"></i> Warning</span>
+                            </div>
+                            <div class="alert-card-meta">
+                                <span><i class="fa-solid fa-mobile-screen"></i> Permission Risk</span>
+                                <span><i class="fa-regular fa-clock"></i> Yesterday, 9:30 AM</span>
+                            </div>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0; line-height: 1.5;">
+                                "Flashlight Pro" application has requested permissions outside of its normal scope of operation.
+                            </p>
+                        </div>
+                        <div class="alert-card-actions">
+                            <a href="threat-details.html" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">View Details</a>
+                            <button class="btn btn-outline btn-resolve" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-check"></i> Mark Resolved</button>
+                        </div>
+                    </div>
+
+                    <!-- Resolved Alert -->
+                    <div class="alert-list-card resolved-status" data-status="resolved">
+                        <div>
+                            <div class="alert-card-header">
+                                <h3 class="alert-card-title" style="text-decoration: line-through; opacity: 0.7;">Fake delivery notification</h3>
+                                <span class="badge" style="background: rgba(16, 185, 129, 0.1); color: var(--color-success); border: none;"><i class="fa-solid fa-shield-check"></i> Resolved</span>
+                            </div>
+                            <div class="alert-card-meta" style="opacity: 0.7;">
+                                <span><i class="fa-solid fa-shield"></i> Threat reviewed by user</span>
+                                <span><i class="fa-regular fa-clock"></i> Oct 24, 11:00 AM</span>
+                            </div>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0; line-height: 1.5; opacity: 0.7;">
+                                User successfully blocked the sender and ignored the threat.
+                            </p>
+                        </div>
+                        <div class="alert-card-actions">
+                            <button class="btn btn-outline" disabled style="padding: 0.5rem 1rem; font-size: 0.85rem; opacity: 0.5;">Resolved</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Mobile Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="bottom-nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="alerts.html" class="bottom-nav-item active">
+                <i class="fa-solid fa-bell"></i>
+                <span>Alerts</span>
+            </a>
+            <a href="scan.html" class="bottom-nav-scan">
+                <i class="fa-solid fa-satellite-dish"></i>
+            </a>
+            <a href="ai-agent.html" class="bottom-nav-item">
+                <i class="fa-solid fa-robot"></i>
+                <span>AI Agent</span>
+            </a>
+            <a href="settings.html" class="bottom-nav-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/alerts.js"></script>
+</body>
+</html>

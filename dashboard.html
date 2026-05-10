@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CyberGuard AI</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- New Top Navbar for Desktop -->
+        <nav class="app-topnav">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard
+            </a>
+            <div class="app-topnav-center desktop-only">
+                <a href="dashboard.html" class="app-nav-item active"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="scan.html" class="app-nav-item"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
+                <a href="alerts.html" class="app-nav-item"><i class="fa-solid fa-bell"></i> Alerts</a>
+                <a href="ai-agent.html" class="app-nav-item"><i class="fa-solid fa-robot"></i> AI Agent</a>
+                <a href="security-tips.html" class="app-nav-item"><i class="fa-solid fa-lightbulb"></i> Tips</a>
+            </div>
+            <div class="dashboard-header-right desktop-only">
+                <div class="search-box" style="position: relative;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                    <input type="text" class="form-control" placeholder="Search threats..." style="padding-left: 2.5rem; width: 200px; border-radius: 20px;">
+                </div>
+                <a href="alerts.html" style="font-size: 1.25rem; color: var(--text-muted);"><i class="fa-regular fa-bell"></i></a>
+                <a href="profile.html"><img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" style="width: 36px; border-radius: 50%;"></a>
+                <a href="login.html" onclick="localStorage.removeItem('isLoggedIn');" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+            </div>
+        </nav>
+
+        <!-- Mobile App Header -->
+        <header class="mobile-app-header">
+            <div class="logo" style="font-size: 1rem;">
+                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard
+            </div>
+            <div class="header-actions">
+                <a href="profile.html" class="text-main" style="font-size: 1.25rem;"><i class="fa-regular fa-circle-user"></i></a>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            <div class="dashboard-content">
+                
+                <div class="db-layout-grid">
+                    
+                    <!-- 1. Top Summary Hero Panel -->
+                    <div class="db-hero-panel">
+                        <div class="db-hero-score-wrap">
+                            <div class="db-score-circle">
+                                85<span>/100</span>
+                            </div>
+                            <div class="db-hero-info">
+                                <h2><i class="fa-solid fa-shield-check text-accent" style="font-size: 1.5rem;"></i> Protected</h2>
+                                <p>No critical threats detected in the last scan.</p>
+                                <div class="last-scan">Last scan: 10 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="db-hero-actions">
+                            <a href="ai-agent.html" class="btn btn-outline-light"><i class="fa-solid fa-robot"></i> Ask CyberGuard</a>
+                            <a href="scan.html" class="btn btn-white"><i class="fa-solid fa-satellite-dish"></i> Run Scan</a>
+                        </div>
+                    </div>
+
+                    <!-- 2. Risk Intelligence Row -->
+                    <div class="db-metrics-grid">
+                        <a href="threat-details.html" class="db-metric-card">
+                            <div class="db-metric-header">
+                                <div class="db-metric-icon warning"><i class="fa-solid fa-message"></i></div>
+                                <i class="fa-solid fa-chevron-right text-muted" style="font-size: 0.8rem;"></i>
+                            </div>
+                            <div>
+                                <div class="db-metric-value">3</div>
+                                <div class="db-metric-label">Suspicious Messages</div>
+                            </div>
+                        </a>
+                        <a href="threat-details.html" class="db-metric-card">
+                            <div class="db-metric-header">
+                                <div class="db-metric-icon warning"><i class="fa-solid fa-link"></i></div>
+                                <i class="fa-solid fa-chevron-right text-muted" style="font-size: 0.8rem;"></i>
+                            </div>
+                            <div>
+                                <div class="db-metric-value">2</div>
+                                <div class="db-metric-label">Risky Links</div>
+                            </div>
+                        </a>
+                        <a href="threat-details.html" class="db-metric-card">
+                            <div class="db-metric-header">
+                                <div class="db-metric-icon danger"><i class="fa-solid fa-mobile-screen"></i></div>
+                                <i class="fa-solid fa-chevron-right text-muted" style="font-size: 0.8rem;"></i>
+                            </div>
+                            <div>
+                                <div class="db-metric-value">5</div>
+                                <div class="db-metric-label">Permission Risks</div>
+                            </div>
+                        </a>
+                        <a href="alerts.html" class="db-metric-card">
+                            <div class="db-metric-header">
+                                <div class="db-metric-icon safe"><i class="fa-solid fa-bell"></i></div>
+                                <i class="fa-solid fa-chevron-right text-muted" style="font-size: 0.8rem;"></i>
+                            </div>
+                            <div>
+                                <div class="db-metric-value">4</div>
+                                <div class="db-metric-label">Recent Alerts</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Left Column -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        
+                        <!-- 3. Threat Timeline -->
+                        <div class="db-card">
+                            <div class="db-card-title">
+                                Threat Timeline
+                                <a href="alerts.html" class="text-accent" style="font-size: 0.85rem; font-weight: 600;">View All</a>
+                            </div>
+                            <div class="db-timeline">
+                                <div class="db-timeline-item">
+                                    <div class="db-timeline-dot warning"></div>
+                                    <a href="threat-details.html" class="db-timeline-content">
+                                        <div class="db-timeline-title">Suspicious bank verification message</div>
+                                        <div class="db-timeline-desc">Flagged for credential harvesting URL • 2h ago</div>
+                                    </a>
+                                </div>
+                                <div class="db-timeline-item">
+                                    <div class="db-timeline-dot danger"></div>
+                                    <a href="threat-details.html" class="db-timeline-content">
+                                        <div class="db-timeline-title">Unknown shortened payment link</div>
+                                        <div class="db-timeline-desc">Intercepted in browser • 5h ago</div>
+                                    </a>
+                                </div>
+                                <div class="db-timeline-item">
+                                    <div class="db-timeline-dot warning"></div>
+                                    <a href="threat-details.html" class="db-timeline-content">
+                                        <div class="db-timeline-title">App requesting contacts and microphone</div>
+                                        <div class="db-timeline-desc">Calculator app flagged for excessive permissions • 1d ago</div>
+                                    </a>
+                                </div>
+                                <div class="db-timeline-item">
+                                    <div class="db-timeline-dot safe"></div>
+                                    <div class="db-timeline-content" style="cursor: default;">
+                                        <div class="db-timeline-title">Weekly scan completed</div>
+                                        <div class="db-timeline-desc">No new high-severity threats found • 2d ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Device Protection -->
+                        <div class="db-card">
+                            <div class="db-card-title">Device Protection Modules</div>
+                            <div class="db-module-list">
+                                <div class="db-module-item">
+                                    <div class="db-module-name"><i class="fa-solid fa-message text-muted"></i> Message Scanning</div>
+                                    <div class="db-status-pill active">Active</div>
+                                </div>
+                                <div class="db-module-item">
+                                    <div class="db-module-name"><i class="fa-solid fa-link text-muted"></i> Link Checking</div>
+                                    <div class="db-status-pill active">Active</div>
+                                </div>
+                                <div class="db-module-item">
+                                    <div class="db-module-name"><i class="fa-solid fa-mobile-screen text-muted"></i> Permission Review</div>
+                                    <div class="db-status-pill review">Needs Review</div>
+                                </div>
+                                <div class="db-module-item">
+                                    <div class="db-module-name"><i class="fa-solid fa-bell text-muted"></i> Notification Alerts</div>
+                                    <div class="db-status-pill active">Active</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        
+                        <!-- 5. AI Insight Panel -->
+                        <div class="db-ai-card">
+                            <div class="db-card-title" style="margin-bottom: 0.5rem; color: var(--color-primary);">
+                                <i class="fa-solid fa-robot"></i> Agent Insight
+                            </div>
+                            <p class="db-ai-text">
+                                "Most detected risks are related to unknown links and permission access. Review high-risk alerts first."
+                            </p>
+                            <a href="ai-agent.html" class="btn btn-primary btn-block btn-glow">Open Agent</a>
+                        </div>
+
+                        <!-- 6. Risk Trend Visual -->
+                        <div class="db-card">
+                            <div class="db-card-title">7-Day Risk Trend</div>
+                            <div class="db-chart-wrap">
+                                <div class="db-chart-col">
+                                    <div class="db-chart-bar-wrap"><div class="db-chart-bar low" style="height: 20%;"></div></div>
+                                    <div class="db-chart-label">M</div>
+                                </div>
+                                <div class="db-chart-col">
+                                    <div class="db-chart-bar-wrap"><div class="db-chart-bar low" style="height: 30%;"></div></div>
+                                    <div class="db-chart-label">T</div>
+                                </div>
+                                <div class="db-chart-col">
+                                    <div class="db-chart-bar-wrap"><div class="db-chart-bar medium" style="height: 60%;"></div></div>
+                                    <div class="db-chart-label">W</div>
+                                </div>
+                                <div class="db-chart-col">
+                                    <div class="db-chart-bar-wrap"><div class="db-chart-bar low" style="height: 25%;"></div></div>
+                                    <div class="db-chart-label">T</div>
+                                </div>
+                                <div class="db-chart-col">
+                                    <div class="db-chart-bar-wrap"><div class="db-chart-bar medium" style="height: 55%;"></div></div>
+                                    <div class="db-chart-label">F</div>
+                                </div>
+                                <div class="db-chart-col">
+                                    <div class="db-chart-bar-wrap"><div class="db-chart-bar low" style="height: 15%;"></div></div>
+                                    <div class="db-chart-label">S</div>
+                                </div>
+                                <div class="db-chart-col">
+                                    <div class="db-chart-bar-wrap"><div class="db-chart-bar low" style="height: 10%;"></div></div>
+                                    <div class="db-chart-label">S</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </main>
+        
+        <!-- Mobile Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="bottom-nav-item active">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="scan.html" class="bottom-nav-item">
+                <i class="fa-solid fa-satellite-dish"></i>
+                <span>Scan</span>
+            </a>
+            <a href="ai-agent.html" class="bottom-nav-item chat-fab">
+                <div class="fab-icon"><i class="fa-solid fa-robot"></i></div>
+            </a>
+            <a href="alerts.html" class="bottom-nav-item">
+                <i class="fa-solid fa-bell"></i>
+                <span>Alerts</span>
+            </a>
+            <a href="settings.html" class="bottom-nav-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/navigation.js"></script>
+</body>
+</html>

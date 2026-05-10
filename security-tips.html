@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Tips - CyberGuard AI</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- New Top Navbar for Desktop -->
+        <nav class="app-topnav">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard
+            </a>
+            <div class="app-topnav-center desktop-only">
+                <a href="dashboard.html" class="app-nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="scan.html" class="app-nav-item"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
+                <a href="alerts.html" class="app-nav-item"><i class="fa-solid fa-bell"></i> Alerts</a>
+                <a href="ai-agent.html" class="app-nav-item"><i class="fa-solid fa-robot"></i> AI Agent</a>
+                <a href="security-tips.html" class="app-nav-item active"><i class="fa-solid fa-lightbulb"></i> Tips</a>
+            </div>
+            <div class="dashboard-header-right desktop-only">
+                <div class="search-box" style="position: relative;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                    <input type="text" class="form-control" placeholder="Search threats..." style="padding-left: 2.5rem; width: 200px; border-radius: 20px;">
+                </div>
+                <a href="alerts.html" style="font-size: 1.25rem; color: var(--text-muted);"><i class="fa-regular fa-bell"></i></a>
+                <a href="profile.html"><img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" style="width: 36px; border-radius: 50%;"></a>
+                <a href="login.html" onclick="localStorage.removeItem('isLoggedIn');" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+            </div>
+        </nav>
+
+        <!-- Mobile App Header -->
+        <header class="mobile-app-header">
+            <div class="logo" style="font-size: 1rem;">
+                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard
+            </div>
+            <div class="header-actions">
+                <a href="profile.html" class="text-main" style="font-size: 1.25rem;"><i class="fa-regular fa-circle-user"></i></a>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            
+
+            <div class="dashboard-content">
+                
+                <!-- Featured Tip Card -->
+                <div class="featured-tip-card">
+                    <div class="featured-tip-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="featured-tip-content">
+                        <h3>The Golden Rule of Mobile Security</h3>
+                        <p>Your bank or financial institution will <strong>never</strong> ask for your password, PIN, or One-Time Passcode (OTP) over SMS or a phone call. Always use the official mobile app to verify any suspicious account activity.</p>
+                        <button class="btn btn-outline" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white;">Read the Full Guide</button>
+                    </div>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All Tips</button>
+                    <button class="filter-tab" data-filter="messages">Messages</button>
+                    <button class="filter-tab" data-filter="links">Links</button>
+                    <button class="filter-tab" data-filter="app permissions">App Permissions</button>
+                    <button class="filter-tab" data-filter="account safety">Account Safety</button>
+                    <button class="filter-tab" data-filter="device protection">Device Protection</button>
+                </div>
+
+                <!-- Tips Grid -->
+                <div class="tips-grid">
+                    
+                    <!-- Tip 1 -->
+                    <div class="tip-card" data-category="account safety">
+                        <div class="tip-card-header">
+                            <div class="tip-icon"><i class="fa-solid fa-key"></i></div>
+                            <span class="tip-priority important">Important</span>
+                        </div>
+                        <h4 class="tip-title">Never share OTP or passwords</h4>
+                        <p class="tip-desc">Scammers use fake urgent messages to trick you into providing your authentication codes. Keep them private.</p>
+                        <div class="tip-actions">
+                            <button class="tip-action-btn btn-save"><i class="fa-regular fa-bookmark"></i> Save</button>
+                            <button class="tip-action-btn btn-read"><i class="fa-solid fa-check"></i> Mark Read</button>
+                        </div>
+                    </div>
+
+                    <!-- Tip 2 -->
+                    <div class="tip-card" data-category="links">
+                        <div class="tip-card-header">
+                            <div class="tip-icon"><i class="fa-solid fa-link-slash"></i></div>
+                            <span class="tip-priority important">Important</span>
+                        </div>
+                        <h4 class="tip-title">Avoid unknown links</h4>
+                        <p class="tip-desc">Do not click on shortened URLs (like bit.ly) or links from senders you don't recognize. They often lead to phishing sites.</p>
+                        <div class="tip-actions">
+                            <button class="tip-action-btn btn-save"><i class="fa-regular fa-bookmark"></i> Save</button>
+                            <button class="tip-action-btn btn-read"><i class="fa-solid fa-check"></i> Mark Read</button>
+                        </div>
+                    </div>
+
+                    <!-- Tip 3 -->
+                    <div class="tip-card" data-category="app permissions">
+                        <div class="tip-card-header">
+                            <div class="tip-icon"><i class="fa-solid fa-list-check"></i></div>
+                            <span class="tip-priority recommended">Recommended</span>
+                        </div>
+                        <h4 class="tip-title">Review app permissions regularly</h4>
+                        <p class="tip-desc">A flashlight app shouldn't need access to your microphone or contacts. Revoke permissions that don't make sense.</p>
+                        <div class="tip-actions">
+                            <button class="tip-action-btn btn-save"><i class="fa-regular fa-bookmark"></i> Save</button>
+                            <button class="tip-action-btn btn-read"><i class="fa-solid fa-check"></i> Mark Read</button>
+                        </div>
+                    </div>
+
+                    <!-- Tip 4 -->
+                    <div class="tip-card" data-category="device protection">
+                        <div class="tip-card-header">
+                            <div class="tip-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                            <span class="tip-priority recommended">Recommended</span>
+                        </div>
+                        <h4 class="tip-title">Keep your phone updated</h4>
+                        <p class="tip-desc">OS updates patch critical security vulnerabilities. Enable automatic updates to stay protected against new exploits.</p>
+                        <div class="tip-actions">
+                            <button class="tip-action-btn btn-save"><i class="fa-regular fa-bookmark"></i> Save</button>
+                            <button class="tip-action-btn btn-read"><i class="fa-solid fa-check"></i> Mark Read</button>
+                        </div>
+                    </div>
+
+                    <!-- Tip 5 -->
+                    <div class="tip-card" data-category="app permissions">
+                        <div class="tip-card-header">
+                            <div class="tip-icon"><i class="fa-brands fa-google-play"></i></div>
+                            <span class="tip-priority basic">Basic</span>
+                        </div>
+                        <h4 class="tip-title">Use official apps only</h4>
+                        <p class="tip-desc">Download apps exclusively from the Google Play Store or Apple App Store. Sideloading APKs bypasses security checks.</p>
+                        <div class="tip-actions">
+                            <button class="tip-action-btn btn-save"><i class="fa-regular fa-bookmark"></i> Save</button>
+                            <button class="tip-action-btn btn-read"><i class="fa-solid fa-check"></i> Mark Read</button>
+                        </div>
+                    </div>
+
+                    <!-- Tip 6 -->
+                    <div class="tip-card" data-category="device protection">
+                        <div class="tip-card-header">
+                            <div class="tip-icon"><i class="fa-solid fa-lock"></i></div>
+                            <span class="tip-priority basic">Basic</span>
+                        </div>
+                        <h4 class="tip-title">Enable screen lock</h4>
+                        <p class="tip-desc">Use a strong PIN, password, or biometric lock to prevent physical access if your device is lost or stolen.</p>
+                        <div class="tip-actions">
+                            <button class="tip-action-btn btn-save"><i class="fa-regular fa-bookmark"></i> Save</button>
+                            <button class="tip-action-btn btn-read"><i class="fa-solid fa-check"></i> Mark Read</button>
+                        </div>
+                    </div>
+
+                    <!-- Tip 7 -->
+                    <div class="tip-card" data-category="account safety">
+                        <div class="tip-card-header">
+                            <div class="tip-icon"><i class="fa-solid fa-shield-virus"></i></div>
+                            <span class="tip-priority important">Important</span>
+                        </div>
+                        <h4 class="tip-title">Turn on two-factor authentication</h4>
+                        <p class="tip-desc">Add an extra layer of security to your critical accounts. If a password is compromised, 2FA prevents unauthorized access.</p>
+                        <div class="tip-actions">
+                            <button class="tip-action-btn btn-save"><i class="fa-regular fa-bookmark"></i> Save</button>
+                            <button class="tip-action-btn btn-read"><i class="fa-solid fa-check"></i> Mark Read</button>
+                        </div>
+                    </div>
+
+                    <!-- Tip 8 -->
+                    <div class="tip-card" data-category="messages">
+                        <div class="tip-card-header">
+                            <div class="tip-icon"><i class="fa-solid fa-flag"></i></div>
+                            <span class="tip-priority recommended">Recommended</span>
+                        </div>
+                        <h4 class="tip-title">Report suspicious messages</h4>
+                        <p class="tip-desc">If you receive a phishing text, block the sender and report it to your carrier to help protect others.</p>
+                        <div class="tip-actions">
+                            <button class="tip-action-btn btn-save"><i class="fa-regular fa-bookmark"></i> Save</button>
+                            <button class="tip-action-btn btn-read"><i class="fa-solid fa-check"></i> Mark Read</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Mobile Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="bottom-nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="alerts.html" class="bottom-nav-item">
+                <i class="fa-solid fa-bell"></i>
+                <span>Alerts</span>
+            </a>
+            <a href="scan.html" class="bottom-nav-scan">
+                <i class="fa-solid fa-satellite-dish"></i>
+            </a>
+            <a href="ai-agent.html" class="bottom-nav-item">
+                <i class="fa-solid fa-robot"></i>
+                <span>AI Agent</span>
+            </a>
+            <a href="security-tips.html" class="bottom-nav-item active">
+                <i class="fa-solid fa-lightbulb"></i>
+                <span>Tips</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" style="position: fixed; bottom: 80px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;"></div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/security-tips.js"></script>
+</body>
+</html>
