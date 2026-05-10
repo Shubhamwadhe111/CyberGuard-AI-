@@ -12,7 +12,6 @@
   --color-primary-dark: #020617;
   --color-accent: #0d9488; /* Teal */
   --color-accent-hover: #14b8a6;
-  --color-accent-glow: rgba(13, 148, 136, 0.4);
   
   --color-success: #10b981; 
   --color-warning: #f59e0b; 
@@ -34,10 +33,10 @@
   --radius-xl: 24px;
   --radius-full: 9999px;
   
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
-  --shadow-glow: 0 0 20px var(--color-accent-glow);
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-glow: none;
 }
 
 /* Global Reset */
@@ -64,7 +63,7 @@ p { font-size: 1.125rem; }
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     border: 1px solid rgba(15, 23, 42, 0.08);
-    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+    box-shadow: none;
     border-radius: var(--radius-full);
     position: sticky;
     top: 1rem;
@@ -162,7 +161,7 @@ p { font-size: 1.125rem; }
 .btn-primary:hover {
     background-color: var(--color-primary-light);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+    box-shadow: none;
 }
 
 .btn-outline {
@@ -185,10 +184,10 @@ p { font-size: 1.125rem; }
 }
 .btn-white:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    box-shadow: none;
 }
 
-.btn-glow { box-shadow: var(--shadow-glow); }
+
 .btn-lg { padding: 0.75rem 2rem; font-size: 1rem; }
 
 /* Typography Utilities */
@@ -217,15 +216,7 @@ p { font-size: 1.125rem; }
 
 /* Glow Background */
 .hero-bg-glow {
-    position: absolute;
-    top: -20%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 800px;
-    height: 800px;
-    background: radial-gradient(circle, rgba(13, 148, 136, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
-    pointer-events: none;
-    z-index: 0;
+    display: none;
 }
 
 .hero-content {
@@ -799,7 +790,7 @@ p { font-size: 1.125rem; }
 .form-control:focus {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px var(--color-accent-glow);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
 }
 
 .form-options {
@@ -844,7 +835,7 @@ p { font-size: 1.125rem; }
 .otp-input:focus {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px var(--color-accent-glow);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
 }
 
 .error-msg {

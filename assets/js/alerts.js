@@ -1,88 +1,95 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const filterTabs = document.querySelectorAll('.filter-tab');
-    const alerts = document.querySelectorAll('.alert-list-card');
-    
-    // Stats elements
-    const countHigh = document.getElementById('countHigh');
-    const countWarning = document.getElementById('countWarning');
-    const countResolved = document.getElementById('countResolved');
-    const countTotal = document.getElementById('countTotal');
 
-    // Update summary counts based on DOM elements
-    function updateStats() {
-        let high = 0, warning = 0, resolved = 0;
-        
-        alerts.forEach(alert => {
-            const status = alert.getAttribute('data-status');
-            if (status === 'high') high++;
-            else if (status === 'warning') warning++;
-            else if (status === 'resolved') resolved++;
+    // Filter alerts by tab
+    window.filterAlerts = function(status, btn) {
+        document.querySelectorAll('.al-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('#alertsList .al-card').forEach(card => {
+            if (status === 'all') {
+                card.style.display = '';
+            } else {
+                card.style.display = card.dataset.status === status ? '' : 'none';
+            }
         });
+    };
 
-        if (countHigh) countHigh.textContent = high;
-        if (countWarning) countWarning.textContent = warning;
-        if (countResolved) countResolved.textContent = resolved;
-        if (countTotal) countTotal.textContent = alerts.length;
+    // Resolve a single alert
+    window.resolveAlert = function(btn) {
+        const card = btn.closest('.al-card');
+        if (!card) return;
+        card.dataset.status = 'resolved';
+        card.classList.add('resolved');
+        card.querySelector('.al-card-stripe').className = 'al-card-stripe safe';
+        card.querySelector('.al-card-icon').className = 'al-card-icon safe';
+        card.querySelector('.al-card-icon').innerHTML = '<i class="fa-solid fa-shield-check"></i>';
+        const titleEl = card.querySelector('.al-card-title');
+        if (titleEl) titleEl.style.textDecoration = 'line-through';
+        const footer = card.querySelector('.al-card-footer');
+        if (footer) footer.innerHTML = '<span style="font-size:0.82rem;color:var(--color-accent);font-weight:600;"><i class="fa-solid fa-check-circle"></i> Resolved just now</span>';
+        updateCounts();
+        showToast('Alert marked as resolved.', 'success');
+    };
+
+    // Mark all resolved
+    window.markAllResolved = function() {
+        document.querySelectorAll('#alertsList .al-card:not(.resolved)').forEach(card => {
+            card.dataset.status = 'resolved';
+            card.classList.add('resolved');
+            const stripe = card.querySelector('.al-card-stripe');
+            if (stripe) stripe.className = 'al-card-stripe safe';
+            const icon = card.querySelector('.al-card-icon');
+            if (icon) { icon.className = 'al-card-icon safe'; icon.innerHTML = '<i class="fa-solid fa-shield-check"></i>'; }
+            const title = card.querySelector('.al-card-title');
+            if (title) title.style.textDecoration = 'line-through';
+            const footer = card.querySelector('.al-card-footer');
+            if (footer) footer.innerHTML = '<span style="font-size:0.82rem;color:var(--color-accent);font-weight:600;"><i class="fa-solid fa-check-circle"></i> Resolved just now</span>';
+        });
+        updateCounts();
+        showToast('All alerts marked as resolved!', 'success');
+    };
+
+    // Update KPI counts
+    function updateCounts() {
+        const cards = document.querySelectorAll('#alertsList .al-card');
+        let high = 0, warn = 0, info = 0, resolved = 0;
+        cards.forEach(c => {
+            if (c.dataset.status === 'high')     high++;
+            if (c.dataset.status === 'warning')  warn++;
+            if (c.dataset.status === 'info')     info++;
+            if (c.dataset.status === 'resolved') resolved++;
+        });
+        document.getElementById('cntHigh').textContent     = high;
+        document.getElementById('cntWarn').textContent     = warn;
+        document.getElementById('cntInfo').textContent     = info;
+        document.getElementById('cntResolved').textContent = resolved;
     }
 
-    // Initialize stats
-    updateStats();
+    // Sort alerts
+    window.sortAlerts = function() {
+        const val = document.getElementById('sortSelect').value;
+        const list = document.getElementById('alertsList');
+        const cards = Array.from(list.querySelectorAll('.al-card'));
+        const order = { high: 0, warning: 1, info: 2, resolved: 3 };
+        if (val === 'severity') {
+            cards.sort((a, b) => (order[a.dataset.status] || 9) - (order[b.dataset.status] || 9));
+            cards.forEach(c => list.appendChild(c));
+        }
+    };
 
-    // Filter Logic
-    filterTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            // Update active state
-            filterTabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            const filter = tab.getAttribute('data-filter');
-
-            alerts.forEach(alert => {
-                if (filter === 'all' || alert.getAttribute('data-status') === filter) {
-                    alert.style.display = 'grid'; // because mobile overrides use grid
-                    // Force mobile flex-direction logic check
-                    if (window.innerWidth <= 768) {
-                        alert.style.display = 'grid'; // mobile is 1fr grid
-                    }
-                } else {
-                    alert.style.display = 'none';
-                }
-            });
-        });
-    });
-
-    // Mark Resolved Logic
-    const resolveBtns = document.querySelectorAll('.btn-resolve');
-    resolveBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const card = this.closest('.alert-list-card');
-            
-            // Change appearance to resolved
-            card.className = 'alert-list-card resolved-status';
-            card.setAttribute('data-status', 'resolved');
-            
-            // Update Header
-            const headerBadge = card.querySelector('.badge');
-            headerBadge.style.background = 'rgba(16, 185, 129, 0.1)';
-            headerBadge.style.color = 'var(--color-success)';
-            headerBadge.innerHTML = '<i class="fa-solid fa-shield-check"></i> Resolved';
-            
-            const title = card.querySelector('.alert-card-title');
-            title.style.textDecoration = 'line-through';
-            title.style.opacity = '0.7';
-
-            const meta = card.querySelector('.alert-card-meta');
-            meta.style.opacity = '0.7';
-
-            const p = card.querySelector('p');
-            p.style.opacity = '0.7';
-
-            // Update Action Buttons
-            const actionsContainer = card.querySelector('.alert-card-actions');
-            actionsContainer.innerHTML = '<button class="btn btn-outline" disabled style="padding: 0.5rem 1rem; font-size: 0.85rem; opacity: 0.5;">Resolved</button>';
-
-            // Refresh stats summary
-            updateStats();
-        });
-    });
+    // Toast
+    function showToast(message, type) {
+        const container = document.getElementById('toastContainer') || (() => {
+            const d = document.createElement('div');
+            d.id = 'toastContainer';
+            d.style.cssText = 'position:fixed;bottom:80px;right:20px;z-index:1000;display:flex;flex-direction:column;gap:10px;';
+            document.body.appendChild(d);
+            return d;
+        })();
+        const toast = document.createElement('div');
+        const bg = type === 'success' ? '#10b981' : '#ef4444';
+        toast.style.cssText = `background:${bg};color:white;padding:0.85rem 1.25rem;border-radius:10px;display:flex;align-items:center;gap:0.6rem;font-size:0.88rem;font-weight:500;`;
+        toast.innerHTML = `<i class="fa-solid fa-check-circle"></i> ${message}`;
+        container.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
+    }
 });

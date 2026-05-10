@@ -3,143 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberGuard Agent - CyberGuard AI</title>
+    <title>AI Agent - CyberGuard AI</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/profile.css">
+    <link rel="stylesheet" href="assets/css/ai-agent.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="dashboard-layout">
-        <!-- New Top Navbar for Desktop -->
-        <nav class="app-topnav">
-            <a href="index.html" class="logo">
-                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                CyberGuard
-            </a>
-            <div class="app-topnav-center desktop-only">
-                <a href="dashboard.html" class="app-nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
-                <a href="scan.html" class="app-nav-item"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
-                <a href="alerts.html" class="app-nav-item"><i class="fa-solid fa-bell"></i> Alerts</a>
-                <a href="ai-agent.html" class="app-nav-item active"><i class="fa-solid fa-robot"></i> AI Agent</a>
-                <a href="security-tips.html" class="app-nav-item"><i class="fa-solid fa-lightbulb"></i> Tips</a>
-            </div>
-            <div class="dashboard-header-right desktop-only">
-                <div class="search-box" style="position: relative;">
-                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
-                    <input type="text" class="form-control" placeholder="Search threats..." style="padding-left: 2.5rem; width: 200px; border-radius: 20px;">
+<div class="dashboard-layout">
+    <nav class="app-topnav">
+        <a href="index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>CyberGuard</a>
+        <div class="app-topnav-center desktop-only">
+            <a href="home.html" class="app-nav-item"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="dashboard.html" class="app-nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="scan.html" class="app-nav-item"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
+            <a href="alerts.html" class="app-nav-item"><i class="fa-solid fa-circle-exclamation"></i> Alerts</a>
+            <a href="ai-agent.html" class="app-nav-item active"><i class="fa-solid fa-robot"></i> AI Agent</a>
+            <a href="security-tips.html" class="app-nav-item"><i class="fa-solid fa-lightbulb"></i> Tips</a>
+        </div>
+        <div class="dashboard-header-right desktop-only">
+            <span id="navBellLink"></span>
+            <!-- Profile Dropdown -->
+            <div class="prof-nav-wrap" id="profNavWrap">
+                <button class="prof-nav-btn" id="profNavBtn">
+                    <img src="https://ui-avatars.com/api/?name=Alex+Walker&background=0d9488&color=fff" alt="Profile" class="prof-nav-avatar">
+                    <span class="prof-nav-name">Alex</span>
+                    <i class="fa-solid fa-chevron-down prof-nav-caret"></i>
+                </button>
+                <div class="prof-nav-dropdown" id="profNavDropdown">
+                    <div class="prof-nav-dd-header">
+                        <img src="https://ui-avatars.com/api/?name=Alex+Walker&background=0d9488&color=fff" alt="Profile" style="width:42px;height:42px;border-radius:50%;">
+                        <div>
+                            <div style="font-weight:700;font-size:0.88rem;">Alex Walker</div>
+                            <div style="font-size:0.73rem;color:var(--text-muted);">alex@example.com</div>
+                            <span class="prof-plan-badge">Basic Plan</span>
+                        </div>
+                    </div>
+                    <div class="prof-nav-dd-list">
+                        <a href="profile.html" class="prof-nav-dd-item"><i class="fa-solid fa-user"></i> My Profile</a>
+                        <a href="settings.html" class="prof-nav-dd-item"><i class="fa-solid fa-gear"></i> App Settings</a>
+                        <div class="prof-nav-dd-divider"></div>
+                        <button class="prof-nav-dd-item danger" onclick="localStorage.removeItem('isLoggedIn');window.location.href='login.html'"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+                    </div>
                 </div>
-                <a href="alerts.html" style="font-size: 1.25rem; color: var(--text-muted);"><i class="fa-regular fa-bell"></i></a>
-                <a href="profile.html"><img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" style="width: 36px; border-radius: 50%;"></a>
-                <a href="login.html" onclick="localStorage.removeItem('isLoggedIn');" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
             </div>
-        </nav>
+        </div>
+    </nav>
+    <header class="mobile-app-header">
+        <div class="logo" style="font-size:1rem;"><div class="logo-icon" style="width:24px;height:24px;font-size:0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>CyberGuard</div>
+        <div class="header-actions"><a href="profile.html" class="text-main" style="font-size:1.25rem;"><i class="fa-regular fa-circle-user"></i></a></div>
+    </header>
 
-        <!-- Mobile App Header -->
-        <header class="mobile-app-header">
-            <div class="logo" style="font-size: 1rem;">
-                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
-                CyberGuard
+    <main class="dashboard-main" style="overflow:hidden;">
+        <!-- Full-width wrapper outside dashboard-content constraints -->
+        <div style="padding:1rem 1.5rem;height:calc(100vh - 64px);box-sizing:border-box;">
+        <div class="ag-page-wrapper">
+
+            <!-- ===== LEFT SIDEBAR ===== -->
+            <div class="ag-sidebar">
+
+                <!-- Agent Card -->
+                <div class="ag-agent-card">
+                    <div class="ag-agent-avatar">
+                        <i class="fa-solid fa-robot"></i>
+                        <div class="ag-online-dot"></div>
+                    </div>
+                    <div class="ag-agent-name">CyberGuard Agent</div>
+                    <div class="ag-agent-status"><i class="fa-solid fa-circle" style="font-size:0.45rem;"></i> Online · Ready</div>
+                    <div class="ag-agent-meta">Your personal AI security assistant for mobile threat protection.</div>
+                    <button class="btn btn-outline" style="width:100%;font-size:0.78rem;padding:0.4rem;" onclick="clearChat()">
+                        <i class="fa-solid fa-rotate-left"></i> New Conversation
+                    </button>
+                </div>
+
+                <!-- Capabilities — short list -->
+                <div class="ag-cap-card">
+                    <div class="ag-cap-title"><i class="fa-solid fa-brain" style="color:var(--color-accent);"></i> Can help with</div>
+                    <div class="ag-cap-list">
+                        <div class="ag-cap-item"><i class="fa-solid fa-check" style="color:var(--color-accent);"></i> Suspicious SMS/messages</div>
+                        <div class="ag-cap-item"><i class="fa-solid fa-check" style="color:var(--color-accent);"></i> Risky URLs & links</div>
+                        <div class="ag-cap-item"><i class="fa-solid fa-check" style="color:var(--color-accent);"></i> App permission risks</div>
+                        <div class="ag-cap-item"><i class="fa-solid fa-check" style="color:var(--color-accent);"></i> OTP & identity fraud</div>
+                        <div class="ag-cap-item"><i class="fa-solid fa-check" style="color:var(--color-accent);"></i> Threat step-by-step fixes</div>
+                    </div>
+                </div>
+
+                <!-- Session Stats -->
+                <div class="ag-cap-card">
+                    <div class="ag-cap-title"><i class="fa-solid fa-chart-bar" style="color:var(--color-accent);"></i> Session</div>
+                    <div class="ag-stat-row">
+                        <div class="ag-stat-line"><span style="color:var(--text-muted);">Messages</span><span id="statMessages">0</span></div>
+                        <div class="ag-stat-line"><span style="color:var(--text-muted);">Threats</span><span id="statThreats" style="color:var(--color-danger);">0</span></div>
+                        <div class="ag-stat-line"><span style="color:var(--text-muted);">URLs</span><span id="statUrls" style="color:var(--color-warning);">0</span></div>
+                        <div class="ag-stat-line"><span style="color:var(--text-muted);">Tips</span><span id="statTips" style="color:var(--color-accent);">0</span></div>
+                    </div>
+                </div>
+
             </div>
-            <div class="header-actions">
-                <a href="profile.html" class="text-main" style="font-size: 1.25rem;"><i class="fa-regular fa-circle-user"></i></a>
-            </div>
-        </header>
 
-        <main class="dashboard-main">
-            
+            <!-- ===== CENTER CHAT ===== -->
+            <div class="ag-chat-col">
+                <div class="ag-chat-wrap">
 
-            <div class="dashboard-content" style="padding-top: 2rem;">
-                
-                <div class="agent-grid">
-                    <!-- Left Column: Chat Container -->
-                    <div class="chat-container">
-                        <div class="chat-header">
-                            <div class="message-avatar ai"><i class="fa-solid fa-robot"></i></div>
+                    <!-- Header -->
+                    <div class="ag-chat-header">
+                        <div style="display:flex;align-items:center;gap:0.6rem;">
+                            <div class="ag-header-avatar"><i class="fa-solid fa-robot"></i></div>
                             <div>
-                                <h2 style="font-size: 1.1rem; font-weight: 700; margin: 0; color: var(--text-main);">CyberGuard Agent</h2>
-                                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Ask about suspicious messages, risky links, alerts, and mobile safety.</p>
+                                <div style="font-weight:700;font-size:0.88rem;">CyberGuard Agent</div>
+                                <div style="font-size:0.68rem;color:var(--color-accent);"><i class="fa-solid fa-circle" style="font-size:0.4rem;"></i> Online · Analyzing threats in real-time</div>
                             </div>
                         </div>
+                        <div style="display:flex;gap:0.4rem;">
+                            <button class="ag-hdr-btn" onclick="exportChat()" title="Export"><i class="fa-solid fa-download"></i></button>
+                            <button class="ag-hdr-btn" onclick="clearChat()" title="Clear"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
 
-                        <div class="chat-messages" id="chatMessages">
-                            <div class="message-wrapper ai">
-                                <div class="message-avatar ai"><i class="fa-solid fa-robot"></i></div>
-                                <div class="message-bubble">
-                                    Hello! I'm your CyberGuard AI Assistant. I can analyze suspicious messages, scan URLs, and explain security alerts. How can I help you stay safe today?
+                    <!-- Messages -->
+                    <div class="ag-messages" id="chatMessages">
+                        <div class="ag-msg bot">
+                            <div class="ag-msg-avatar"><i class="fa-solid fa-robot"></i></div>
+                            <div class="ag-msg-content">
+                                <div class="ag-msg-bubble bot">
+                                    <p>👋 Hi! I'm your <strong>CyberGuard AI Agent</strong>.</p>
+                                    <p style="margin-top:0.4rem;">Ask me about suspicious SMS, risky links, app permissions, OTP fraud, or any mobile security threat — I'll guide you step by step.</p>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="chat-input-area">
-                            <div class="quick-actions">
-                                <button class="quick-action-chip">Check a link</button>
-                                <button class="quick-action-chip">Analyze message</button>
-                                <button class="quick-action-chip">Explain alert</button>
-                                <button class="quick-action-chip">Safety tips</button>
-                            </div>
-                            <div class="chat-input-group">
-                                <input type="text" id="chatInput" class="chat-input" placeholder="Type a message or paste a link..." autocomplete="off">
-                                <button id="sendBtn" class="chat-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                                <div class="ag-msg-time">Just now</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right Column: Side Panel -->
-                    <div class="threat-side-panel desktop-only">
-                        
-                        <div class="side-panel-card" id="riskContextPanel" style="display: none;">
-                            <h3 style="font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-main);">Risk Summary</h3>
-                            <div id="riskContextContent"></div>
-                        </div>
+                    <!-- Suggestion Chips -->
+                    <div class="ag-chips" id="suggestionChips">
+                        <button class="ag-chip" onclick="sendChip(this)">🔗 Check a link</button>
+                        <button class="ag-chip" onclick="sendChip(this)">📨 Analyze SMS</button>
+                        <button class="ag-chip" onclick="sendChip(this)">📱 App permissions</button>
+                        <button class="ag-chip" onclick="sendChip(this)">🛡️ Stop phishing</button>
+                        <button class="ag-chip" onclick="sendChip(this)">🔑 OTP fraud</button>
+                        <button class="ag-chip" onclick="sendChip(this)">📶 Public Wi-Fi</button>
+                        <button class="ag-chip" onclick="sendChip(this)">🚨 I clicked a phishing link</button>
+                        <button class="ag-chip" onclick="sendChip(this)">🔒 Secure my phone</button>
+                    </div>
 
-                        <div class="side-panel-card">
-                            <h3 style="font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-main);"><i class="fa-solid fa-lightbulb" style="color: var(--color-warning); margin-right: 0.5rem;"></i> Recent Suggestions</h3>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <div style="background: var(--bg-surface-hover); padding: 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-muted);">
-                                    <strong style="color: var(--text-main); display: block; margin-bottom: 0.25rem;">Suspicious Packages</strong>
-                                    Be cautious of SMS claiming you missed a delivery. Always track packages through official apps.
-                                </div>
-                                <div style="background: var(--bg-surface-hover); padding: 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-muted);">
-                                    <strong style="color: var(--text-main); display: block; margin-bottom: 0.25rem;">Bank Verification</strong>
-                                    Your bank will never ask for your password or OTP via SMS or email links.
-                                </div>
-                            </div>
+                    <!-- Input -->
+                    <div class="ag-input-area">
+                        <div class="ag-input-wrap">
+                            <input type="text" id="chatInput" class="ag-input" placeholder="Ask about threats, links, SMS, permissions..." autocomplete="off">
+                            <button id="sendBtn" class="ag-send-btn" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
                         </div>
+                        <div class="ag-input-hint"><i class="fa-solid fa-lock"></i> Conversations are private and processed locally</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ===== RIGHT SIDEBAR ===== -->
+            <div class="ag-right-sidebar">
+
+                <!-- Risk Assessment (shown when relevant) -->
+                <div class="ag-cap-card" id="riskPanel" style="display:none;">
+                    <div class="ag-cap-title"><i class="fa-solid fa-triangle-exclamation" style="color:var(--color-danger);"></i> Risk Assessment</div>
+                    <div id="riskContent"></div>
+                </div>
+
+                <!-- Threat Status -->
+                <div class="ag-cap-card">
+                    <div class="ag-cap-title"><i class="fa-solid fa-shield-halved" style="color:var(--color-accent);"></i> Threat Status</div>
+                    <div class="ag-threat-row"><span><i class="fa-solid fa-message" style="width:14px;color:var(--color-warning);"></i> SMS</span><span style="color:var(--color-warning);font-weight:700;">2 Active</span></div>
+                    <div class="ag-threat-row"><span><i class="fa-solid fa-link" style="width:14px;color:var(--color-danger);"></i> Links</span><span style="color:var(--color-danger);font-weight:700;">1 Blocked</span></div>
+                    <div class="ag-threat-row"><span><i class="fa-solid fa-mobile-screen" style="width:14px;color:var(--color-warning);"></i> Apps</span><span style="color:var(--color-warning);font-weight:700;">3 Risks</span></div>
+                    <div class="ag-threat-row"><span><i class="fa-solid fa-wifi" style="width:14px;color:var(--color-accent);"></i> Network</span><span style="color:var(--color-accent);font-weight:700;">Secure</span></div>
+                    <a href="dashboard.html" class="btn btn-outline" style="width:100%;text-align:center;margin-top:0.6rem;font-size:0.75rem;padding:0.35rem;">View Dashboard</a>
+                </div>
+
+                <!-- Quick Ask -->
+                <div class="ag-cap-card">
+                    <div class="ag-cap-title"><i class="fa-solid fa-bolt" style="color:var(--color-warning);"></i> Quick Ask</div>
+                    <div style="display:flex;flex-direction:column;gap:0.4rem;">
+                        <button class="ag-quick-ask" onclick="quickAsk('What are the most common mobile phishing signs?')">Common phishing signs</button>
+                        <button class="ag-quick-ask" onclick="quickAsk('How do I revoke dangerous app permissions?')">Revoke app permissions</button>
+                        <button class="ag-quick-ask" onclick="quickAsk('What should I do if I clicked a phishing link?')">Clicked a phishing link</button>
+                        <button class="ag-quick-ask" onclick="quickAsk('How does OTP fraud work?')">How OTP fraud works</button>
+                        <button class="ag-quick-ask" onclick="quickAsk('How to secure my phone from hackers?')">Secure my phone</button>
+                        <button class="ag-quick-ask" onclick="quickAsk('Is public wifi safe?')">Public Wi-Fi risks</button>
+                    </div>
+                </div>
+
+                <!-- Export -->
+                <div class="ag-cap-card">
+                    <div class="ag-cap-title"><i class="fa-solid fa-file-export" style="color:var(--color-accent);"></i> Actions</div>
+                    <div style="display:flex;flex-direction:column;gap:0.4rem;">
+                        <button class="ag-quick-ask" onclick="exportChat()"><i class="fa-solid fa-download" style="width:14px;color:var(--color-accent);"></i> Export conversation</button>
+                        <button class="ag-quick-ask" onclick="clearChat()"><i class="fa-solid fa-rotate-left" style="width:14px;color:var(--text-muted);"></i> New conversation</button>
+                        <a href="scan.html" class="ag-quick-ask" style="text-decoration:none;display:block;"><i class="fa-solid fa-satellite-dish" style="width:14px;color:var(--color-accent);"></i> Run a scan</a>
+                        <a href="alerts.html" class="ag-quick-ask" style="text-decoration:none;display:block;"><i class="fa-solid fa-bell" style="width:14px;color:var(--color-warning);"></i> View alerts</a>
                     </div>
                 </div>
 
             </div>
-        </main>
 
-        <!-- Mobile Bottom Navigation -->
-        <nav class="bottom-nav">
-            <a href="dashboard.html" class="bottom-nav-item">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-            <a href="alerts.html" class="bottom-nav-item">
-                <i class="fa-solid fa-bell"></i>
-                <span>Alerts</span>
-            </a>
-            <a href="scan.html" class="bottom-nav-scan">
-                <i class="fa-solid fa-satellite-dish"></i>
-            </a>
-            <a href="ai-agent.html" class="bottom-nav-item active">
-                <i class="fa-solid fa-robot"></i>
-                <span>AI Agent</span>
-            </a>
-            <a href="settings.html" class="bottom-nav-item">
-                <i class="fa-solid fa-gear"></i>
-                <span>Settings</span>
-            </a>
-        </nav>
-    </div>
+        </div>
+        </div>
+    </main>
 
-    <!-- Toast Notification Container -->
-    <div id="toastContainer" style="position: fixed; bottom: 80px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;"></div>
-
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/navigation.js"></script>
-    <script src="assets/js/ai-agent.js"></script>
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="bottom-nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="scan.html" class="bottom-nav-item"><i class="fa-solid fa-satellite-dish"></i><span>Scan</span></a>
+        <a href="ai-agent.html" class="bottom-nav-item active chat-fab"><div class="fab-icon"><i class="fa-solid fa-robot"></i></div></a>
+        <a href="alerts.html" class="bottom-nav-item"><i class="fa-solid fa-bell"></i><span>Alerts</span></a>
+        <a href="settings.html" class="bottom-nav-item"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+    </nav>
+</div>
+<div id="toastContainer" style="position:fixed;bottom:80px;right:20px;z-index:1000;display:flex;flex-direction:column;gap:10px;"></div>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/navigation.js"></script>
+    <script src="assets/js/notifications.js"></script>
+    <script src="assets/js/profile.js"></script>
+<script src="assets/js/ai-agent.js"></script>
 </body>
 </html>

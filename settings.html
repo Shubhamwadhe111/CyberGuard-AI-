@@ -5,273 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - CyberGuard AI</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/profile.css">
+    <link rel="stylesheet" href="assets/css/notifications.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="dashboard-layout">
-        <!-- New Top Navbar for Desktop -->
-        <nav class="app-topnav">
-            <a href="index.html" class="logo">
-                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                CyberGuard
-            </a>
-            <div class="app-topnav-center desktop-only">
-                <a href="dashboard.html" class="app-nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
-                <a href="scan.html" class="app-nav-item"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
-                <a href="alerts.html" class="app-nav-item"><i class="fa-solid fa-bell"></i> Alerts</a>
-                <a href="ai-agent.html" class="app-nav-item"><i class="fa-solid fa-robot"></i> AI Agent</a>
-                <a href="security-tips.html" class="app-nav-item"><i class="fa-solid fa-lightbulb"></i> Tips</a>
-            </div>
-            <div class="dashboard-header-right desktop-only">
-                <div class="search-box" style="position: relative;">
-                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
-                    <input type="text" class="form-control" placeholder="Search threats..." style="padding-left: 2.5rem; width: 200px; border-radius: 20px;">
+<div class="dashboard-layout">
+    <nav class="app-topnav">
+        <a href="index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>CyberGuard</a>
+        <div class="app-topnav-center desktop-only">
+            <a href="home.html" class="app-nav-item"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="dashboard.html" class="app-nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="scan.html" class="app-nav-item"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
+            <a href="alerts.html" class="app-nav-item"><i class="fa-solid fa-circle-exclamation"></i> Alerts</a>
+            <a href="ai-agent.html" class="app-nav-item"><i class="fa-solid fa-robot"></i> AI Agent</a>
+            <a href="security-tips.html" class="app-nav-item"><i class="fa-solid fa-lightbulb"></i> Tips</a>
+        </div>
+        <div class="dashboard-header-right desktop-only">
+            <span id="navBellLink"></span>
+            <div class="prof-nav-wrap" id="profNavWrap">
+                <button class="prof-nav-btn" id="profNavBtn">
+                    <img src="https://ui-avatars.com/api/?name=Alex+Walker&background=0d9488&color=fff" alt="Profile" class="prof-nav-avatar">
+                    <span class="prof-nav-name">Alex</span>
+                    <i class="fa-solid fa-chevron-down prof-nav-caret"></i>
+                </button>
+                <div class="prof-nav-dropdown" id="profNavDropdown">
+                    <div class="prof-nav-dd-header">
+                        <img src="https://ui-avatars.com/api/?name=Alex+Walker&background=0d9488&color=fff" alt="Profile" style="width:42px;height:42px;border-radius:50%;">
+                        <div>
+                            <div style="font-weight:700;font-size:0.88rem;">Alex Walker</div>
+                            <div style="font-size:0.73rem;color:var(--text-muted);">alex@example.com</div>
+                            <span class="prof-plan-badge">Basic Plan</span>
+                        </div>
+                    </div>
+                    <div class="prof-nav-dd-list">
+                        <a href="profile.html" class="prof-nav-dd-item"><i class="fa-solid fa-user"></i> My Profile</a>
+                        <a href="settings.html" class="prof-nav-dd-item active"><i class="fa-solid fa-gear"></i> App Settings</a>
+                        <div class="prof-nav-dd-divider"></div>
+                        <button class="prof-nav-dd-item danger" onclick="localStorage.removeItem('isLoggedIn');window.location.href='login.html'"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+                    </div>
                 </div>
-                <a href="alerts.html" style="font-size: 1.25rem; color: var(--text-muted);"><i class="fa-regular fa-bell"></i></a>
-                <a href="profile.html"><img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" style="width: 36px; border-radius: 50%;"></a>
-                <a href="login.html" onclick="localStorage.removeItem('isLoggedIn');" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
             </div>
-        </nav>
+        </div>
+    </nav>
+    <header class="mobile-app-header">
+        <div class="logo" style="font-size:1rem;"><div class="logo-icon" style="width:24px;height:24px;font-size:0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>CyberGuard</div>
+        <div class="header-actions"><a href="profile.html" style="font-size:1.25rem;"><i class="fa-solid fa-circle-user"></i></a></div>
+    </header>
 
-        <!-- Mobile App Header -->
-        <header class="mobile-app-header">
-            <div class="logo" style="font-size: 1rem;">
-                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
-                CyberGuard
-            </div>
-            <div class="header-actions">
-                <a href="profile.html" class="text-main" style="font-size: 1.25rem;"><i class="fa-solid fa-circle-user"></i></a>
-            </div>
-        </header>
-
-        <main class="dashboard-main">
-            
-
-            <div class="dashboard-content">
-                
-                <div class="settings-container">
-                    
-                    <!-- Protection Settings -->
-                    <div class="settings-card">
-                        <div class="settings-card-header">
-                            <h3><i class="fa-solid fa-shield-halved" style="color: var(--color-primary); margin-right: 0.5rem;"></i> Protection Settings</h3>
-                            <p>Configure which aspects of your device CyberGuard actively monitors.</p>
-                        </div>
-                        <div class="settings-row">
-                            <div class="settings-info">
-                                <h4>Message Scanning</h4>
-                                <p>Automatically analyze incoming SMS for phishing links and urgent OTP requests.</p>
-                            </div>
-                            <div class="settings-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="setMsgScan" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="settings-row">
-                            <div class="settings-info">
-                                <h4>Link Checking</h4>
-                                <p>Verify URLs against global threat databases before you open them.</p>
-                            </div>
-                            <div class="settings-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="setLinkCheck" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="settings-row">
-                            <div class="settings-info">
-                                <h4>App Permission Review</h4>
-                                <p>Monitor newly installed applications for suspicious permission requests.</p>
-                            </div>
-                            <div class="settings-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="setAppPerms" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
+    <main class="dashboard-main">
+        <div class="dashboard-content">
+            <div class="settings-container">
+                <!-- Protection Settings -->
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <h3><i class="fa-solid fa-shield-halved" style="color:var(--color-primary);margin-right:0.5rem;"></i> Protection Settings</h3>
+                        <p>Configure which aspects of your device CyberGuard actively monitors.</p>
                     </div>
-
-                    <!-- Scan Settings -->
-                    <div class="settings-card">
-                        <div class="settings-card-header">
-                            <h3><i class="fa-solid fa-satellite-dish" style="color: var(--color-accent); margin-right: 0.5rem;"></i> Scanning Options</h3>
-                            <p>Manage how and when deep system scans occur.</p>
-                        </div>
-                        <div class="settings-row">
-                            <div class="settings-info">
-                                <h4>Background Auto-Scan</h4>
-                                <p>Allow CyberGuard to periodically scan in the background to ensure continuous safety.</p>
-                            </div>
-                            <div class="settings-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="setAutoScan" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="settings-row">
-                            <div class="settings-info">
-                                <h4>Scan Frequency</h4>
-                                <p>How often should automatic deep scans run?</p>
-                            </div>
-                            <div class="settings-control">
-                                <select id="setScanFreq" class="settings-select">
-                                    <option value="manual">Manual Only</option>
-                                    <option value="daily" selected>Daily</option>
-                                    <option value="weekly">Weekly</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="settings-row">
-                            <div class="settings-info">
-                                <h4>Risk Sensitivity</h4>
-                                <p>Adjust the strictness of the threat detection AI model.</p>
-                            </div>
-                            <div class="settings-control">
-                                <select id="setSensitivity" class="settings-select">
-                                    <option value="standard" selected>Standard (Recommended)</option>
-                                    <option value="strict">Strict (May cause false positives)</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="settings-row">
+                        <div class="settings-info"><h4>Message Scanning</h4><p>Automatically analyze incoming SMS for phishing links and urgent OTP requests.</p></div>
+                        <div class="settings-control"><label class="toggle-switch"><input type="checkbox" id="setMsgScan" checked><span class="toggle-slider"></span></label></div>
                     </div>
-
-                    <!-- Privacy Settings -->
-                    <div class="settings-card">
-                        <div class="settings-card-header">
-                            <h3><i class="fa-solid fa-user-lock" style="color: #8b5cf6; margin-right: 0.5rem;"></i> Privacy & Data</h3>
-                            <p>Control what data is stored and for how long.</p>
-                        </div>
-                        <div class="settings-row">
-                            <div class="settings-info">
-                                <h4>Strict Privacy Mode</h4>
-                                <p>Ensures absolutely no threat analytics are sent back to CyberGuard servers.</p>
-                            </div>
-                            <div class="settings-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="setPrivacyMode">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="settings-row">
-                            <div class="settings-info">
-                                <h4>Save Scan History</h4>
-                                <p>Keep a local log of previous scans and detected threats.</p>
-                            </div>
-                            <div class="settings-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="setSaveHistory" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="settings-row">
-                            <div class="settings-info">
-                                <h4>Data Retention</h4>
-                                <p>How long should local alert history be kept before auto-deletion?</p>
-                            </div>
-                            <div class="settings-control">
-                                <select id="setRetention" class="settings-select">
-                                    <option value="7">7 Days</option>
-                                    <option value="30" selected>30 Days</option>
-                                    <option value="90">90 Days</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="settings-row">
+                        <div class="settings-info"><h4>Link Checking</h4><p>Verify URLs against global threat databases before you open them.</p></div>
+                        <div class="settings-control"><label class="toggle-switch"><input type="checkbox" id="setLinkCheck" checked><span class="toggle-slider"></span></label></div>
                     </div>
-
-                    <!-- Notification Settings -->
-                    <div class="settings-card">
-                        <div class="settings-card-header">
-                            <h3><i class="fa-solid fa-bell" style="color: var(--color-warning); margin-right: 0.5rem;"></i> Notifications</h3>
-                            <p>Manage what alerts you receive.</p>
-                        </div>
-                        <div class="settings-row">
-                            <div class="settings-info">
-                                <h4>High Risk Alerts</h4>
-                                <p>Immediate push notifications when severe threats are blocked.</p>
-                            </div>
-                            <div class="settings-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="setHighRisk" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="settings-row">
-                            <div class="settings-info">
-                                <h4>Weekly Summary</h4>
-                                <p>Receive an email summarizing blocked threats and device health.</p>
-                            </div>
-                            <div class="settings-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="setWeeklySummary">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="settings-row">
-                            <div class="settings-info">
-                                <h4>Security Tips</h4>
-                                <p>Occasional push notifications with actionable mobile security advice.</p>
-                            </div>
-                            <div class="settings-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="setTipsAlerts" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
+                    <div class="settings-row">
+                        <div class="settings-info"><h4>App Permission Review</h4><p>Monitor newly installed applications for suspicious permission requests.</p></div>
+                        <div class="settings-control"><label class="toggle-switch"><input type="checkbox" id="setAppPerms" checked><span class="toggle-slider"></span></label></div>
                     </div>
-
-                    <!-- Actions -->
-                    <div class="settings-actions">
-                        <button class="btn btn-primary" id="btnSaveBottom"><i class="fa-solid fa-save"></i> Save Settings</button>
-                        <button class="btn btn-outline" id="btnExportReport"><i class="fa-solid fa-file-export"></i> Export Report</button>
-                        <button class="btn btn-outline" id="btnClearData" style="border-color: rgba(239, 68, 68, 0.5); color: var(--color-danger);"><i class="fa-solid fa-trash-can"></i> Clear Demo Data</button>
-                        <button class="btn btn-outline" id="btnLogout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
-                    </div>
-
                 </div>
 
+                <!-- Scan Settings -->
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <h3><i class="fa-solid fa-satellite-dish" style="color:var(--color-accent);margin-right:0.5rem;"></i> Scanning Options</h3>
+                        <p>Manage how and when deep system scans occur.</p>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-info"><h4>Background Auto-Scan</h4><p>Allow CyberGuard to periodically scan in the background to ensure continuous safety.</p></div>
+                        <div class="settings-control"><label class="toggle-switch"><input type="checkbox" id="setAutoScan" checked><span class="toggle-slider"></span></label></div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-info"><h4>Scan Frequency</h4><p>How often should automatic deep scans run?</p></div>
+                        <div class="settings-control"><select id="setScanFreq" class="settings-select"><option value="manual">Manual Only</option><option value="daily" selected>Daily</option><option value="weekly">Weekly</option></select></div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-info"><h4>Risk Sensitivity</h4><p>Adjust the strictness of the threat detection AI model.</p></div>
+                        <div class="settings-control"><select id="setSensitivity" class="settings-select"><option value="standard" selected>Standard (Recommended)</option><option value="strict">Strict (May cause false positives)</option></select></div>
+                    </div>
+                </div>
+
+                <!-- Privacy Settings -->
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <h3><i class="fa-solid fa-user-lock" style="color:#8b5cf6;margin-right:0.5rem;"></i> Privacy &amp; Data</h3>
+                        <p>Control what data is stored and for how long.</p>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-info"><h4>Strict Privacy Mode</h4><p>Ensures absolutely no threat analytics are sent back to CyberGuard servers.</p></div>
+                        <div class="settings-control"><label class="toggle-switch"><input type="checkbox" id="setPrivacyMode"><span class="toggle-slider"></span></label></div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-info"><h4>Save Scan History</h4><p>Keep a local log of previous scans and detected threats.</p></div>
+                        <div class="settings-control"><label class="toggle-switch"><input type="checkbox" id="setSaveHistory" checked><span class="toggle-slider"></span></label></div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-info"><h4>Data Retention</h4><p>How long should local alert history be kept before auto-deletion?</p></div>
+                        <div class="settings-control"><select id="setRetention" class="settings-select"><option value="7">7 Days</option><option value="30" selected>30 Days</option><option value="90">90 Days</option></select></div>
+                    </div>
+                </div>
+
+                <!-- Notification Settings -->
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <h3><i class="fa-solid fa-bell" style="color:var(--color-warning);margin-right:0.5rem;"></i> Notifications</h3>
+                        <p>Manage what alerts you receive.</p>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-info"><h4>High Risk Alerts</h4><p>Immediate push notifications when severe threats are blocked.</p></div>
+                        <div class="settings-control"><label class="toggle-switch"><input type="checkbox" id="setHighRisk" checked><span class="toggle-slider"></span></label></div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-info"><h4>Weekly Summary</h4><p>Receive an email summarizing blocked threats and device health.</p></div>
+                        <div class="settings-control"><label class="toggle-switch"><input type="checkbox" id="setWeeklySummary"><span class="toggle-slider"></span></label></div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-info"><h4>Security Tips</h4><p>Occasional push notifications with actionable mobile security advice.</p></div>
+                        <div class="settings-control"><label class="toggle-switch"><input type="checkbox" id="setTipsAlerts" checked><span class="toggle-slider"></span></label></div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="settings-actions">
+                    <button class="btn btn-primary" id="btnSaveBottom"><i class="fa-solid fa-save"></i> Save Settings</button>
+                    <button class="btn btn-outline" id="btnExportReport"><i class="fa-solid fa-file-export"></i> Export Report</button>
+                    <button class="btn btn-outline" id="btnClearData" style="border-color:rgba(239,68,68,0.5);color:var(--color-danger);"><i class="fa-solid fa-trash-can"></i> Clear Demo Data</button>
+                </div>
             </div>
-        </main>
+        </div>
+    </main>
 
-        <!-- Mobile Bottom Navigation -->
-        <nav class="bottom-nav">
-            <a href="dashboard.html" class="bottom-nav-item">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-            <a href="alerts.html" class="bottom-nav-item">
-                <i class="fa-solid fa-bell"></i>
-                <span>Alerts</span>
-            </a>
-            <a href="scan.html" class="bottom-nav-scan">
-                <i class="fa-solid fa-satellite-dish"></i>
-            </a>
-            <a href="ai-agent.html" class="bottom-nav-item">
-                <i class="fa-solid fa-robot"></i>
-                <span>AI Agent</span>
-            </a>
-            <a href="settings.html" class="bottom-nav-item active">
-                <i class="fa-solid fa-gear"></i>
-                <span>Settings</span>
-            </a>
-        </nav>
-    </div>
-
-    <!-- Toast Notification Container -->
-    <div id="toastContainer" style="position: fixed; bottom: 80px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;"></div>
-
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/navigation.js"></script>
-    <script src="assets/js/settings.js"></script>
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="bottom-nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="scan.html" class="bottom-nav-item"><i class="fa-solid fa-satellite-dish"></i><span>Scan</span></a>
+        <a href="ai-agent.html" class="bottom-nav-item"><i class="fa-solid fa-robot"></i><span>AI</span></a>
+        <a href="alerts.html" class="bottom-nav-item"><i class="fa-solid fa-bell"></i><span>Alerts</span></a>
+        <a href="settings.html" class="bottom-nav-item active"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+    </nav>
+</div>
+<div id="toastContainer" style="position:fixed;bottom:80px;right:20px;z-index:1000;display:flex;flex-direction:column;gap:10px;"></div>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/navigation.js"></script>
+<script src="assets/js/notifications.js"></script>
+<script src="assets/js/profile.js"></script>
+<script src="assets/js/settings.js"></script>
 </body>
 </html>

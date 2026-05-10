@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard AI - Mobile Threat Intelligence</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="public-layout">
+    
+    <!-- Premium Navbar -->
+    <nav class="app-topnav">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard
+            </a>
+            <div class="app-topnav-center desktop-only">
+                <a href="home.html" class="app-nav-item active"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="dashboard.html" class="app-nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+                <a href="scan.html" class="app-nav-item"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
+                <a href="alerts.html" class="app-nav-item"><i class="fa-solid fa-circle-exclamation"></i> Alerts</a>
+                <a href="ai-agent.html" class="app-nav-item"><i class="fa-solid fa-robot"></i> AI Agent</a>
+                <a href="security-tips.html" class="app-nav-item"><i class="fa-solid fa-lightbulb"></i> Tips</a>
+            </div>
+            <div class="dashboard-header-right desktop-only">
+                <span id="navBellLink"></span>
+                <!-- Profile Dropdown -->
+            <div class="prof-nav-wrap" id="profNavWrap">
+                <button class="prof-nav-btn" id="profNavBtn">
+                    <img src="https://ui-avatars.com/api/?name=Alex+Walker&background=0d9488&color=fff" alt="Profile" class="prof-nav-avatar">
+                    <span class="prof-nav-name">Alex</span>
+                    <i class="fa-solid fa-chevron-down prof-nav-caret"></i>
+                </button>
+                <div class="prof-nav-dropdown" id="profNavDropdown">
+                    <div class="prof-nav-dd-header">
+                        <img src="https://ui-avatars.com/api/?name=Alex+Walker&background=0d9488&color=fff" alt="Profile" style="width:42px;height:42px;border-radius:50%;">
+                        <div>
+                            <div style="font-weight:700;font-size:0.88rem;">Alex Walker</div>
+                            <div style="font-size:0.73rem;color:var(--text-muted);">alex@example.com</div>
+                            <span class="prof-plan-badge">Basic Plan</span>
+                        </div>
+                    </div>
+                    <div class="prof-nav-dd-list">
+                        <a href="profile.html" class="prof-nav-dd-item"><i class="fa-solid fa-user"></i> My Profile</a>
+                        <a href="settings.html" class="prof-nav-dd-item"><i class="fa-solid fa-gear"></i> App Settings</a>
+                        <div class="prof-nav-dd-divider"></div>
+                        <button class="prof-nav-dd-item danger" onclick="localStorage.removeItem('isLoggedIn');window.location.href='login.html'"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </nav>
+
+    <header class="mobile-app-header">
+            <div class="logo" style="font-size: 1rem;">
+                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard
+            </div>
+            <div class="header-actions">
+                <a href="profile.html" class="text-main" style="font-size: 1.25rem;"><i class="fa-regular fa-circle-user"></i></a>
+            </div>
+        </header>
+
+    <!-- 1. Hero Section -->
+    <section class="hm-hero" style="padding-top: 80px;">
+        <div class="hm-hero-grid">
+            
+            <!-- Left Side: Dashboard Summary -->
+            <div style="position: relative; z-index: 10;">
+                <div class="hm-badge" style="background: rgba(13, 148, 136, 0.1); border: 1px solid rgba(13, 148, 136, 0.3);">
+                    <i class="fa-solid fa-user-check"></i> Welcome Back, User
+                </div>
+                <h1 class="hm-title">Your Devices Are Protected & Secure</h1>
+                <p class="hm-desc" style="color: var(--text-muted);">CyberGuard AI is actively monitoring your network. All system checks are nominal with no critical vulnerabilities detected.</p>
+                
+                <div class="hero-buttons" style="display: flex; gap: 1rem;">
+                    <a href="scan.html" class="btn btn-primary btn-lg" style="box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: var(--radius-md);"><i class="fa-solid fa-satellite-dish"></i> Run Deep Scan</a>
+                    <a href="alerts.html" class="btn btn-outline btn-lg" style="border-radius: var(--radius-md);">View Detailed Alerts</a>
+                </div>
+                
+                <div class="hm-trust-row" style="opacity: 0.8;">
+                    <div class="hm-trust-item"><i class="fa-solid fa-shield-halved text-accent"></i> Real-time Active</div>
+                    <div class="hm-trust-item"><i class="fa-solid fa-cloud text-accent"></i> Cloud Synced</div>
+                    <div class="hm-trust-item"><i class="fa-solid fa-bolt text-accent"></i> AI Engine v2.4</div>
+                </div>
+            </div>
+
+            <!-- Right Side: Quick System Status -->
+            <div class="hm-dash-preview" style="background: var(--surface-light); border: 1px solid var(--border-color); border-radius: var(--radius-xl); overflow: hidden;">
+                <div class="hm-preview-header" style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-color);">
+                    <div>
+                        <h3 style="font-size: 1.1rem; font-weight: 600;">System Health Overview</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Last updated just now</p>
+                    </div>
+                    <div class="hm-status-badge" style="background: rgba(13, 148, 136, 0.1); color: var(--color-accent); border: 1px solid rgba(13, 148, 136, 0.3);">
+                        <i class="fa-solid fa-server"></i> Online
+                    </div>
+                </div>
+                
+                <div class="hm-preview-grid" style="padding: 1.5rem;">
+                    <div class="hm-preview-stat" style="background: var(--surface); border: 1px solid var(--border-color); padding: 1rem; border-radius: var(--radius-md);">
+                        <i class="fa-solid fa-shield-virus" style="color: var(--color-accent); margin-bottom: 0.5rem; display: block; font-size: 1.25rem;"></i>
+                        <div class="hm-preview-stat-val" style="font-size: 1.5rem; font-weight: 700;">12</div>
+                        <div class="hm-preview-stat-lbl" style="font-size: 0.8rem; color: var(--text-muted);">Scans Today</div>
+                    </div>
+                    <div class="hm-preview-stat" style="background: var(--surface); border: 1px solid var(--border-color); padding: 1rem; border-radius: var(--radius-md);">
+                        <i class="fa-solid fa-bug-slash" style="color: var(--color-accent); margin-bottom: 0.5rem; display: block; font-size: 1.25rem;"></i>
+                        <div class="hm-preview-stat-val" style="font-size: 1.5rem; font-weight: 700;">0</div>
+                        <div class="hm-preview-stat-lbl" style="font-size: 0.8rem; color: var(--text-muted);">Active Threats</div>
+                    </div>
+                    <div class="hm-preview-stat" style="background: var(--surface); border: 1px solid var(--border-color); padding: 1rem; border-radius: var(--radius-md);">
+                        <i class="fa-solid fa-mobile-screen" style="color: var(--color-accent); margin-bottom: 0.5rem; display: block; font-size: 1.25rem;"></i>
+                        <div class="hm-preview-stat-val" style="font-size: 1.5rem; font-weight: 700;">2</div>
+                        <div class="hm-preview-stat-lbl" style="font-size: 0.8rem; color: var(--text-muted);">Active Devices</div>
+                    </div>
+                </div>
+
+                <div style="padding: 0 1.5rem 1.5rem 1.5rem;">
+                    <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Security Recommendations</div>
+                    <div style="display: flex; gap: 1rem; align-items: center; background: var(--surface); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                        <div style="background: rgba(13, 148, 136, 0.1); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-accent);">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 0.9rem;">Enable 2FA</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Add an extra layer of security</div>
+                        </div>
+                        <a href="settings.html" class="btn btn-outline" style="margin-left: auto; padding: 0.25rem 0.75rem; font-size: 0.8rem;">Setup</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- 2. Quick Access Modules -->
+    <section class="hm-section" style="background: var(--bg-surface-hover);">
+        <h2 class="hm-section-title">Your Security Hub</h2>
+        <p class="hm-section-desc">Quickly access the core modules of CyberGuard AI.</p>
+        
+        <div class="hm-feat-grid">
+            <a href="dashboard.html" class="hm-feat-card" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--border-color); background: var(--surface);">
+                <div class="hm-feat-icon" style="background: rgba(13, 148, 136, 0.1); color: var(--color-accent);"><i class="fa-solid fa-chart-pie"></i></div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">Analytics Dashboard</h3>
+                <p class="text-muted" style="font-size: 0.95rem;">View comprehensive analytics, threat history, and overall system protection scores.</p>
+            </a>
+            <a href="scan.html" class="hm-feat-card" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--border-color); background: var(--surface);">
+                <div class="hm-feat-icon" style="background: rgba(13, 148, 136, 0.1); color: var(--color-accent);"><i class="fa-solid fa-satellite-dish"></i></div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">Deep System Scan</h3>
+                <p class="text-muted" style="font-size: 0.95rem;">Manually trigger a deep scan of your network, apps, and storage for hidden threats.</p>
+            </a>
+            <a href="ai-agent.html" class="hm-feat-card" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--border-color); background: var(--surface);">
+                <div class="hm-feat-icon" style="background: rgba(13, 148, 136, 0.1); color: var(--color-accent);"><i class="fa-solid fa-robot"></i></div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">AI Security Agent</h3>
+                <p class="text-muted" style="font-size: 0.95rem;">Chat with your personal AI assistant to analyze suspicious emails, links, or activities.</p>
+            </a>
+            <a href="alerts.html" class="hm-feat-card" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--border-color); background: var(--surface);">
+                <div class="hm-feat-icon" style="background: rgba(13, 148, 136, 0.1); color: var(--color-accent);"><i class="fa-solid fa-bell"></i></div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">Real-time Alerts</h3>
+                <p class="text-muted" style="font-size: 0.95rem;">Review recent security notifications, blocked connections, and action required items.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- 3. Global Threat Intelligence -->
+    <section class="hm-section">
+        <h2 class="hm-section-title">Global Threat Network</h2>
+        <p class="hm-section-desc">CyberGuard is constantly updating its knowledge base from global endpoints to keep you secure.</p>
+        
+        <div class="hm-prob-sol">
+            <div class="hm-prob-card" style="border: 1px solid var(--border-color); background: var(--surface);">
+                <h3>Blocked Today Globally</h3>
+                <p class="text-muted" style="margin-bottom: 1.5rem;">Our cloud network has intercepted millions of attacks today.</p>
+                <div style="font-size: 3rem; font-weight: 800; color: var(--color-accent); margin-bottom: 1rem;">2.4M+</div>
+                <ul class="hm-list good">
+                    <li><i class="fa-solid fa-shield-virus text-accent"></i> 1.2M Phishing URLs Blocked</li>
+                    <li><i class="fa-solid fa-shield-virus text-accent"></i> 800k Malicious SMS Intercepted</li>
+                    <li><i class="fa-solid fa-shield-virus text-accent"></i> 400k Rogue Apps Stopped</li>
+                </ul>
+            </div>
+            
+            <div class="hm-sol-card" style="border: 1px solid var(--border-color); background: var(--surface-light);">
+                <h3>Your Contribution</h3>
+                <p class="text-muted" style="margin-bottom: 1.5rem;">Your device acts as a sensor, safely contributing anonymized threat data to the network.</p>
+                <div style="font-size: 3rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem;">124</div>
+                <p style="color: var(--text-muted);">Signals contributed this month.</p>
+                <a href="profile.html" class="btn btn-outline" style="margin-top: 1rem;">View Profile Details</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Security Education & Tips -->
+    <section class="hm-section" style="background: var(--bg-surface-hover);">
+        <h2 class="hm-section-title">Latest Security Insights</h2>
+        <p class="hm-section-desc">Stay ahead of attackers by learning about new tactics.</p>
+        
+        <div class="hm-feat-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+            <div style="background: var(--surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden;">
+                <div style="height: 160px; background: rgba(13, 148, 136, 0.2); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--color-accent);">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                </div>
+                <div style="padding: 1.5rem;">
+                    <div style="font-size: 0.8rem; color: var(--color-accent); font-weight: 600; text-transform: uppercase; margin-bottom: 0.5rem;">Article</div>
+                    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">The Rise of Smishing</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">SMS phishing attacks are up 300%. Learn how to spot them without opening the link.</p>
+                    <a href="security-tips.html" class="btn btn-outline" style="width: 100%; text-align: center;">Read More</a>
+                </div>
+            </div>
+            <div style="background: var(--surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden;">
+                <div style="height: 160px; background: rgba(13, 148, 136, 0.2); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--color-accent);">
+                    <i class="fa-solid fa-wifi"></i>
+                </div>
+                <div style="padding: 1.5rem;">
+                    <div style="font-size: 0.8rem; color: var(--color-accent); font-weight: 600; text-transform: uppercase; margin-bottom: 0.5rem;">Guide</div>
+                    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Public Wi-Fi Safety</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Coffee shop networks are hunting grounds. See how CyberGuard's active proxy protects you.</p>
+                    <a href="security-tips.html" class="btn btn-outline" style="width: 100%; text-align: center;">Read More</a>
+                </div>
+            </div>
+            <div style="background: var(--surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden;">
+                <div style="height: 160px; background: rgba(13, 148, 136, 0.2); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--color-accent);">
+                    <i class="fa-solid fa-passport"></i>
+                </div>
+                <div style="padding: 1.5rem;">
+                    <div style="font-size: 0.8rem; color: var(--color-accent); font-weight: 600; text-transform: uppercase; margin-bottom: 0.5rem;">Video</div>
+                    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Identity Theft 101</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Understand the life cycle of stolen data and how to lock down your digital identity.</p>
+                    <a href="security-tips.html" class="btn btn-outline" style="width: 100%; text-align: center;">Read More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Status Footer / CTA -->
+    <section class="hm-cta-section" style="background: var(--surface-light); border-top: 1px solid var(--border-color); padding: 4rem 2rem;">
+        <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-main); letter-spacing: -0.02em;">Need Assistance?</h2>
+        <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 2rem;">Our support team is available 24/7 to help you resolve any critical security incidents.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="ai-agent.html" class="btn btn-primary btn-lg" style="font-size: 1.1rem; padding: 1rem 2.5rem;"><i class="fa-solid fa-robot"></i> Ask AI Agent</a>
+            <a href="settings.html" class="btn btn-outline btn-lg" style="font-size: 1.1rem; padding: 1rem 2.5rem;">Contact Support</a>
+        </div>
+    </section>
+    <!-- Mobile Bottom Navigation -->
+<nav class="bottom-nav">
+            <a href="dashboard.html" class="bottom-nav-item active">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="scan.html" class="bottom-nav-item">
+                <i class="fa-solid fa-satellite-dish"></i>
+                <span>Scan</span>
+            </a>
+            <a href="ai-agent.html" class="bottom-nav-item chat-fab">
+                <div class="fab-icon"><i class="fa-solid fa-robot"></i></div>
+            </a>
+            <a href="alerts.html" class="bottom-nav-item">
+                <i class="fa-solid fa-bell"></i>
+                <span>Alerts</span>
+            </a>
+            <a href="settings.html" class="bottom-nav-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+    <header class="mobile-app-header">
+            <div class="logo" style="font-size: 1rem;">
+                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard
+            </div>
+            <div class="header-actions">
+                <a href="profile.html" class="text-main" style="font-size: 1.25rem;"><i class="fa-regular fa-circle-user"></i></a>
+            </div>
+        </header>
+
+    <!-- Public Footer -->
+    <footer class="public-footer">
+        <div class="footer-container">
+            <div class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                CyberGuard AI
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="security-tips.html">Security Tips</a>
+                <a href="support.html">Support</a>
+                <a href="login.html">Sign In</a>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-github"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem; color: var(--text-inverse-muted); font-size: 0.875rem;">
+            &copy; 2026 CyberGuard AI. A Professional Security Prototype.
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/notifications.js"></script>
+    <script src="assets/js/profile.js"></script>
+</body>
+</html>

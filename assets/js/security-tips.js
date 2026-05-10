@@ -1,98 +1,110 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Reusable Toast Function (similar to threat-details)
-    function showToast(message, type = 'success') {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        
-        let bgColor = type === 'success' ? '#10b981' : '#0d9488';
-        
-        toast.style.cssText = `
-            background: ${bgColor};
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            animation: slideIn 0.3s ease forwards;
-            font-weight: 500;
-        `;
-        
-        const icon = type === 'success' ? 'fa-check-circle' : 'fa-bookmark';
-        toast.innerHTML = `<i class="fa-solid ${icon}"></i> ${message}`;
-        
-        container.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.style.animation = 'slideOut 0.3s ease forwards';
-            setTimeout(() => {
-                toast.remove();
-            }, 300);
-        }, 3000);
+    const TOTAL = 12;
+    let readSet = new Set(), savedSet = new Set();
+
+    function updateStats() {
+        const r = readSet.size, s = savedSet.size;
+        const pct = Math.round((r / TOTAL) * 100);
+        const score = Math.min(100, 42 + r * 4 + s * 2);
+        document.getElementById('readCount').textContent   = r;
+        document.getElementById('savedKpi').textContent    = s;
+        document.getElementById('savedCount').textContent  = s;
+        document.getElementById('scoreVal').textContent    = pct + '%';
+        document.getElementById('progressLabel').textContent = `${r} of ${TOTAL} tips read`;
+        document.getElementById('progressBar').style.width  = pct + '%';
+        document.getElementById('secScore').textContent     = score;
+        document.getElementById('secScoreBar').style.width  = score + '%';
+        const bar = document.getElementById('secScoreBar');
+        bar.style.background = score >= 70 ? 'var(--color-accent)' : score >= 45 ? 'var(--color-warning)' : 'var(--color-danger)';
     }
 
-    if (!document.getElementById('toastStyles')) {
-        const style = document.createElement('style');
-        style.id = 'toastStyles';
-        style.textContent = `
-            @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-            @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
-        `;
-        document.head.appendChild(style);
+    window.markRead = function(btn) {
+        const card = btn.closest('.tip-card');
+        const id   = Array.from(document.querySelectorAll('.tip-card')).indexOf(card);
+        if (readSet.has(id)) return;
+        readSet.add(id);
+        card.classList.add('read');
+        btn.classList.add('done');
+        btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Read';
+        btn.disabled = true;
+        updateStats();
+        showToast('Tip marked as read!', 'success');
+    };
+
+    window.toggleSave = function(btn) {
+        const card = btn.closest('.tip-card');
+        const id   = Array.from(document.querySelectorAll('.tip-card')).indexOf(card);
+        if (savedSet.has(id)) {
+            savedSet.delete(id);
+            btn.classList.remove('saved');
+            btn.innerHTML = '<i class="fa-regular fa-bookmark"></i>';
+            showToast('Tip removed from saved.', 'info');
+        } else {
+            savedSet.add(id);
+            btn.classList.add('saved');
+            btn.innerHTML = '<i class="fa-solid fa-bookmark"></i>';
+            showToast('Tip saved!', 'success');
+        }
+        updateStats();
+    };
+
+    window.filterTips = function(cat, btn) {
+        document.querySelectorAll('.tips-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.tip-card').forEach(card => {
+            card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+        });
+    };
+
+    window.sortTips = function(val) {
+        const grid = document.getElementById('tipsGrid');
+        const cards = Array.from(grid.querySelectorAll('.tip-card'));
+        const order = { critical: 0, high: 1, medium: 2, low: 3 };
+        if (val === 'priority') {
+            cards.sort((a, b) => (order[a.dataset.priority] || 9) - (order[b.dataset.priority] || 9));
+        } else if (val === 'unread') {
+            cards.sort((a, b) => (a.classList.contains('read') ? 1 : 0) - (b.classList.contains('read') ? 1 : 0));
+        }
+        cards.forEach(c => grid.appendChild(c));
+    };
+
+    window.showSaved = function() {
+        filterTips('saved-view', { classList: { add: () => {}, remove: () => {} } });
+        const cards = document.querySelectorAll('.tip-card');
+        cards.forEach((card, i) => {
+            card.style.display = savedSet.has(i) ? '' : 'none';
+        });
+        showToast(savedSet.size > 0 ? `Showing ${savedSet.size} saved tips` : 'No saved tips yet.', 'info');
+    };
+
+    // Daily challenges rotation
+    const challenges = [
+        { text: 'Check all your app permissions today', desc: 'Go to Settings → Apps and revoke any permission that seems unnecessary for each app.' },
+        { text: 'Enable 2FA on one new account today', desc: 'Pick one account (email, banking, social) and enable two-factor authentication right now.' },
+        { text: 'Update all pending apps on your device', desc: 'Go to Play Store → My Apps and update everything. Security patches are often bundled in updates.' },
+        { text: 'Review your saved passwords for weak ones', desc: 'Use your password manager or phone settings to identify and change any weak or reused passwords.' },
+        { text: 'Run a full CyberGuard device scan', desc: 'Open the Scan page and run a full scan to check for threats on your device right now.' },
+    ];
+    const today = new Date().getDay();
+    const ch = challenges[today % challenges.length];
+    document.getElementById('challengeText').textContent = ch.text;
+    document.getElementById('challengeDesc').textContent = ch.desc;
+
+    window.completeChallenge = function(btn) {
+        btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Completed!';
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
+        showToast('Daily challenge completed! +10 security score 🎉', 'success');
+        document.getElementById('secScore').textContent = Math.min(100, parseInt(document.getElementById('secScore').textContent) + 10);
+    };
+
+    function showToast(msg, type) {
+        const c = document.getElementById('toastContainer') || document.body;
+        const t = document.createElement('div');
+        const bg = type === 'success' ? '#10b981' : type === 'info' ? '#3b82f6' : '#ef4444';
+        t.style.cssText = `background:${bg};color:white;padding:0.75rem 1.1rem;border-radius:10px;font-size:0.85rem;font-weight:500;display:flex;align-items:center;gap:0.5rem;`;
+        t.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${msg}`;
+        c.appendChild(t);
+        setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; setTimeout(() => t.remove(), 300); }, 3000);
     }
-
-    // Filter Logic
-    const filterTabs = document.querySelectorAll('.filter-tab');
-    const tips = document.querySelectorAll('.tip-card');
-
-    filterTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            // Update active state
-            filterTabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            const filter = tab.getAttribute('data-filter');
-
-            tips.forEach(tip => {
-                if (filter === 'all' || tip.getAttribute('data-category') === filter) {
-                    tip.style.display = 'flex';
-                } else {
-                    tip.style.display = 'none';
-                }
-            });
-        });
-    });
-
-    // Save Button Logic
-    const saveBtns = document.querySelectorAll('.btn-save');
-    saveBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            if (this.classList.contains('saved')) {
-                this.classList.remove('saved');
-                this.innerHTML = '<i class="fa-regular fa-bookmark"></i> Save';
-            } else {
-                this.classList.add('saved');
-                this.innerHTML = '<i class="fa-solid fa-bookmark"></i> Saved';
-                showToast('Security tip saved to your bookmarks.', 'info');
-            }
-        });
-    });
-
-    // Mark as Read Logic
-    const readBtns = document.querySelectorAll('.btn-read');
-    readBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            if (this.classList.contains('read')) return;
-
-            this.classList.add('read');
-            this.innerHTML = '<i class="fa-solid fa-check-double"></i> Read';
-            
-            // Visually dim the card slightly
-            const card = this.closest('.tip-card');
-            card.style.opacity = '0.7';
-            card.style.boxShadow = 'none';
-        });
-    });
 });

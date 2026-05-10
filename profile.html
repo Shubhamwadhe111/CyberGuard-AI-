@@ -5,212 +5,285 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - CyberGuard AI</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/profile.css">
+    <link rel="stylesheet" href="assets/css/notifications.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="dashboard-layout">
-        <!-- New Top Navbar for Desktop -->
-        <nav class="app-topnav">
-            <a href="index.html" class="logo">
-                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                CyberGuard
-            </a>
-            <div class="app-topnav-center desktop-only">
-                <a href="dashboard.html" class="app-nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
-                <a href="scan.html" class="app-nav-item"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
-                <a href="alerts.html" class="app-nav-item"><i class="fa-solid fa-bell"></i> Alerts</a>
-                <a href="ai-agent.html" class="app-nav-item"><i class="fa-solid fa-robot"></i> AI Agent</a>
-                <a href="security-tips.html" class="app-nav-item"><i class="fa-solid fa-lightbulb"></i> Tips</a>
-            </div>
-            <div class="dashboard-header-right desktop-only">
-                <div class="search-box" style="position: relative;">
-                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
-                    <input type="text" class="form-control" placeholder="Search threats..." style="padding-left: 2.5rem; width: 200px; border-radius: 20px;">
+<div class="dashboard-layout">
+    <nav class="app-topnav">
+        <a href="index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>CyberGuard</a>
+        <div class="app-topnav-center desktop-only">
+            <a href="home.html" class="app-nav-item"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="dashboard.html" class="app-nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="scan.html" class="app-nav-item"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
+            <a href="alerts.html" class="app-nav-item"><i class="fa-solid fa-circle-exclamation"></i> Alerts</a>
+            <a href="ai-agent.html" class="app-nav-item"><i class="fa-solid fa-robot"></i> AI Agent</a>
+            <a href="security-tips.html" class="app-nav-item"><i class="fa-solid fa-lightbulb"></i> Tips</a>
+        </div>
+        <div class="dashboard-header-right desktop-only">
+            <span id="navBellLink"></span>
+            <!-- Profile Dropdown -->
+            <div class="prof-nav-wrap" id="profNavWrap">
+                <button class="prof-nav-btn" id="profNavBtn">
+                    <img src="https://ui-avatars.com/api/?name=Alex+Walker&background=0d9488&color=fff" alt="Profile" class="prof-nav-avatar">
+                    <span class="prof-nav-name">Alex Walker</span>
+                    <i class="fa-solid fa-chevron-down prof-nav-caret"></i>
+                </button>
+                <div class="prof-nav-dropdown" id="profNavDropdown">
+                    <div class="prof-nav-dd-header">
+                        <img src="https://ui-avatars.com/api/?name=Alex+Walker&background=0d9488&color=fff" alt="Profile" style="width:42px;height:42px;border-radius:50%;">
+                        <div>
+                            <div style="font-weight:700;font-size:0.88rem;">Alex Walker</div>
+                            <div style="font-size:0.73rem;color:var(--text-muted);">alex@example.com</div>
+                            <span class="prof-plan-badge">Basic Plan</span>
+                        </div>
+                    </div>
+                    <div class="prof-nav-dd-list">
+                        <a href="profile.html" class="prof-nav-dd-item active"><i class="fa-solid fa-user"></i> My Profile</a>
+                        <a href="settings.html" class="prof-nav-dd-item"><i class="fa-solid fa-gear"></i> App Settings</a>
+                        <div class="prof-nav-dd-divider"></div>
+                        <button class="prof-nav-dd-item danger" onclick="localStorage.removeItem('isLoggedIn');window.location.href='login.html'"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+                    </div>
                 </div>
-                <a href="alerts.html" style="font-size: 1.25rem; color: var(--text-muted);"><i class="fa-regular fa-bell"></i></a>
-                <a href="profile.html"><img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" style="width: 36px; border-radius: 50%;"></a>
-                <a href="login.html" onclick="localStorage.removeItem('isLoggedIn');" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
             </div>
-        </nav>
+        </div>
+    </nav>
+    <header class="mobile-app-header">
+        <div class="logo" style="font-size:1rem;"><div class="logo-icon" style="width:24px;height:24px;font-size:0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>CyberGuard</div>
+        <div class="header-actions"><a href="profile.html" style="font-size:1.25rem;color:var(--color-primary);"><i class="fa-solid fa-circle-user"></i></a></div>
+    </header>
 
-        <!-- Mobile App Header -->
-        <header class="mobile-app-header">
-            <div class="logo" style="font-size: 1rem;">
-                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
-                CyberGuard
+    <main class="dashboard-main">
+        <div class="dashboard-content">
+
+            <!-- Page Header -->
+            <div class="prof-page-header">
+                <div>
+                    <h1 style="font-size:1.6rem;font-weight:800;margin:0;">My Profile</h1>
+                    <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.2rem;">Manage your account, security & app preferences</p>
+                </div>
+                <a href="settings.html" class="btn btn-outline"><i class="fa-solid fa-gear"></i> App Settings</a>
             </div>
-            <div class="header-actions">
-                <a href="profile.html" class="text-main" style="font-size: 1.25rem; color: var(--color-primary);"><i class="fa-solid fa-circle-user"></i></a>
+
+            <!-- Profile Hero Banner -->
+            <div class="prof-hero">
+                <div class="prof-hero-bg"></div>
+                <div class="prof-hero-content">
+                    <div class="prof-avatar-wrap">
+                        <div class="prof-avatar-lg">AW</div>
+                        <div class="prof-avatar-status"></div>
+                    </div>
+                    <div class="prof-hero-info">
+                        <h2 id="displayUserName">Alex Walker</h2>
+                        <p id="displayEmail">alex@example.com</p>
+                        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;">
+                            <span class="prof-badge accent"><i class="fa-solid fa-shield-check"></i> Account Active</span>
+                            <span class="prof-badge muted"><i class="fa-solid fa-crown"></i> Basic Plan</span>
+                            <span class="prof-badge muted"><i class="fa-regular fa-clock"></i> Member since May 2024</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline" style="color:white;border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);" id="btnEditProfile"><i class="fa-solid fa-pen"></i> Edit Profile</button>
+                </div>
             </div>
-        </header>
 
-        <main class="dashboard-main">
-            
+            <div class="prof-main-grid">
 
-            <div class="dashboard-content">
-                
-                <div class="profile-grid">
-                    
-                    <!-- Left Column -->
-                    <div>
-                        <!-- Personal Info Card -->
-                        <div class="profile-card">
-                            <div class="profile-header-user">
-                                <div class="profile-avatar-large"><i class="fa-solid fa-user"></i></div>
-                                <div class="profile-name-area">
-                                    <h3 id="displayUserName">Alex Walker</h3>
-                                    <p>CyberGuard Basic Plan</p>
-                                    <span class="badge" style="background: rgba(16, 185, 129, 0.1); color: var(--color-success); border: 1px solid rgba(16, 185, 129, 0.2); margin-top: 0.5rem;"><i class="fa-solid fa-check-circle"></i> Account Active</span>
+                <!-- LEFT COLUMN -->
+                <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+                    <!-- Personal Info -->
+                    <div class="prof-card">
+                        <div class="prof-card-title"><i class="fa-solid fa-user" style="color:var(--color-accent);"></i> Personal Information</div>
+                        <form id="profileForm">
+                            <div class="prof-form-grid">
+                                <div class="prof-field">
+                                    <label>Full Name</label>
+                                    <input type="text" id="profName" class="prof-input" value="Alex Walker" disabled>
+                                </div>
+                                <div class="prof-field">
+                                    <label>Email Address</label>
+                                    <input type="email" id="profEmail" class="prof-input" value="alex@example.com" disabled>
+                                </div>
+                                <div class="prof-field">
+                                    <label>Mobile Number</label>
+                                    <input type="tel" id="profPhone" class="prof-input" value="+91 98765 43210" disabled>
+                                </div>
+                                <div class="prof-field">
+                                    <label>Organization</label>
+                                    <input type="text" id="profCompany" class="prof-input" value="" disabled placeholder="Not set">
                                 </div>
                             </div>
+                            <div style="display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1rem;">
+                                <button type="button" id="btnCancelEdit" class="btn btn-outline" style="display:none;">Cancel</button>
+                                <button type="submit" id="btnSaveProfile" class="btn btn-primary" style="display:none;"><i class="fa-solid fa-check"></i> Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
 
-                            <form id="profileForm" class="profile-form">
-                                <div class="form-group-row">
-                                    <div class="form-group">
-                                        <label for="profName">Full Name</label>
-                                        <input type="text" id="profName" class="form-control" value="Alex Walker" disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="profEmail">Email Address</label>
-                                        <input type="email" id="profEmail" class="form-control" value="alex@example.com" disabled>
-                                    </div>
+                    <!-- Account Security -->
+                    <div class="prof-card">
+                        <div class="prof-card-title"><i class="fa-solid fa-shield-halved" style="color:var(--color-accent);"></i> Account Security</div>
+                        <div class="prof-security-list">
+                            <div class="prof-sec-item">
+                                <div class="prof-sec-icon safe"><i class="fa-solid fa-key"></i></div>
+                                <div style="flex:1;">
+                                    <div class="prof-sec-label">Password</div>
+                                    <div class="prof-sec-sub">Last changed 45 days ago</div>
                                 </div>
-                                <div class="form-group-row">
-                                    <div class="form-group">
-                                        <label for="profPhone">Mobile Number</label>
-                                        <input type="tel" id="profPhone" class="form-control" value="+1 (555) 019-2834" disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="profCompany">Organization (Optional)</label>
-                                        <input type="text" id="profCompany" class="form-control" value="" disabled placeholder="None">
-                                    </div>
+                                <span class="prof-badge accent">Strong</span>
+                                <button class="prof-sec-action">Change</button>
+                            </div>
+                            <div class="prof-sec-item">
+                                <div class="prof-sec-icon safe"><i class="fa-solid fa-shield-virus"></i></div>
+                                <div style="flex:1;">
+                                    <div class="prof-sec-label">Two-Factor Authentication</div>
+                                    <div class="prof-sec-sub">Enabled via SMS OTP</div>
                                 </div>
-                                
-                                <div style="display: flex; gap: 1rem; margin-top: 1rem; justify-content: flex-end;">
-                                    <button type="button" id="btnEditProfile" class="btn btn-outline">Edit Profile</button>
-                                    <button type="submit" id="btnSaveProfile" class="btn btn-primary" style="display: none;">Save Changes</button>
+                                <span class="prof-badge accent">Enabled</span>
+                                <button class="prof-sec-action">Manage</button>
+                            </div>
+                            <div class="prof-sec-item">
+                                <div class="prof-sec-icon warn"><i class="fa-solid fa-mobile-screen"></i></div>
+                                <div style="flex:1;">
+                                    <div class="prof-sec-label">Active Sessions</div>
+                                    <div class="prof-sec-sub">2 devices · iPhone 13, Chrome PC</div>
                                 </div>
-                            </form>
-                        </div>
-
-                        <!-- Account Security Card -->
-                        <div class="profile-card">
-                            <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">Account Security</h3>
-                            <ul class="security-list">
-                                <li>
-                                    <span>Password</span>
-                                    <div><i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Last changed 45 days ago</div>
-                                </li>
-                                <li>
-                                    <span>Two-Factor Authentication (OTP)</span>
-                                    <div><i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Enabled via SMS</div>
-                                </li>
-                                <li>
-                                    <span>Last Login</span>
-                                    <div><i class="fa-regular fa-clock"></i> Today at 08:30 AM (Device: iPhone 13)</div>
-                                </li>
-                            </ul>
+                                <span class="prof-badge warn">2 Active</span>
+                                <button class="prof-sec-action">Review</button>
+                            </div>
+                            <div class="prof-sec-item">
+                                <div class="prof-sec-icon safe"><i class="fa-regular fa-clock"></i></div>
+                                <div style="flex:1;">
+                                    <div class="prof-sec-label">Last Login</div>
+                                    <div class="prof-sec-sub">Today at 08:30 AM · Mumbai, IN</div>
+                                </div>
+                                <span class="prof-badge muted">Today</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Right Column -->
-                    <div>
-                        <!-- Privacy Notice -->
-                        <div class="privacy-note">
-                            <i class="fa-solid fa-shield-halved"></i>
-                            <div>
-                                <strong style="color: var(--text-main); display: block; margin-bottom: 0.25rem;">Data Minimization Active</strong>
-                                <p>We process threat data locally on your device where possible. Your personal SMS messages and contacts are never uploaded to our servers.</p>
+                    <!-- Danger Zone -->
+                    <div class="prof-card danger-zone">
+                        <div class="prof-card-title"><i class="fa-solid fa-triangle-exclamation" style="color:var(--color-danger);"></i> Danger Zone</div>
+                        <div style="display:flex;flex-direction:column;gap:0.75rem;margin-top:0.5rem;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
+                                <div>
+                                    <div style="font-size:0.85rem;font-weight:600;">Log out of all devices</div>
+                                    <div style="font-size:0.75rem;color:var(--text-muted);">Terminate all active sessions immediately</div>
+                                </div>
+                                <button class="prof-danger-btn" onclick="alert('All sessions terminated (demo)')"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out All</button>
                             </div>
-                        </div>
-
-                        <!-- Scan Preferences Preview -->
-                        <div class="profile-card">
-                            <h3 style="font-size: 1.05rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--text-main);">Active Protections</h3>
-                            <ul class="preference-list">
-                                <li>
-                                    <i class="fa-solid fa-check"></i>
-                                    <div>
-                                        <h4>Message Scanning</h4>
-                                        <p>Detecting phishing and urgent OTP requests.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <i class="fa-solid fa-check"></i>
-                                    <div>
-                                        <h4>Link Checking</h4>
-                                        <p>Cross-referencing URLs with threat databases.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <i class="fa-solid fa-check"></i>
-                                    <div>
-                                        <h4>App Permission Review</h4>
-                                        <p>Monitoring applications for risky behaviors.</p>
-                                    </div>
-                                </li>
-                            </ul>
-                            <a href="settings.html" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 1rem; border-color: var(--border-color); color: var(--text-muted); font-size: 0.85rem;">Manage Protections in Settings</a>
-                        </div>
-
-                        <!-- Notification Preferences Preview -->
-                        <div class="profile-card">
-                            <h3 style="font-size: 1.05rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--text-main);">Notification Settings</h3>
-                            <ul class="preference-list">
-                                <li>
-                                    <i class="fa-solid fa-bell" style="color: var(--color-accent);"></i>
-                                    <div>
-                                        <h4>Threat Alerts</h4>
-                                        <p>Instant push notifications for high risks.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <i class="fa-solid fa-envelope" style="color: var(--text-muted);"></i>
-                                    <div>
-                                        <h4>Scan Summary</h4>
-                                        <p>Weekly email report of device health.</p>
-                                    </div>
-                                </li>
-                            </ul>
-                            <button id="btnLogoutMobile" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 1rem; border-color: rgba(239, 68, 68, 0.3); color: var(--color-danger); font-size: 0.85rem;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+                            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
+                                <div>
+                                    <div style="font-size:0.85rem;font-weight:600;">Delete account</div>
+                                    <div style="font-size:0.75rem;color:var(--text-muted);">Permanently remove all your data</div>
+                                </div>
+                                <button class="prof-danger-btn" onclick="alert('Contact support to delete account (demo)')"><i class="fa-solid fa-trash"></i> Delete Account</button>
+                            </div>
                         </div>
                     </div>
 
                 </div>
 
+                <!-- RIGHT COLUMN -->
+                <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+                    <!-- Security Score -->
+                    <div class="prof-card">
+                        <div class="prof-card-title"><i class="fa-solid fa-chart-pie" style="color:var(--color-accent);"></i> Security Score</div>
+                        <div style="text-align:center;padding:1rem 0;">
+                            <div class="prof-score-ring">
+                                <svg viewBox="0 0 80 80" style="width:100%;height:100%;">
+                                    <circle cx="40" cy="40" r="34" fill="none" stroke="var(--border-color)" stroke-width="7"/>
+                                    <circle cx="40" cy="40" r="34" fill="none" stroke="var(--color-warning)" stroke-width="7"
+                                        stroke-dasharray="213.6" stroke-dashoffset="60" stroke-linecap="round"
+                                        transform="rotate(-90 40 40)"/>
+                                </svg>
+                                <div class="prof-score-num">72<span style="font-size:0.7em;color:var(--text-muted);">/100</span></div>
+                            </div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">Good — room to improve</div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+                            <div class="prof-score-row"><span>2FA Enabled</span><span style="color:var(--color-accent);">+20</span></div>
+                            <div class="prof-score-row"><span>Strong Password</span><span style="color:var(--color-accent);">+20</span></div>
+                            <div class="prof-score-row"><span>App Scan Done</span><span style="color:var(--color-accent);">+15</span></div>
+                            <div class="prof-score-row warn"><span>OTP via SMS (weak)</span><span style="color:var(--color-warning);">-10</span></div>
+                            <div class="prof-score-row warn"><span>Pending alerts (2)</span><span style="color:var(--color-warning);">-5</span></div>
+                        </div>
+                        <a href="scan.html" class="btn btn-outline" style="width:100%;text-align:center;margin-top:1rem;font-size:0.82rem;">Improve Score</a>
+                    </div>
+
+                    <!-- App Settings Quick Access -->
+                    <div class="prof-card">
+                        <div class="prof-card-title"><i class="fa-solid fa-gear" style="color:var(--color-accent);"></i> App Settings</div>
+                        <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem;">
+                            <div class="prof-setting-row">
+                                <div>
+                                    <div style="font-size:0.83rem;font-weight:600;">SMS Threat Detection</div>
+                                    <div style="font-size:0.73rem;color:var(--text-muted);">Scan incoming messages</div>
+                                </div>
+                                <label class="prof-toggle"><input type="checkbox" checked><span class="prof-slider"></span></label>
+                            </div>
+                            <div class="prof-setting-row">
+                                <div>
+                                    <div style="font-size:0.83rem;font-weight:600;">Auto URL Check</div>
+                                    <div style="font-size:0.73rem;color:var(--text-muted);">Verify links automatically</div>
+                                </div>
+                                <label class="prof-toggle"><input type="checkbox" checked><span class="prof-slider"></span></label>
+                            </div>
+                            <div class="prof-setting-row">
+                                <div>
+                                    <div style="font-size:0.83rem;font-weight:600;">Push Notifications</div>
+                                    <div style="font-size:0.73rem;color:var(--text-muted);">Alert for high-risk threats</div>
+                                </div>
+                                <label class="prof-toggle"><input type="checkbox" checked><span class="prof-slider"></span></label>
+                            </div>
+                            <div class="prof-setting-row">
+                                <div>
+                                    <div style="font-size:0.83rem;font-weight:600;">Weekly Scan Report</div>
+                                    <div style="font-size:0.73rem;color:var(--text-muted);">Email summary every week</div>
+                                </div>
+                                <label class="prof-toggle"><input type="checkbox"><span class="prof-slider"></span></label>
+                            </div>
+                            <div class="prof-setting-row">
+                                <div>
+                                    <div style="font-size:0.83rem;font-weight:600;">Dark Mode</div>
+                                    <div style="font-size:0.73rem;color:var(--text-muted);">Use dark theme</div>
+                                </div>
+                                <label class="prof-toggle"><input type="checkbox" id="darkModeToggle"><span class="prof-slider"></span></label>
+                            </div>
+                        </div>
+                        <a href="settings.html" class="btn btn-outline" style="width:100%;text-align:center;margin-top:1rem;font-size:0.82rem;">All Settings</a>
+                    </div>
+
+                    <!-- Logout Card -->
+                    <div class="prof-card" style="border-color:rgba(239,68,68,0.2);">
+                        <div class="prof-card-title"><i class="fa-solid fa-arrow-right-from-bracket" style="color:var(--color-danger);"></i> Session</div>
+                        <p style="font-size:0.8rem;color:var(--text-muted);margin:0.5rem 0 1rem;">You are currently logged in. Logging out will end your session on this device.</p>
+                        <button class="btn" style="width:100%;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);color:var(--color-danger);font-weight:700;" onclick="localStorage.removeItem('isLoggedIn');window.location.href='login.html'">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout of CyberGuard
+                        </button>
+                    </div>
+
+                </div>
             </div>
-        </main>
+        </div>
+    </main>
 
-        <!-- Mobile Bottom Navigation -->
-        <nav class="bottom-nav">
-            <a href="dashboard.html" class="bottom-nav-item">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-            <a href="alerts.html" class="bottom-nav-item">
-                <i class="fa-solid fa-bell"></i>
-                <span>Alerts</span>
-            </a>
-            <a href="scan.html" class="bottom-nav-scan">
-                <i class="fa-solid fa-satellite-dish"></i>
-            </a>
-            <a href="ai-agent.html" class="bottom-nav-item">
-                <i class="fa-solid fa-robot"></i>
-                <span>AI Agent</span>
-            </a>
-            <a href="settings.html" class="bottom-nav-item">
-                <i class="fa-solid fa-gear"></i>
-                <span>Settings</span>
-            </a>
-        </nav>
-    </div>
-
-    <!-- Toast Notification Container -->
-    <div id="toastContainer" style="position: fixed; bottom: 80px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;"></div>
-
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/navigation.js"></script>
-    <script src="assets/js/profile.js"></script>
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="bottom-nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="scan.html" class="bottom-nav-item"><i class="fa-solid fa-satellite-dish"></i><span>Scan</span></a>
+        <a href="ai-agent.html" class="bottom-nav-item"><i class="fa-solid fa-robot"></i><span>AI</span></a>
+        <a href="alerts.html" class="bottom-nav-item"><i class="fa-solid fa-bell"></i><span>Alerts</span></a>
+        <a href="profile.html" class="bottom-nav-item active"><i class="fa-solid fa-circle-user"></i><span>Profile</span></a>
+    </nav>
+</div>
+<div id="toastContainer" style="position:fixed;bottom:80px;right:20px;z-index:1000;display:flex;flex-direction:column;gap:10px;"></div>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/navigation.js"></script>
+<script src="assets/js/notifications.js"></script>
+<script src="assets/js/profile.js"></script>
 </body>
 </html>

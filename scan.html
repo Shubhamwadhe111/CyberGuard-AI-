@@ -5,213 +5,439 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Threat Scan - CyberGuard AI</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/profile.css">
+    <link rel="stylesheet" href="assets/css/scan.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="dashboard-layout">
-        <!-- New Top Navbar for Desktop -->
-        <nav class="app-topnav">
-            <a href="index.html" class="logo">
-                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                CyberGuard
-            </a>
-            <div class="app-topnav-center desktop-only">
-                <a href="dashboard.html" class="app-nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
-                <a href="scan.html" class="app-nav-item active"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
-                <a href="alerts.html" class="app-nav-item"><i class="fa-solid fa-bell"></i> Alerts</a>
-                <a href="ai-agent.html" class="app-nav-item"><i class="fa-solid fa-robot"></i> AI Agent</a>
-                <a href="security-tips.html" class="app-nav-item"><i class="fa-solid fa-lightbulb"></i> Tips</a>
-            </div>
-            <div class="dashboard-header-right desktop-only">
-                <div class="search-box" style="position: relative;">
-                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
-                    <input type="text" class="form-control" placeholder="Search threats..." style="padding-left: 2.5rem; width: 200px; border-radius: 20px;">
+<div class="dashboard-layout">
+
+    <!-- Top Navbar -->
+    <nav class="app-topnav">
+        <a href="index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            CyberGuard
+        </a>
+        <div class="app-topnav-center desktop-only">
+            <a href="home.html" class="app-nav-item"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="dashboard.html" class="app-nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="scan.html" class="app-nav-item active"><i class="fa-solid fa-satellite-dish"></i> Scan</a>
+            <a href="alerts.html" class="app-nav-item"><i class="fa-solid fa-circle-exclamation"></i> Alerts</a>
+            <a href="ai-agent.html" class="app-nav-item"><i class="fa-solid fa-robot"></i> AI Agent</a>
+            <a href="security-tips.html" class="app-nav-item"><i class="fa-solid fa-lightbulb"></i> Tips</a>
+        </div>
+        <div class="dashboard-header-right desktop-only">
+            <span id="navBellLink"></span>
+            <!-- Profile Dropdown -->
+            <div class="prof-nav-wrap" id="profNavWrap">
+                <button class="prof-nav-btn" id="profNavBtn">
+                    <img src="https://ui-avatars.com/api/?name=Alex+Walker&background=0d9488&color=fff" alt="Profile" class="prof-nav-avatar">
+                    <span class="prof-nav-name">Alex</span>
+                    <i class="fa-solid fa-chevron-down prof-nav-caret"></i>
+                </button>
+                <div class="prof-nav-dropdown" id="profNavDropdown">
+                    <div class="prof-nav-dd-header">
+                        <img src="https://ui-avatars.com/api/?name=Alex+Walker&background=0d9488&color=fff" alt="Profile" style="width:42px;height:42px;border-radius:50%;">
+                        <div>
+                            <div style="font-weight:700;font-size:0.88rem;">Alex Walker</div>
+                            <div style="font-size:0.73rem;color:var(--text-muted);">alex@example.com</div>
+                            <span class="prof-plan-badge">Basic Plan</span>
+                        </div>
+                    </div>
+                    <div class="prof-nav-dd-list">
+                        <a href="profile.html" class="prof-nav-dd-item"><i class="fa-solid fa-user"></i> My Profile</a>
+                        <a href="settings.html" class="prof-nav-dd-item"><i class="fa-solid fa-gear"></i> App Settings</a>
+                        <div class="prof-nav-dd-divider"></div>
+                        <button class="prof-nav-dd-item danger" onclick="localStorage.removeItem('isLoggedIn');window.location.href='login.html'"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+                    </div>
                 </div>
-                <a href="alerts.html" style="font-size: 1.25rem; color: var(--text-muted);"><i class="fa-regular fa-bell"></i></a>
-                <a href="profile.html"><img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" style="width: 36px; border-radius: 50%;"></a>
-                <a href="login.html" onclick="localStorage.removeItem('isLoggedIn');" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <!-- Mobile App Header -->
-        <header class="mobile-app-header">
-            <div class="logo" style="font-size: 1rem;">
-                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
-                CyberGuard
+    <!-- Mobile Header -->
+    <header class="mobile-app-header">
+        <div class="logo" style="font-size:1rem;">
+            <div class="logo-icon" style="width:24px;height:24px;font-size:0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
+            CyberGuard
+        </div>
+        <div class="header-actions">
+            <a href="profile.html" class="text-main" style="font-size:1.25rem;"><i class="fa-solid fa-circle-user"></i></a>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="dashboard-content">
+
+            <!-- Page Header -->
+            <div class="db-page-header" style="margin-bottom:1.75rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+                <div>
+                    <h1 style="font-size:1.75rem;font-weight:800;margin:0;">Threat Scanner</h1>
+                    <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.25rem;">Last scan: <span id="lastScanTime">3 hours ago</span> &nbsp;|&nbsp; Status: <span style="color:var(--color-accent);font-weight:600;">System Ready</span></p>
+                </div>
+                <a href="alerts.html" class="btn btn-outline"><i class="fa-solid fa-list-check"></i> View All Results</a>
             </div>
-            <div class="header-actions">
-                <a href="profile.html" class="text-main" style="font-size: 1.25rem;"><i class="fa-solid fa-circle-user"></i></a>
+
+            <!-- Scan Type Selector -->
+            <div class="scan-type-grid">
+                <button class="scan-type-btn active" data-type="full" onclick="selectScanType(this,'full')">
+                    <div class="scan-type-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="scan-type-label">Full Scan</div>
+                    <div class="scan-type-desc">Complete deep analysis of all modules</div>
+                    <div class="scan-type-time"><i class="fa-regular fa-clock"></i> ~2 min</div>
+                </button>
+                <button class="scan-type-btn" data-type="quick" onclick="selectScanType(this,'quick')">
+                    <div class="scan-type-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="scan-type-label">Quick Scan</div>
+                    <div class="scan-type-desc">Fast check of critical threat areas</div>
+                    <div class="scan-type-time"><i class="fa-regular fa-clock"></i> ~30 sec</div>
+                </button>
+                <button class="scan-type-btn" data-type="sms" onclick="selectScanType(this,'sms')">
+                    <div class="scan-type-icon"><i class="fa-solid fa-message"></i></div>
+                    <div class="scan-type-label">SMS Scan</div>
+                    <div class="scan-type-desc">Scan all incoming text messages</div>
+                    <div class="scan-type-time"><i class="fa-regular fa-clock"></i> ~45 sec</div>
+                </button>
+                <button class="scan-type-btn" data-type="app" onclick="selectScanType(this,'app')">
+                    <div class="scan-type-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                    <div class="scan-type-label">App Audit</div>
+                    <div class="scan-type-desc">Check app permissions and behavior</div>
+                    <div class="scan-type-time"><i class="fa-regular fa-clock"></i> ~1 min</div>
+                </button>
             </div>
-        </header>
 
-        <main class="dashboard-main">
-            
+            <!-- Main Layout -->
+            <div class="scan-main-grid">
 
-            <div class="dashboard-content">
-                <div style="max-width: 1000px; margin: 0 auto;">
-                    
-                    <!-- Main Scan Card -->
-                    <div class="scan-hero-card">
-                        <div style="font-size: 3rem; color: var(--color-primary); margin-bottom: 1rem;"><i class="fa-solid fa-shield-halved"></i></div>
-                        <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem;">Device Protection Scan</h2>
-                        <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 2rem;">Initiate a deep analysis of your local environment to ensure no hidden threats are present.</p>
-                        
-                        <button id="btnStartScan" class="btn btn-primary btn-glow" style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: var(--radius-full);">
-                            <i class="fa-solid fa-satellite-dish fa-spin-hover"></i> Start Scan
-                        </button>
+                <!-- LEFT: Scan Engine -->
+                <div class="scan-left-col">
 
-                        <div id="scanProgressArea" style="display: none;">
-                            <div class="scan-progress-container">
-                                <div class="scan-progress-bar-bg">
-                                    <div id="scanProgressBar" class="scan-progress-bar-fill"></div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <div class="scan-status-text" id="scanStatusText">Initializing...</div>
-                                    <div class="scan-status-text" id="scanPercentage">0%</div>
-                                </div>
-                                <div class="scan-status-detail" id="scanStatusDetail">Preparing scan engine...</div>
+                    <!-- Scan Engine Card -->
+                    <div class="scan-engine-card">
+                        <div class="scan-engine-top">
+                            <div class="scan-engine-shield" id="scanShield">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <div class="scan-shield-ring r1"></div>
+                                <div class="scan-shield-ring r2"></div>
+                            </div>
+                            <div>
+                                <h2 id="scanTitle" style="font-size:1.5rem;font-weight:800;margin:0 0 0.25rem;">Full System Scan</h2>
+                                <p id="scanDesc" style="color:var(--text-muted);font-size:0.9rem;margin:0;">Analyzes messages, links, app permissions, and network activity for threats.</p>
                             </div>
                         </div>
 
-                        <!-- Categories Grid -->
-                        <div class="scan-categories-grid">
-                            <div class="scan-category-card" id="catMessages">
-                                <div class="scan-cat-icon"><i class="fa-solid fa-message"></i></div>
+                        <!-- Category Chips -->
+                        <div class="scan-cat-chips">
+                            <div class="scan-chip" id="catMessages"><i class="fa-solid fa-message"></i> Messages <span class="chip-status" id="chipMessages">Pending</span></div>
+                            <div class="scan-chip" id="catLinks"><i class="fa-solid fa-link"></i> Links <span class="chip-status" id="chipLinks">Pending</span></div>
+                            <div class="scan-chip" id="catPerms"><i class="fa-solid fa-list-check"></i> Permissions <span class="chip-status" id="chipPerms">Pending</span></div>
+                            <div class="scan-chip" id="catApps"><i class="fa-solid fa-mobile-screen-button"></i> Apps <span class="chip-status" id="chipApps">Pending</span></div>
+                            <div class="scan-chip" id="catNetwork"><i class="fa-solid fa-wifi"></i> Network <span class="chip-status" id="chipNetwork">Pending</span></div>
+                        </div>
+
+                        <!-- Progress -->
+                        <div id="scanProgressArea" style="display:none;">
+                            <div class="scan-progress-bar-bg" style="margin-bottom:0.5rem;">
+                                <div id="scanProgressBar" class="scan-progress-bar-fill" style="width:0%;"></div>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:var(--text-muted);">
+                                <span id="scanStatusText">Initializing...</span>
+                                <span id="scanPercentage" style="font-weight:700;color:var(--text-main);">0%</span>
+                            </div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.4rem;" id="scanStatusDetail">Preparing engine...</div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+                            <button id="btnStartScan" class="btn btn-primary" style="flex:1;padding:0.85rem;font-size:1rem;">
+                                <i class="fa-solid fa-satellite-dish"></i> Start Scan
+                            </button>
+                            <button id="btnStopScan" class="btn btn-outline" style="display:none;" onclick="stopScan()">
+                                <i class="fa-solid fa-stop"></i> Stop
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- URL / Link Checker -->
+                    <div class="db-card">
+                        <div class="db-card-title" style="font-size:1rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;">
+                            <span><i class="fa-solid fa-link" style="color:var(--color-accent);"></i> Quick URL Checker</span>
+                        </div>
+                        <div style="display:flex;gap:0.75rem;">
+                            <input type="url" id="urlInput" class="scan-url-input" placeholder="Paste a suspicious URL here...">
+                            <button class="btn btn-primary" onclick="checkURL()" style="white-space:nowrap;"><i class="fa-solid fa-magnifying-glass"></i> Check</button>
+                        </div>
+                        <div id="urlResult" style="display:none;margin-top:1rem;"></div>
+                    </div>
+
+                    <!-- Global Threat Intelligence Feed -->
+                    <div class="db-card">
+                        <div class="db-card-title" style="font-size:1rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;">
+                            <span><i class="fa-solid fa-globe" style="color:var(--color-accent);"></i> Global Threat Feed</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);font-weight:500;">Live · Updated 5 min ago</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:0.65rem;">
+
+                            <div class="scan-feed-item">
+                                <div class="scan-feed-dot danger"></div>
+                                <div style="flex:1;">
+                                    <div class="scan-feed-title">New smishing campaign targeting Indian bank customers</div>
+                                    <div class="scan-feed-meta">SMS Phishing &nbsp;•&nbsp; Severity: High &nbsp;•&nbsp; 2h ago</div>
+                                </div>
+                                <span class="db-tl-badge danger" style="padding:0.2rem 0.5rem;font-size:0.68rem;font-weight:700;border-radius:20px;background:rgba(239,68,68,0.1);color:var(--color-danger);">High</span>
+                            </div>
+
+                            <div class="scan-feed-item">
+                                <div class="scan-feed-dot warning"></div>
+                                <div style="flex:1;">
+                                    <div class="scan-feed-title">Fake delivery tracking links spreading via WhatsApp</div>
+                                    <div class="scan-feed-meta">Phishing Link &nbsp;•&nbsp; Severity: Medium &nbsp;•&nbsp; 4h ago</div>
+                                </div>
+                                <span style="padding:0.2rem 0.5rem;font-size:0.68rem;font-weight:700;border-radius:20px;background:rgba(245,158,11,0.1);color:var(--color-warning);">Medium</span>
+                            </div>
+
+                            <div class="scan-feed-item">
+                                <div class="scan-feed-dot danger"></div>
+                                <div style="flex:1;">
+                                    <div class="scan-feed-title">Spyware app disguised as "Phone Cleaner Pro" found on Play Store</div>
+                                    <div class="scan-feed-meta">Malicious App &nbsp;•&nbsp; Severity: High &nbsp;•&nbsp; 6h ago</div>
+                                </div>
+                                <span style="padding:0.2rem 0.5rem;font-size:0.68rem;font-weight:700;border-radius:20px;background:rgba(239,68,68,0.1);color:var(--color-danger);">High</span>
+                            </div>
+
+                            <div class="scan-feed-item">
+                                <div class="scan-feed-dot warning"></div>
+                                <div style="flex:1;">
+                                    <div class="scan-feed-title">Public Wi-Fi MITM attacks reported in major airports</div>
+                                    <div class="scan-feed-meta">Network Attack &nbsp;•&nbsp; Severity: Medium &nbsp;•&nbsp; 12h ago</div>
+                                </div>
+                                <span style="padding:0.2rem 0.5rem;font-size:0.68rem;font-weight:700;border-radius:20px;background:rgba(245,158,11,0.1);color:var(--color-warning);">Medium</span>
+                            </div>
+
+                            <div class="scan-feed-item">
+                                <div class="scan-feed-dot safe"></div>
+                                <div style="flex:1;">
+                                    <div class="scan-feed-title">Android security patch KB-2024-05 released — update now</div>
+                                    <div class="scan-feed-meta">OS Update &nbsp;•&nbsp; Severity: Info &nbsp;•&nbsp; 1d ago</div>
+                                </div>
+                                <span style="padding:0.2rem 0.5rem;font-size:0.68rem;font-weight:700;border-radius:20px;background:rgba(13,148,136,0.1);color:var(--color-accent);">Info</span>
+                            </div>
+
+                        </div>
+                        <a href="security-tips.html" class="btn btn-outline" style="width:100%;text-align:center;margin-top:1.25rem;font-size:0.875rem;">View All Threat Intelligence</a>
+                    </div>
+
+                    <!-- What We Scan -->
+                    <div class="db-card">
+                        <div class="db-card-title" style="font-size:1rem;font-weight:700;margin-bottom:1rem;">
+                            <i class="fa-solid fa-circle-info" style="color:var(--color-accent);"></i> What CyberGuard Scans
+                        </div>
+                        <div class="scan-coverage-grid">
+                            <div class="scan-coverage-item">
+                                <div class="scan-cov-icon"><i class="fa-solid fa-message"></i></div>
                                 <div>
-                                    <div class="scan-cat-title">Messages</div>
-                                    <div class="scan-cat-status status-pending" id="catStatusMessages"><i class="fa-regular fa-clock"></i> Pending</div>
+                                    <div class="scan-cov-title">SMS & Messages</div>
+                                    <div class="scan-cov-desc">Detects phishing language, OTP scams, and malicious sender patterns in all incoming messages.</div>
                                 </div>
                             </div>
-                            <div class="scan-category-card" id="catLinks">
-                                <div class="scan-cat-icon"><i class="fa-solid fa-link"></i></div>
+                            <div class="scan-coverage-item">
+                                <div class="scan-cov-icon"><i class="fa-solid fa-link"></i></div>
                                 <div>
-                                    <div class="scan-cat-title">Links</div>
-                                    <div class="scan-cat-status status-pending" id="catStatusLinks"><i class="fa-regular fa-clock"></i> Pending</div>
+                                    <div class="scan-cov-title">Links & URLs</div>
+                                    <div class="scan-cov-desc">Cross-references every URL against 50M+ known phishing domains and malicious redirect chains.</div>
                                 </div>
                             </div>
-                            <div class="scan-category-card" id="catPerms">
-                                <div class="scan-cat-icon"><i class="fa-solid fa-list-check"></i></div>
+                            <div class="scan-coverage-item">
+                                <div class="scan-cov-icon"><i class="fa-solid fa-list-check"></i></div>
                                 <div>
-                                    <div class="scan-cat-title">Permissions</div>
-                                    <div class="scan-cat-status status-pending" id="catStatusPerms"><i class="fa-regular fa-clock"></i> Pending</div>
+                                    <div class="scan-cov-title">App Permissions</div>
+                                    <div class="scan-cov-desc">Audits every installed app for permissions that don't match its stated function.</div>
                                 </div>
                             </div>
-                            <div class="scan-category-card" id="catApps">
-                                <div class="scan-cat-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                            <div class="scan-coverage-item">
+                                <div class="scan-cov-icon"><i class="fa-solid fa-wifi"></i></div>
                                 <div>
-                                    <div class="scan-cat-title">Installed Apps</div>
-                                    <div class="scan-cat-status status-pending" id="catStatusApps"><i class="fa-regular fa-clock"></i> Pending</div>
+                                    <div class="scan-cov-title">Network Activity</div>
+                                    <div class="scan-cov-desc">Monitors active connections for rogue access points, open ports, and man-in-the-middle attacks.</div>
+                                </div>
+                            </div>
+                            <div class="scan-coverage-item">
+                                <div class="scan-cov-icon"><i class="fa-solid fa-hard-drive"></i></div>
+                                <div>
+                                    <div class="scan-cov-title">Storage & Files</div>
+                                    <div class="scan-cov-desc">Checks downloaded files and cached data against known malware signatures and ransomware patterns.</div>
+                                </div>
+                            </div>
+                            <div class="scan-coverage-item">
+                                <div class="scan-cov-icon"><i class="fa-solid fa-microchip"></i></div>
+                                <div>
+                                    <div class="scan-cov-title">System Integrity</div>
+                                    <div class="scan-cov-desc">Verifies OS patch level, checks for rooting/jailbreaking, and validates system process signatures.</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Scan Results (Hidden initially) -->
-                    <div id="scanResultsArea" style="display: none;">
+                    <!-- Scan Results -->
+                    <div id="scanResultsArea" style="display:none;">
                         <div class="scan-results-header">
-                            <h3>Scan Results</h3>
-                            <div class="scan-results-summary">Completed just now • 4 items found</div>
-                        </div>
-
-                        <!-- Result 1 -->
-                        <div class="scan-result-item risk-high">
-                            <div class="scan-result-info">
-                                <div class="scan-result-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                                <div>
-                                    <div class="scan-result-title">Suspicious bank verification message</div>
-                                    <div class="scan-result-desc">Detected urgent language requesting OTP verification from unknown sender.</div>
-                                    <span class="badge scan-badge-high">High Risk</span>
-                                    <span class="badge" style="background: var(--bg-surface-hover); color: var(--text-muted); border: 1px solid var(--border-color); margin-left: 0.5rem;">SMS Message</span>
-                                </div>
+                            <div>
+                                <h3 style="margin:0;font-size:1.1rem;font-weight:700;">Scan Results</h3>
+                                <div style="font-size:0.85rem;color:var(--text-muted);margin-top:0.2rem;" id="scanResultsSummary">Completed just now</div>
                             </div>
-                            <div class="scan-result-actions">
-                                <a href="threat-details.html?id=1" class="btn btn-outline" style="border-color: var(--border-color);">View Details</a>
+                            <div style="display:flex;gap:0.5rem;">
+                                <span class="scan-result-count danger" id="countHigh">0 High</span>
+                                <span class="scan-result-count warning" id="countMed">0 Med</span>
+                                <span class="scan-result-count safe" id="countSafe">0 Safe</span>
                             </div>
                         </div>
 
-                        <!-- Result 2 -->
-                        <div class="scan-result-item risk-medium">
-                            <div class="scan-result-info">
-                                <div class="scan-result-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
-                                <div>
-                                    <div class="scan-result-title">Unknown shortened payment link</div>
-                                    <div class="scan-result-desc">URL found in clipboard matches known masking patterns.</div>
-                                    <span class="badge scan-badge-medium">Medium Risk</span>
-                                    <span class="badge" style="background: var(--bg-surface-hover); color: var(--text-muted); border: 1px solid var(--border-color); margin-left: 0.5rem;">Clipboard Link</span>
-                                </div>
-                            </div>
-                            <div class="scan-result-actions">
-                                <a href="threat-details.html?id=2" class="btn btn-outline" style="border-color: var(--border-color);">View Details</a>
-                            </div>
+                        <div id="resultsContainer">
+                            <!-- Results injected by JS -->
                         </div>
-
-                        <!-- Result 3 -->
-                        <div class="scan-result-item risk-medium">
-                            <div class="scan-result-info">
-                                <div class="scan-result-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
-                                <div>
-                                    <div class="scan-result-title">Flashlight App requires Contacts</div>
-                                    <div class="scan-result-desc">App "Super Flashlight" is requesting unnecessary permissions.</div>
-                                    <span class="badge scan-badge-medium">Warning</span>
-                                    <span class="badge" style="background: var(--bg-surface-hover); color: var(--text-muted); border: 1px solid var(--border-color); margin-left: 0.5rem;">App Permission</span>
-                                </div>
-                            </div>
-                            <div class="scan-result-actions">
-                                <a href="threat-details.html?id=3" class="btn btn-outline" style="border-color: var(--border-color);">View Details</a>
-                            </div>
-                        </div>
-
-                        <!-- Result 4 -->
-                        <div class="scan-result-item risk-safe">
-                            <div class="scan-result-info">
-                                <div class="scan-result-icon"><i class="fa-solid fa-shield-check"></i></div>
-                                <div>
-                                    <div class="scan-result-title">System Update Status</div>
-                                    <div class="scan-result-desc">Device OS is up to date with the latest security patches.</div>
-                                    <span class="badge scan-badge-safe">Safe</span>
-                                    <span class="badge" style="background: var(--bg-surface-hover); color: var(--text-muted); border: 1px solid var(--border-color); margin-left: 0.5rem;">System</span>
-                                </div>
-                            </div>
-                            <div class="scan-result-actions">
-                                <button class="btn btn-outline" style="border-color: var(--border-color); opacity: 0.5; cursor: default;">No Action Needed</button>
-                            </div>
-                        </div>
-
                     </div>
+
+                </div>
+
+                <!-- RIGHT: Info Panels -->
+                <div class="scan-right-col">
+
+                    <!-- Scan Stats -->
+                    <div class="db-card">
+                        <div class="db-card-title" style="font-size:1rem;font-weight:700;margin-bottom:1rem;">Scan Statistics</div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                            <div class="scan-stat-box">
+                                <div class="scan-stat-val">48</div>
+                                <div class="scan-stat-lbl">Total Scans</div>
+                            </div>
+                            <div class="scan-stat-box">
+                                <div class="scan-stat-val" style="color:var(--color-danger);">12</div>
+                                <div class="scan-stat-lbl">Threats Found</div>
+                            </div>
+                            <div class="scan-stat-box">
+                                <div class="scan-stat-val" style="color:var(--color-accent);">36</div>
+                                <div class="scan-stat-lbl">Clean Scans</div>
+                            </div>
+                            <div class="scan-stat-box">
+                                <div class="scan-stat-val">3h</div>
+                                <div class="scan-stat-lbl">Avg. Interval</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Scan Log -->
+                    <div class="db-card">
+                        <div class="db-card-title" style="font-size:1rem;font-weight:700;margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between;">
+                            <span><i class="fa-solid fa-terminal" style="color:var(--color-accent);"></i> Live Console</span>
+                            <button onclick="clearLog()" style="background:none;border:none;font-size:0.8rem;color:var(--text-muted);cursor:pointer;">Clear</button>
+                        </div>
+                        <div id="scanLogConsole" class="scan-log-console">
+                            <div class="log-line safe">[SYSTEM] CyberGuard v2.4 engine loaded</div>
+                            <div class="log-line">[INFO] All modules initialized and ready</div>
+                            <div class="log-line">[INFO] Waiting for scan command...</div>
+                        </div>
+                    </div>
+
+                    <!-- Scan History -->
+                    <div class="db-card">
+                        <div class="db-card-title" style="font-size:1rem;font-weight:700;margin-bottom:1rem;">Scan History</div>
+                        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                            <div class="scan-history-item">
+                                <div class="scan-hist-icon danger"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:0.88rem;font-weight:600;">Full Scan — 2 threats</div>
+                                    <div style="font-size:0.78rem;color:var(--text-muted);">Today, 10:30 AM</div>
+                                </div>
+                                <a href="threat-details.html" style="font-size:0.8rem;color:var(--color-accent);text-decoration:none;font-weight:600;">View</a>
+                            </div>
+                            <div class="scan-history-item">
+                                <div class="scan-hist-icon safe"><i class="fa-solid fa-check"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:0.88rem;font-weight:600;">Quick Scan — Clean</div>
+                                    <div style="font-size:0.78rem;color:var(--text-muted);">Yesterday, 8:15 PM</div>
+                                </div>
+                                <span style="font-size:0.8rem;color:var(--text-muted);">Clear</span>
+                            </div>
+                            <div class="scan-history-item">
+                                <div class="scan-hist-icon warning"><i class="fa-solid fa-circle-exclamation"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:0.88rem;font-weight:600;">App Audit — 3 warnings</div>
+                                    <div style="font-size:0.78rem;color:var(--text-muted);">May 9, 2:00 PM</div>
+                                </div>
+                                <a href="threat-details.html" style="font-size:0.8rem;color:var(--color-accent);text-decoration:none;font-weight:600;">View</a>
+                            </div>
+                            <div class="scan-history-item">
+                                <div class="scan-hist-icon safe"><i class="fa-solid fa-check"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:0.88rem;font-weight:600;">SMS Scan — Clean</div>
+                                    <div style="font-size:0.78rem;color:var(--text-muted);">May 8, 11:00 AM</div>
+                                </div>
+                                <span style="font-size:0.8rem;color:var(--text-muted);">Clear</span>
+                            </div>
+                            <div class="scan-history-item">
+                                <div class="scan-hist-icon danger"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:0.88rem;font-weight:600;">Full Scan — 1 threat</div>
+                                    <div style="font-size:0.78rem;color:var(--text-muted);">May 7, 9:45 AM</div>
+                                </div>
+                                <a href="threat-details.html" style="font-size:0.8rem;color:var(--color-accent);text-decoration:none;font-weight:600;">View</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Schedule Auto-Scan -->
+                    <div class="db-card">
+                        <div class="db-card-title" style="font-size:1rem;font-weight:700;margin-bottom:1rem;"><i class="fa-solid fa-calendar-check" style="color:var(--color-accent);"></i> Auto-Scan Schedule</div>
+                        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.9rem;">
+                                <span><i class="fa-solid fa-rotate" style="color:var(--text-muted);"></i> Frequency</span>
+                                <select style="background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-main);padding:0.3rem 0.6rem;border-radius:6px;font-size:0.85rem;">
+                                    <option>Every 6 hours</option>
+                                    <option>Every 12 hours</option>
+                                    <option selected>Daily</option>
+                                    <option>Weekly</option>
+                                </select>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.9rem;">
+                                <span><i class="fa-solid fa-moon" style="color:var(--text-muted);"></i> Scan while charging</span>
+                                <div class="db-toggle on" onclick="this.classList.toggle('on')" style="width:42px;height:22px;border-radius:11px;background:var(--color-accent);position:relative;cursor:pointer;flex-shrink:0;transition:background 0.25s;">
+                                    <div style="content:'';position:absolute;top:3px;left:23px;width:16px;height:16px;border-radius:50%;background:white;transition:left 0.25s;"></div>
+                                </div>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.9rem;">
+                                <span><i class="fa-solid fa-bell" style="color:var(--text-muted);"></i> Notify on threats</span>
+                                <div class="db-toggle on" onclick="this.classList.toggle('on')" style="width:42px;height:22px;border-radius:11px;background:var(--color-accent);position:relative;cursor:pointer;flex-shrink:0;transition:background 0.25s;">
+                                    <div style="content:'';position:absolute;top:3px;left:23px;width:16px;height:16px;border-radius:50%;background:white;transition:left 0.25s;"></div>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline" style="width:100%;margin-top:0.5rem;" onclick="alert('Schedule saved!')">Save Schedule</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </main>
 
-        <!-- Mobile Bottom Navigation -->
-        <nav class="bottom-nav">
-            <a href="dashboard.html" class="bottom-nav-item">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-            <a href="alerts.html" class="bottom-nav-item">
-                <i class="fa-solid fa-bell"></i>
-                <span>Alerts</span>
-            </a>
-            <a href="scan.html" class="bottom-nav-scan active">
-                <i class="fa-solid fa-satellite-dish"></i>
-            </a>
-            <a href="ai-agent.html" class="bottom-nav-item">
-                <i class="fa-solid fa-robot"></i>
-                <span>AI Agent</span>
-            </a>
-            <a href="settings.html" class="bottom-nav-item">
-                <i class="fa-solid fa-gear"></i>
-                <span>Settings</span>
-            </a>
-        </nav>
-    </div>
+        </div>
+    </main>
 
-    <!-- Toast Notification Container -->
-    <div id="toastContainer" style="position: fixed; bottom: 80px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;"></div>
+    <!-- Mobile Bottom Nav -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="bottom-nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="scan.html" class="bottom-nav-item active"><i class="fa-solid fa-satellite-dish"></i><span>Scan</span></a>
+        <a href="ai-agent.html" class="bottom-nav-item chat-fab"><div class="fab-icon"><i class="fa-solid fa-robot"></i></div></a>
+        <a href="alerts.html" class="bottom-nav-item"><i class="fa-solid fa-bell"></i><span>Alerts</span></a>
+        <a href="settings.html" class="bottom-nav-item"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+    </nav>
 
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/navigation.js"></script>
-    <script src="assets/js/scan.js"></script>
+</div>
+
+<div id="toastContainer" style="position:fixed;bottom:80px;right:20px;z-index:1000;display:flex;flex-direction:column;gap:10px;"></div>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/navigation.js"></script>
+    <script src="assets/js/notifications.js"></script>
+    <script src="assets/js/profile.js"></script>
+<script src="assets/js/scan.js"></script>
 </body>
 </html>
