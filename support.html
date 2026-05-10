@@ -9,26 +9,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="public-layout">
-    <!-- Public Navbar -->
-    <header class="top-navbar glass-nav">
+    <!-- Navbar -->
+    <nav class="glass-nav">
         <div class="nav-container">
             <a href="index.html" class="logo">
                 <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                CyberGuard AI
+                CyberGuard
             </a>
-            <nav class="desktop-nav">
+            <div class="desktop-nav">
                 <a href="index.html" class="nav-item">Home</a>
                 <a href="features.html" class="nav-item">Features</a>
-                <a href="security-tips.html" class="nav-item">Security Tips</a>
                 <a href="support.html" class="nav-item active">Support</a>
-            </nav>
-            <div class="nav-actions">
-                <a href="login.html" class="btn btn-outline" style="border-color: var(--border-color); color: var(--color-primary);">Sign In</a>
-                <a href="signup.html" class="btn btn-primary btn-glow">Get Started</a>
             </div>
-            <button class="btn-icon mobile-menu-btn" style="align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;"><i class="fa-solid fa-bars"></i></button>
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-outline" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:white;">Sign In</a>
+                <a href="signup.html" class="btn btn-primary">Get Started</a>
+            </div>
+            <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
         </div>
-    </header>
+    </nav>
 
     <main class="main-content">
         <!-- Hero Search Section -->
@@ -180,14 +179,20 @@
     </main>
 
     <!-- Footer -->
-    <footer style="background: var(--bg-surface); border-top: 1px solid var(--border-color); padding: 4rem 2rem 2rem; margin-top: auto;">
-        <div class="footer-container" style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
-            <div class="logo">
-                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.75rem;"><i class="fa-solid fa-shield-halved"></i></div>
+    <footer style="background:var(--color-primary);padding:2.5rem 2rem;">
+        <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+            <div class="logo" style="color:white;">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
                 CyberGuard AI
             </div>
-            <p style="color: var(--text-muted); font-size: 0.875rem;">© 2026 CyberGuard AI. All rights reserved.</p>
+            <div style="display:flex;gap:1.5rem;">
+                <a href="index.html" style="color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:500;">Home</a>
+                <a href="features.html" style="color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:500;">Features</a>
+                <a href="support.html" style="color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:500;">Support</a>
+                <a href="login.html" style="color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:500;">Sign In</a>
+            </div>
         </div>
+        <div style="text-align:center;margin-top:1.5rem;color:rgba(255,255,255,0.35);font-size:0.8rem;">© 2026 CyberGuard AI. A Professional Security Prototype.</div>
     </footer>
 
     <!-- Toast Container -->
