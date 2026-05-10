@@ -59,23 +59,19 @@ p { font-size: 1.125rem; }
 
 /* Premium Navbar */
 .glass-nav {
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    box-shadow: none;
-    border-radius: var(--radius-full);
+    background: var(--color-primary);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 4px 24px rgba(15,23,42,0.18);
     position: sticky;
-    top: 1rem;
+    top: 0;
     z-index: 100;
     height: 64px;
     display: flex;
     align-items: center;
-    max-width: 1200px;
-    margin: 1rem auto;
-    width: calc(100% - 2rem);
-    padding: 0 1.5rem;
+    width: 100%;
+    padding: 0 2rem;
 }
+.glass-nav .nav-container { max-width: 1200px; margin: 0 auto; width: 100%; }
 
 .nav-container {
     width: 100%;
@@ -87,12 +83,13 @@ p { font-size: 1.125rem; }
 .logo {
     font-size: 1.125rem;
     font-weight: 700;
-    color: var(--color-primary);
+    color: white;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     letter-spacing: -0.01em;
 }
+.public-layout .logo { color: white; }
 
 .logo-icon {
     width: 24px;
@@ -114,14 +111,14 @@ p { font-size: 1.125rem; }
 }
 
 .nav-item {
-    color: var(--text-muted);
+    color: rgba(255,255,255,0.75);
     font-weight: 500;
     font-size: 0.9rem;
     position: relative;
     padding: 0.5rem 0;
 }
 
-.nav-item:hover, .nav-item.active { color: var(--color-primary); }
+.nav-item:hover, .nav-item.active { color: white; }
 
 .nav-item.active::after {
     content: '';
@@ -133,6 +130,7 @@ p { font-size: 1.125rem; }
     background-color: var(--color-accent);
     border-radius: 2px;
 }
+.mobile-menu-btn { color: white !important; }
 
 .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
 .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.25rem; cursor: pointer; color: var(--color-primary) !important; }
@@ -153,16 +151,23 @@ p { font-size: 1.125rem; }
 }
 
 .btn-primary {
-    background-color: var(--color-primary);
-    color: var(--text-inverse);
-    border-color: var(--color-primary);
+    background-color: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
 }
 
 .btn-primary:hover {
-    background-color: var(--color-primary-light);
+    background-color: var(--color-accent-hover);
     transform: translateY(-2px);
-    box-shadow: none;
 }
+
+/* In public nav, Sign In btn should look good on dark bg */
+.glass-nav .btn-outline {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.25);
+    color: white;
+}
+.glass-nav .btn-outline:hover { background: rgba(255,255,255,0.18); }
 
 .btn-outline {
     background-color: transparent;
