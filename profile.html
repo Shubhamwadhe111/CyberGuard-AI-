@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - CyberGuard AI</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/mobile-app.css">
     <link rel="stylesheet" href="assets/css/profile.css">
     <link rel="stylesheet" href="assets/css/notifications.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,6 +15,19 @@
     </style>
 </head>
 <body>
+    
+    <!-- Mobile Top App Bar -->
+    <header class="mobile-top-bar">
+        <div class="mobile-logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>CyberGuard AI</span>
+        </div>
+        <div class="mobile-top-actions">
+            <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+            <a href="profile.html" class="mobile-avatar">U</a>
+        </div>
+    </header>
+
 <div class="dashboard-layout">
     <nav class="app-topnav">
         <a href="index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div><span class="brand-name">CyberGuard</span></a>
@@ -53,10 +67,6 @@
             </div>
         </div>
     </nav>
-    <header class="mobile-app-header">
-        <div class="logo" style="font-size:1rem;"><div class="logo-icon" style="width:24px;height:24px;font-size:0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>CyberGuard</div>
-        <div class="header-actions"><a href="profile.html" style="font-size:1.25rem;color:var(--color-primary);"><i class="fa-solid fa-circle-user"></i></a></div>
-    </header>
 
     <main class="dashboard-main">
         <div class="dashboard-content">
@@ -275,12 +285,32 @@
         </div>
     </main>
 
-    <nav class="bottom-nav">
-        <a href="dashboard.html" class="bottom-nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
-        <a href="scan.html" class="bottom-nav-item"><i class="fa-solid fa-satellite-dish"></i><span>Scan</span></a>
-        <a href="ai-agent.html" class="bottom-nav-item"><i class="fa-solid fa-robot"></i><span>AI</span></a>
-        <a href="alerts.html" class="bottom-nav-item"><i class="fa-solid fa-bell"></i><span>Alerts</span></a>
-        <a href="profile.html" class="bottom-nav-item active"><i class="fa-solid fa-circle-user"></i><span>Profile</span></a>
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <a href="home.html" class="nav-item-mobile">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="dashboard.html" class="nav-item-mobile">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="ai-agent.html" class="nav-item-mobile">
+            <i class="fa-solid fa-robot"></i>
+            <span>AI Agent</span>
+        </a>
+        <a href="scan.html" class="nav-item-mobile">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Scan</span>
+        </a>
+        <a href="alerts.html" class="nav-item-mobile">
+            <i class="fa-solid fa-bell"></i>
+            <span>Alerts</span>
+        </a>
+        <a href="security-tips.html" class="nav-item-mobile">
+            <i class="fa-solid fa-lightbulb"></i>
+            <span>Tips</span>
+        </a>
     </nav>
 </div>
 <div id="toastContainer" style="position:fixed;bottom:80px;right:20px;z-index:1000;display:flex;flex-direction:column;gap:10px;"></div>

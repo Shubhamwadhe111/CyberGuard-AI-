@@ -5,11 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberGuard AI - Mobile Threat Intelligence</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/mobile-app.css">
     <link rel="stylesheet" href="assets/css/profile.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="dashboard-layout">
+    
+    <!-- Mobile Top App Bar -->
+    <header class="mobile-top-bar">
+        <div class="mobile-logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>CyberGuard AI</span>
+        </div>
+        <div class="mobile-top-actions">
+            <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+            <a href="profile.html" class="mobile-avatar">U</a>
+        </div>
+    </header>
     <style>
         /* Force Logo Visibility on this page */
         .app-topnav .logo { color: #0f172a !important; display: flex !important; align-items: center !important; }
@@ -59,15 +72,6 @@
             </div>
         </nav>
 
-    <header class="mobile-app-header">
-            <div class="logo" style="font-size: 1rem;">
-                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
-                CyberGuard
-            </div>
-            <div class="header-actions">
-                <a href="profile.html" class="text-main" style="font-size: 1.25rem;"><i class="fa-regular fa-circle-user"></i></a>
-            </div>
-        </header>
 
     <!-- 1. Hero Section -->
     <section class="hm-hero" style="padding-top: 80px;">
@@ -248,37 +252,33 @@
         </div>
     </section>
     <!-- Mobile Bottom Navigation -->
-<nav class="bottom-nav">
-            <a href="dashboard.html" class="bottom-nav-item active">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-            <a href="scan.html" class="bottom-nav-item">
-                <i class="fa-solid fa-satellite-dish"></i>
-                <span>Scan</span>
-            </a>
-            <a href="ai-agent.html" class="bottom-nav-item chat-fab">
-                <div class="fab-icon"><i class="fa-solid fa-robot"></i></div>
-            </a>
-            <a href="alerts.html" class="bottom-nav-item">
-                <i class="fa-solid fa-bell"></i>
-                <span>Alerts</span>
-            </a>
-            <a href="settings.html" class="bottom-nav-item">
-                <i class="fa-solid fa-gear"></i>
-                <span>Settings</span>
-            </a>
-        </nav>
-
-    <header class="mobile-app-header">
-            <div class="logo" style="font-size: 1rem;">
-                <div class="logo-icon" style="width: 24px; height: 24px; font-size: 0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
-                CyberGuard
-            </div>
-            <div class="header-actions">
-                <a href="profile.html" class="text-main" style="font-size: 1.25rem;"><i class="fa-regular fa-circle-user"></i></a>
-            </div>
-        </header>
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <a href="home.html" class="nav-item-mobile active">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="dashboard.html" class="nav-item-mobile">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="ai-agent.html" class="nav-item-mobile">
+            <i class="fa-solid fa-robot"></i>
+            <span>AI Agent</span>
+        </a>
+        <a href="scan.html" class="nav-item-mobile">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Scan</span>
+        </a>
+        <a href="alerts.html" class="nav-item-mobile">
+            <i class="fa-solid fa-bell"></i>
+            <span>Alerts</span>
+        </a>
+        <a href="security-tips.html" class="nav-item-mobile">
+            <i class="fa-solid fa-lightbulb"></i>
+            <span>Tips</span>
+        </a>
+    </nav>
 
     <!-- Public Footer -->
     <footer class="public-footer">

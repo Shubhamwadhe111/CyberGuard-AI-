@@ -169,12 +169,20 @@ function updateStats(r) {
   if (s('statTips'))     s('statTips').textContent     = statTips;
 }
 
-function getResponse(input) {
-  const q = input.toLowerCase();
-  for (const r of KB) {
-    if (r.keys.length && r.keys.some(k => q.includes(k))) return r;
-  }
-  return KB[KB.length - 1];
+// ===== GEMINI API CALL =====
+async function fetchGeminiReply(text) {
+  const token = localStorage.getItem('cyberguard_token');
+  const res = await fetch('/api/agent/analyze', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': token
+    },
+    body: JSON.stringify({ message: text })
+  });
+  if (!res.ok) throw new Error('Agent API error');
+  const data = await res.json();
+  return data.reply;
 }
 
 function getTime() {
@@ -213,7 +221,7 @@ function removeTyping() {
   if (t) t.remove();
 }
 
-window.sendMessage = function() {
+window.sendMessage = async function() {
   const input = document.getElementById('chatInput');
   const text  = input.value.trim();
   if (!text) return;
@@ -223,24 +231,43 @@ window.sendMessage = function() {
   const chips = document.getElementById('suggestionChips');
   if (chips) chips.style.display = 'none';
   showTyping();
-  const delay = 800 + Math.random() * 600;
-  setTimeout(() => {
+
+  try {
+    const reply = await fetchGeminiReply(text);
     removeTyping();
-    const r = getResponse(text);
-    updateStats(r);
-    appendMsg(r.reply, 'bot', getTime());
-    // Show risk panel if needed
+    // Convert plain text reply to HTML paragraphs
+    const htmlReply = reply
+      .split('\n')
+      .filter(line => line.trim())
+      .map(line => `<p style="margin:0.25rem 0;">${line}</p>`)
+      .join('');
+    statMessages++;
+    const el = document.getElementById('statMessages');
+    if (el) el.textContent = statMessages;
+    appendMsg(htmlReply, 'bot', getTime());
+
+    // Show risk panel for dangerous keywords
     const rp = document.getElementById('riskPanel');
     const rc = document.getElementById('riskContent');
-    if (rp && rc && r.risk !== 'low') {
-      const color = r.risk === 'high' ? 'var(--color-danger)' : 'var(--color-warning)';
-      rc.innerHTML = `<div style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">
-        <div style="font-size:1.5rem;font-weight:800;color:${color};">${r.risk === 'high' ? 'HIGH' : 'MEDIUM'}</div>
-        <div style="margin-top:0.25rem;">Risk level for this query. <a href="scan.html" style="color:var(--color-accent);">Run a scan</a> for real-time analysis.</div>
-      </div>`;
-      rp.style.display = 'block';
+    const lower = text.toLowerCase();
+    if (rp && rc) {
+      const isHigh = ['phishing','malware','virus','hack','otp','bank'].some(k => lower.includes(k));
+      const isMed  = ['link','url','permission','wifi'].some(k => lower.includes(k));
+      if (isHigh || isMed) {
+        const level = isHigh ? 'HIGH' : 'MEDIUM';
+        const color = isHigh ? 'var(--color-danger)' : 'var(--color-warning)';
+        rc.innerHTML = `<div style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">
+          <div style="font-size:1.5rem;font-weight:800;color:${color};">${level}</div>
+          <div style="margin-top:0.25rem;">Risk level for this query. <a href="scan.html" style="color:var(--color-accent);">Run a scan</a> for real-time analysis.</div>
+        </div>`;
+        rp.style.display = 'block';
+      }
     }
-  }, delay);
+  } catch (err) {
+    removeTyping();
+    appendMsg('<p>⚠️ I could not reach the AI engine. Please make sure the server is running and try again.</p>', 'bot', getTime());
+    console.error('Agent error:', err);
+  }
 };
 
 window.sendChip = function(btn) {

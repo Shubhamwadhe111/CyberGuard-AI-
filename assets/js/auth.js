@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (isValid) {
                 try {
-                    const res = await fetch('http://localhost:3000/api/auth/login', {
+                    const res = await fetch('/api/auth/login', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ email: email.value.trim(), password: password.value })
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (res.ok) {
                         localStorage.setItem('cyberguard_token', data.token);
                         localStorage.setItem('isLoggedIn', 'true');
-                        window.location.href = 'dashboard.html';
+                        window.location.href = 'home.html';
                     } else {
                         alert(data.message || 'Login failed');
                     }
@@ -157,11 +157,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const inputs = document.querySelectorAll('.otp-input');
         
         inputs.forEach((input, index) => {
-            input.addEventListener('keyup', (e) => {
-                if (e.key >= 0 && e.key <= 9) {
-                    if (index < inputs.length - 1) inputs[index + 1].focus();
-                } else if (e.key === 'Backspace') {
-                    if (index > 0) inputs[index - 1].focus();
+            input.addEventListener('input', (e) => {
+                if (input.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && input.value.length === 0 && index > 0) {
+                    inputs[index - 1].focus();
                 }
             });
         });
@@ -198,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const userData = userDataString ? JSON.parse(userDataString) : null;
                 
                 if (userData) {
-                    const res = await fetch('http://localhost:3000/api/auth/signup', {
+                    const res = await fetch('/api/auth/signup', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(userData)
@@ -210,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         localStorage.setItem('isLoggedIn', 'true');
                         sessionStorage.removeItem('pendingSignupData');
                         sessionStorage.removeItem('verificationId');
-                        window.location.href = 'dashboard.html';
+                        window.location.href = 'permissions.html';
                     } else {
                         alert('Backend Error: ' + (data.message || 'Could not save account.'));
                     }

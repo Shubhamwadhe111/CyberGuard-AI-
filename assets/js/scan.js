@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function loadScanHistory() {
         if (!token) return;
         try {
-            const res = await fetch('http://localhost:3000/api/dashboard', {
+            const res = await fetch('/api/dashboard', {
                 method: 'GET',
                 headers: { 'x-auth-token': token }
             });
@@ -234,14 +234,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     try {
                         // 1. Fetch actual alerts from database to show real results
-                        const alertRes = await fetch('http://localhost:3000/api/dashboard', {
+                        const alertRes = await fetch('/api/dashboard', {
                             method: 'GET',
                             headers: { 'x-auth-token': token }
                         });
                         const data = await alertRes.json();
                         
                         // 2. Perform a "Save Scan" call to update history
-                        await fetch('http://localhost:3000/api/scan/save', {
+                        await fetch('/api/scan/save', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
                             body: JSON.stringify({
@@ -277,38 +277,61 @@ document.addEventListener('DOMContentLoaded', async () => {
     const knownBad = ['bit.ly', 'phishing', 'free-prize', 'bank-verify', 'login-secure', 'otpverify', 'http://'];
     const knownWarn = ['t.co', 'tinyurl', 'ow.ly', 'shorturl'];
 
-    window.checkURL = function() {
+    window.checkURL = async function() {
         const input  = document.getElementById('urlInput');
         const result = document.getElementById('urlResult');
         const url = input.value.trim();
         if (!url) { result.style.display = 'none'; return; }
 
-        let cls, icon, title, body;
-        const lower = url.toLowerCase();
-
-        if (knownBad.some(k => lower.includes(k))) {
-            cls = 'danger'; icon = 'fa-circle-xmark';
-            title = 'High Risk — Likely Phishing';
-            body  = 'This URL matches known phishing patterns. Do <strong>not</strong> open it.';
-            addLog(`URL check: HIGH RISK — ${url}`, 'danger');
-        } else if (knownWarn.some(k => lower.includes(k))) {
-            cls = 'warning'; icon = 'fa-triangle-exclamation';
-            title = 'Caution — Shortened URL';
-            body  = 'This is a shortened link. Destination unknown.';
-            addLog(`URL check: WARNING — ${url}`, 'warning');
-        } else {
-            cls = 'safe'; icon = 'fa-circle-check';
-            title = 'Appears Safe';
-            body  = 'No known threat patterns detected.';
-            addLog(`URL check: SAFE — ${url}`, 'safe');
-        }
-
         result.style.display = 'block';
-        result.innerHTML = `
-            <div class="url-result-box ${cls}">
-                <i class="fa-solid ${icon}" style="font-size:1.3rem;flex-shrink:0;margin-top:2px;"></i>
-                <div><strong>${title}</strong><br><span style="font-size:0.85rem;opacity:0.85;">${body}</span></div>
-            </div>`;
+        result.innerHTML = `<div class="url-result-box" style="display:flex;align-items:center;gap:0.5rem;padding:1rem;background:var(--surface);border-radius:var(--radius-md);"><i class="fa-solid fa-circle-notch fa-spin"></i> Checking URL against Google Safe Browsing...</div>`;
+        addLog(`Checking URL: ${url}`, 'info');
+
+        try {
+            const res = await fetch('/api/scan_v2/url', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'x-auth-token': token 
+                },
+                body: JSON.stringify({ url })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                let cls, icon, title, body;
+
+                if (data.score < 50) {
+                    cls = 'danger'; icon = 'fa-circle-xmark';
+                    title = data.alerts.length > 0 ? data.alerts[0].title : 'High Risk';
+                    body  = data.alerts.length > 0 ? data.alerts[0].explanation : 'This URL matches known threat patterns. Do <strong>not</strong> open it.';
+                    addLog(`URL check: HIGH RISK — ${url}`, 'danger');
+                } else if (data.score < 100) {
+                    cls = 'warning'; icon = 'fa-triangle-exclamation';
+                    title = data.alerts.length > 0 ? data.alerts[0].title : 'Caution';
+                    body  = data.alerts.length > 0 ? data.alerts[0].explanation : 'This URL is suspicious.';
+                    addLog(`URL check: WARNING — ${url}`, 'warning');
+                } else {
+                    cls = 'safe'; icon = 'fa-circle-check';
+                    title = 'Appears Safe';
+                    body  = 'Google Safe Browsing found no known threats for this URL.';
+                    addLog(`URL check: SAFE — ${url}`, 'safe');
+                }
+
+                result.innerHTML = `
+                    <div class="url-result-box ${cls}">
+                        <i class="fa-solid ${icon}" style="font-size:1.3rem;flex-shrink:0;margin-top:2px;"></i>
+                        <div><strong>${title}</strong><br><span style="font-size:0.85rem;opacity:0.85;">${body}</span></div>
+                    </div>`;
+            } else {
+                result.innerHTML = `<div class="url-result-box warning" style="display:flex;gap:0.5rem;padding:1rem;background:rgba(245,158,11,0.1);color:var(--color-warning);border-radius:var(--radius-md);"><i class="fa-solid fa-circle-exclamation"></i><div><strong>Error</strong><br>Failed to scan URL.</div></div>`;
+                addLog('URL scan failed.', 'warning');
+            }
+        } catch (err) {
+            console.error(err);
+            result.innerHTML = `<div class="url-result-box warning" style="display:flex;gap:0.5rem;padding:1rem;background:rgba(245,158,11,0.1);color:var(--color-warning);border-radius:var(--radius-md);"><i class="fa-solid fa-circle-exclamation"></i><div><strong>Error</strong><br>Failed to connect to scanner.</div></div>`;
+            addLog('URL scan error.', 'warning');
+        }
     };
 
     const urlInput = document.getElementById('urlInput');

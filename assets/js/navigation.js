@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const publicPages = ['index.html', 'features.html', 'security-tips.html', 'support.html', ''];
     const authPages = ['login.html', 'signup.html', 'otp.html'];
-    const appPages = ['dashboard.html', 'scan.html', 'alerts.html', 'ai-agent.html', 'profile.html', 'settings.html', 'threat-details.html'];
+    const appPages = ['home.html', 'permissions.html', 'dashboard.html', 'scan.html', 'alerts.html', 'ai-agent.html', 'profile.html', 'settings.html', 'threat-details.html'];
     
     let currentPage = window.location.pathname.split('/').pop() || 'index.html';
     if (currentPage === '/' || currentPage === '') currentPage = 'index.html';
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (isLoggedIn && authPages.includes(currentPage)) {
-        window.location.href = 'dashboard.html';
+        window.location.href = 'home.html';
         return;
     }
 
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (navActions && isLoggedIn) {
             navActions.innerHTML = `
-                <a href="dashboard.html" class="btn btn-primary">Go to Dashboard →</a>
+                <a href="home.html" class="btn btn-primary">Go to Home →</a>
             `;
         }
     }
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isLoggedIn || !token) return;
 
         try {
-            const res = await fetch('http://localhost:3000/api/user/profile', {
+            const res = await fetch('/api/user/profile', {
                 method: 'GET',
                 headers: { 'x-auth-token': token }
             });

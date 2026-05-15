@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         // 2. Fetch User Profile for Name/Email
-        const userRes = await fetch('http://localhost:3000/api/user/profile', {
+        const userRes = await fetch('/api/user/profile', {
             method: 'GET',
             headers: { 'x-auth-token': token }
         });
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // 3. Fetch Dashboard Data
-        const res = await fetch('http://localhost:3000/api/dashboard', {
+        const res = await fetch('/api/dashboard', {
             method: 'GET',
             headers: { 'x-auth-token': token }
         });

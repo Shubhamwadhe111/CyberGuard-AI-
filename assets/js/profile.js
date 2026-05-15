@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!token) return;
 
         try {
-            const res = await fetch('http://localhost:3000/api/user/profile', {
+            const res = await fetch('/api/user/profile', {
                 method: 'GET',
                 headers: { 'x-auth-token': token }
             });

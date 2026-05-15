@@ -56,21 +56,45 @@ router.post('/file', [auth, upload.single('file')], async (req, res) => {
             riskScore -= 30;
         }
 
-        // REAL LOGIC: Mock VirusTotal/Hash Check
-        // In production, we'd call axios.get(`https://www.virustotal.com/api/v3/files/${fileHash}`)
-        const knownMaliciousHashes = [
-            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", // Mock hash
-            "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
-        ];
-
-        if (knownMaliciousHashes.includes(fileHash)) {
-            results.push({
-                title: `Malware Signature Detected`,
-                type: "system",
-                risk_level: "critical",
-                explanation: `The file hash ${fileHash.substring(0, 8)}... matches a known malware signature in our database.`
-            });
-            riskScore = 0;
+        // REAL LOGIC: VirusTotal/Hash Check
+        const vtApiKey = process.env.VIRUSTOTAL_API_KEY;
+        if (vtApiKey && vtApiKey.length > 5) {
+            try {
+                const vtRes = await axios.get(`https://www.virustotal.com/api/v3/files/${fileHash}`, {
+                    headers: { 'x-apikey': vtApiKey }
+                });
+                const stats = vtRes.data.data.attributes.last_analysis_stats;
+                if (stats && stats.malicious > 0) {
+                    results.push({
+                        title: `Malware Signature Detected (VirusTotal)`,
+                        type: "system",
+                        risk_level: "critical",
+                        explanation: `VirusTotal reports that ${stats.malicious} security vendors flagged this file as malicious.`
+                    });
+                    riskScore = 0;
+                }
+            } catch (e) {
+                if (e.response && e.response.status === 404) {
+                    console.log("VirusTotal: File hash not found in database.");
+                } else {
+                    console.error("VirusTotal API Error:", e.message);
+                }
+            }
+        } else {
+            // Fallback mock if no API key
+            const knownMaliciousHashes = [
+                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", // Mock hash
+                "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
+            ];
+            if (knownMaliciousHashes.includes(fileHash)) {
+                results.push({
+                    title: `Malware Signature Detected`,
+                    type: "system",
+                    risk_level: "critical",
+                    explanation: `The file hash ${fileHash.substring(0, 8)}... matches a known malware signature in our database.`
+                });
+                riskScore = 0;
+            }
         }
 
         // Save alerts to DB
@@ -127,8 +151,40 @@ router.post('/url', auth, async (req, res) => {
             score = 30;
         }
 
-        // In production: Call Google Safe Browsing API
-        // const gsbRes = await axios.post(`https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${API_KEY}`, { ... });
+        // REAL LOGIC: Call Google Safe Browsing API
+        const gsbApiKey = process.env.GOOGLE_SAFE_BROWSING_API_KEY;
+        if (gsbApiKey && gsbApiKey.length > 5) {
+            try {
+                const gsbRes = await axios.post(
+                    `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${gsbApiKey}`,
+                    {
+                        client: {
+                            clientId: "cyberguard-ai",
+                            clientVersion: "1.0.0"
+                        },
+                        threatInfo: {
+                            threatTypes: ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
+                            platformTypes: ["ANY_PLATFORM"],
+                            threatEntryTypes: ["URL"],
+                            threatEntries: [{ url: url }]
+                        }
+                    }
+                );
+
+                if (gsbRes.data && gsbRes.data.matches && gsbRes.data.matches.length > 0) {
+                    const threat = gsbRes.data.matches[0];
+                    results.push({
+                        title: "Google Safe Browsing Threat",
+                        type: "link",
+                        risk_level: "critical",
+                        explanation: `Google flagged this URL as: ${threat.threatType}. Do not proceed.`
+                    });
+                    score = 0;
+                }
+            } catch (e) {
+                console.error("Google Safe Browsing Error:", e.message);
+            }
+        }
 
         const alert = new Alert({
             userId: req.user.id,

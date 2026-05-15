@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Permissions - CyberGuard AI</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/mobile-app.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        .perm-header {
+            padding: 2rem 1.5rem 1rem 1.5rem;
+            text-align: center;
+        }
+        .perm-header i {
+            font-size: 3rem;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+        }
+        .perm-header h1 {
+            font-size: 1.5rem;
+            margin: 0 0 0.5rem 0;
+            font-weight: 800;
+        }
+        .perm-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.4;
+        }
+        .perm-list {
+            padding: 1rem 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .perm-card {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+        .perm-card.granted {
+            border-color: var(--color-safe);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        .perm-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(13, 148, 136, 0.1);
+            color: var(--color-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        .perm-card.granted .perm-icon {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--color-safe);
+        }
+        .perm-info {
+            flex: 1;
+        }
+        .perm-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+        .perm-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .perm-btn {
+            background: transparent;
+            border: 1px solid var(--color-accent);
+            color: var(--color-accent);
+            border-radius: 20px;
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .perm-btn:hover {
+            background: rgba(13, 148, 136, 0.1);
+        }
+        .perm-card.granted .perm-btn {
+            background: var(--color-safe);
+            border-color: var(--color-safe);
+            color: white;
+        }
+        .perm-footer {
+            padding: 1.5rem;
+            background: var(--surface-light);
+            border-top: 1px solid var(--border-color);
+        }
+        .continue-btn {
+            width: 100%;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            font-size: 1.1rem;
+        }
+        
+        /* Simulating the native app prompt look */
+        .native-prompt-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 1.5rem;
+        }
+        .native-prompt {
+            background: var(--surface);
+            width: 100%;
+            max-width: 340px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .prompt-icon {
+            padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+            color: var(--text-main);
+            font-size: 1.5rem;
+        }
+        .prompt-title {
+            padding: 0 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+        }
+        .prompt-actions {
+            display: flex;
+            flex-direction: column;
+            border-top: 1px solid var(--border-color);
+        }
+        .prompt-btn {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .prompt-btn:last-child {
+            border-bottom: none;
+        }
+        .prompt-btn:hover {
+            background: rgba(255,255,255,0.05);
+        }
+    </style>
+</head>
+<body class="dashboard-layout">
+
+    <div class="perm-header">
+        <i class="fa-solid fa-shield-virus"></i>
+        <h1>Setup Permissions</h1>
+        <p>CyberGuard requires access to certain device features to provide real-time protection and alerts.</p>
+    </div>
+
+    <div class="perm-list">
+        
+        <!-- Notifications -->
+        <div class="perm-card" id="card-notif">
+            <div class="perm-icon"><i class="fa-solid fa-bell"></i></div>
+            <div class="perm-info">
+                <div class="perm-title">Notifications</div>
+                <div class="perm-desc">Get instant alerts for critical threats.</div>
+            </div>
+            <button class="perm-btn" id="btn-notif" onclick="triggerPrompt('notif')">Allow</button>
+        </div>
+
+        <!-- Location -->
+        <div class="perm-card" id="card-loc">
+            <div class="perm-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="perm-info">
+                <div class="perm-title">Location</div>
+                <div class="perm-desc">Detect rogue Wi-Fi networks nearby.</div>
+            </div>
+            <button class="perm-btn" id="btn-loc" onclick="triggerPrompt('loc')">Allow</button>
+        </div>
+
+        <!-- Camera / Mic -->
+        <div class="perm-card" id="card-cam">
+            <div class="perm-icon"><i class="fa-solid fa-camera"></i></div>
+            <div class="perm-info">
+                <div class="perm-title">Camera & Mic</div>
+                <div class="perm-desc">Prevent apps from spying on you.</div>
+            </div>
+            <button class="perm-btn" id="btn-cam" onclick="triggerPrompt('cam')">Allow</button>
+        </div>
+
+    </div>
+
+    <div class="perm-footer">
+        <button class="btn btn-primary continue-btn" onclick="finishSetup()">Complete Setup <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <!-- Native-like Prompt UI -->
+    <div class="native-prompt-overlay" id="promptOverlay">
+        <div class="native-prompt">
+            <div class="prompt-icon" id="promptIcon"><i class="fa-solid fa-camera"></i></div>
+            <div class="prompt-title" id="promptTitle">Allow <b>CyberGuard</b> to take pictures and record video?</div>
+            <div class="prompt-actions">
+                <button class="prompt-btn" style="color:var(--color-accent);" onclick="handlePromptAction('precise')">While using the app</button>
+                <button class="prompt-btn" onclick="handlePromptAction('only_this_time')">Only this time</button>
+                <button class="prompt-btn" onclick="handlePromptAction('deny')">Don't allow</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Security check
+        const token = localStorage.getItem('cyberguard_token');
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        let currentActivePerm = null;
+
+        const permData = {
+            'notif': {
+                icon: '<i class="fa-solid fa-bell"></i>',
+                text: 'Allow <b>CyberGuard</b> to send you notifications?'
+            },
+            'loc': {
+                icon: '<i class="fa-solid fa-location-dot"></i>',
+                text: 'Allow <b>CyberGuard</b> to access this device\'s location?'
+            },
+            'cam': {
+                icon: '<i class="fa-solid fa-camera"></i>',
+                text: 'Allow <b>CyberGuard</b> to take pictures and record audio?'
+            }
+        };
+
+        function triggerPrompt(type) {
+            // Check if already granted
+            if(document.getElementById(`card-${type}`).classList.contains('granted')) return;
+
+            currentActivePerm = type;
+            const data = permData[type];
+            document.getElementById('promptIcon').innerHTML = data.icon;
+            document.getElementById('promptTitle').innerHTML = data.text;
+            
+            // Show overlay
+            document.getElementById('promptOverlay').style.display = 'flex';
+        }
+
+        async function handlePromptAction(action) {
+            // Hide overlay
+            document.getElementById('promptOverlay').style.display = 'none';
+
+            if (action === 'deny') {
+                return; // Do nothing if denied
+            }
+
+            // User clicked Allow ("While using" or "Only this time")
+            const type = currentActivePerm;
+            const btn = document.getElementById(`btn-${type}`);
+            const card = document.getElementById(`card-${type}`);
+
+            // Actually request browser permission where possible
+            try {
+                if (type === 'notif') {
+                    if ("Notification" in window) {
+                        const perm = await Notification.requestPermission();
+                        if (perm === "granted") markGranted(card, btn);
+                    } else markGranted(card, btn); // Fallback for testing
+                } 
+                else if (type === 'loc') {
+                    if ("geolocation" in navigator) {
+                        navigator.geolocation.getCurrentPosition(
+                            (pos) => { markGranted(card, btn); },
+                            (err) => { console.warn(err); markGranted(card, btn); } // Mark granted anyway for visual effect
+                        );
+                    } else markGranted(card, btn);
+                } 
+                else if (type === 'cam') {
+                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                        .then(stream => {
+                            // Stop stream immediately, just wanted permission
+                            stream.getTracks().forEach(track => track.stop());
+                            markGranted(card, btn);
+                        })
+                        .catch(err => {
+                            console.warn(err);
+                            markGranted(card, btn); // Mark granted anyway for visual effect
+                        });
+                    } else markGranted(card, btn);
+                }
+            } catch (e) {
+                console.error(e);
+                markGranted(card, btn); // Fallback so UI progresses
+            }
+        }
+
+        function markGranted(card, btn) {
+            card.classList.add('granted');
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Allowed';
+            btn.disabled = true;
+        }
+
+        function finishSetup() {
+            // Add a flag in localStorage so we don't show this again
+            localStorage.setItem('cyberguard_permissions_setup', 'true');
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+</html>
