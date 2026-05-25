@@ -89,23 +89,77 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         profileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            inputs.forEach(i => { i.disabled = true; i.style.borderColor = ''; });
-            document.getElementById('displayUserName').textContent = document.getElementById('profName').value;
-            document.getElementById('displayEmail').textContent    = document.getElementById('profEmail').value;
-            btnEdit.style.display   = '';
-            btnSave.style.display   = 'none';
-            btnCancel.style.display = 'none';
-            showToast('Profile updated successfully!', 'success');
+            
+            const newName = document.getElementById('profName').value.trim();
+            const newPhone = document.getElementById('profPhone').value.trim();
+            
+            if (!newName || !newPhone) {
+                showToast('Name and phone number are required.', 'danger');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/user/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': token
+                    },
+                    body: JSON.stringify({ name: newName, phone: newPhone })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    
+                    // Update layout values immediately
+                    document.getElementById('displayUserName').textContent = data.name;
+                    document.getElementById('displayEmail').textContent    = data.email;
+                    
+                    const firstName = data.name ? data.name.split(' ')[0] : 'User';
+                    if (document.getElementById('nav-user-name')) document.getElementById('nav-user-name').innerText = firstName;
+                    if (document.getElementById('dd-full-name')) document.getElementById('dd-full-name').innerText = data.name || 'User';
+                    if (document.getElementById('dd-email')) document.getElementById('dd-email').innerText = data.email || '';
+                    
+                    const avatarImg = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'U')}&background=0d9488&color=fff`;
+                    if (document.getElementById('nav-avatar-img')) document.getElementById('nav-avatar-img').src = avatarImg;
+
+                    if (document.getElementById('profInitials')) {
+                        const initials = data.name ? data.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'U';
+                        document.getElementById('profInitials').innerText = initials.substring(0, 2);
+                    }
+
+                    showToast('Profile updated successfully!', 'success');
+                } else {
+                    const errorData = await res.json();
+                    showToast(errorData.message || 'Failed to update profile.', 'danger');
+                }
+            } catch (err) {
+                console.error("Profile save error:", err);
+                showToast('Network error while saving profile.', 'danger');
+            } finally {
+                inputs.forEach(i => { i.disabled = true; i.style.borderColor = ''; });
+                btnEdit.style.display   = '';
+                btnSave.style.display   = 'none';
+                btnCancel.style.display = 'none';
+            }
         });
     }
 
     // Dark mode toggle
     const dm = document.getElementById('darkModeToggle');
     if (dm) {
-        dm.checked = document.body.classList.contains('dark');
+        dm.checked = localStorage.getItem('darkMode') === 'enabled';
         dm.addEventListener('change', () => {
-            document.body.classList.toggle('dark', dm.checked);
-            showToast(`Dark mode ${dm.checked ? 'enabled' : 'disabled'}`, 'info');
+            const enabled = dm.checked;
+            document.body.classList.toggle('dark', enabled);
+            if (enabled) {
+                localStorage.setItem('darkMode', 'enabled');
+                document.documentElement.classList.add('dark');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                document.documentElement.classList.remove('dark');
+            }
+            showToast(`Dark mode ${enabled ? 'enabled' : 'disabled'}`, 'info');
         });
     }
 

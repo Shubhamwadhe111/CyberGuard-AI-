@@ -203,6 +203,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             let progress = 0, catIdx = 0;
             addLog(`Starting ${scanTitles[currentScanType].title}...`, 'info');
 
+            // Trigger the real workspace scan in the background for Full Scan type
+            let realScanPromise = null;
+            if (currentScanType === 'full') {
+                addLog('Contacting workspace threat auditor...', 'info');
+                realScanPromise = fetch('/api/scan/start', {
+                    method: 'POST',
+                    headers: { 'x-auth-token': token }
+                }).then(res => res.json()).catch(err => {
+                    console.error("Real workspace scan failed:", err);
+                    return null;
+                });
+            }
+
             scanInterval = setInterval(async () => {
                 progress += Math.floor(Math.random() * 3) + 2;
                 if (progress > 100) progress = 100;
@@ -233,12 +246,28 @@ document.addEventListener('DOMContentLoaded', async () => {
                     addLog('All modules scanned. Saving to database...', 'info');
 
                     try {
-                        // 1. Fetch actual alerts from database to show real results
-                        const alertRes = await fetch('/api/dashboard', {
-                            method: 'GET',
-                            headers: { 'x-auth-token': token }
-                        });
-                        const data = await alertRes.json();
+                        let data = null;
+                        
+                        // If it is a full scan, resolve the real scan promise
+                        if (currentScanType === 'full' && realScanPromise) {
+                            const scanResult = await realScanPromise;
+                            if (scanResult && scanResult.newAlerts) {
+                                addLog(`Workspace threat auditor completed. Found ${scanResult.alertsFound} security issues.`, 'info');
+                                data = {
+                                    timeline: scanResult.newAlerts,
+                                    metrics: { score: scanResult.score }
+                                };
+                            }
+                        }
+                        
+                        // Fallback to active alerts in dashboard if not full scan or if real scan failed
+                        if (!data) {
+                            const alertRes = await fetch('/api/dashboard', {
+                                method: 'GET',
+                                headers: { 'x-auth-token': token }
+                            });
+                            data = await alertRes.json();
+                        }
                         
                         // 2. Perform a "Save Scan" call to update history
                         await fetch('/api/scan/save', {
@@ -336,5 +365,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const urlInput = document.getElementById('urlInput');
     if (urlInput) urlInput.addEventListener('keydown', e => { if (e.key === 'Enter') window.checkURL(); });
+    
+    const lst = document.getElementById('lastScanTime');
     if (lst) lst.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
 });

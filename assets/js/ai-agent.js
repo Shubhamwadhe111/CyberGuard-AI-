@@ -306,4 +306,15 @@ window.exportChat = function() {
 document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('chatInput');
   if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') window.sendMessage(); });
+
+  // Automatically trigger query from URL parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlQuery = urlParams.get('query');
+  if (urlQuery && input) {
+    input.value = urlQuery;
+    // Small delay to ensure everything is initialized
+    setTimeout(() => {
+      window.sendMessage();
+    }, 400);
+  }
 });

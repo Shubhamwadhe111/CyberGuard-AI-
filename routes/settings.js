@@ -1,13 +1,31 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const auth = require('../middleware/auth');
 const Settings = require('../models/Settings');
+
+const isDbConnected = () => mongoose.connection.readyState === 1;
 
 // @route   GET /api/settings
 // @desc    Get user settings
 // @access  Private
 router.get('/', auth, async (req, res) => {
     try {
+        if (!isDbConnected()) {
+            console.log("Database offline. Serving mock settings data.");
+            return res.json({
+                userId: req.user.id,
+                scan_frequency: 'weekly',
+                notifications: true,
+                privacy_mode: false,
+                data_retention: '90',
+                message_scan: true,
+                link_check: true,
+                app_perms: true,
+                auto_scan: true
+            });
+        }
+
         let settings = await Settings.findOne({ userId: req.user.id });
         
         // If no settings exist yet, create default
@@ -28,12 +46,6 @@ router.get('/', auth, async (req, res) => {
 // @access  Private
 router.put('/', auth, async (req, res) => {
     try {
-        let settings = await Settings.findOne({ userId: req.user.id });
-        
-        if (!settings) {
-            settings = new Settings({ userId: req.user.id });
-        }
-
         const {
             scan_frequency,
             notifications,
@@ -44,6 +56,27 @@ router.put('/', auth, async (req, res) => {
             app_perms,
             auto_scan
         } = req.body;
+
+        if (!isDbConnected()) {
+            console.log("Database offline. Bypassing settings update.");
+            return res.json({
+                userId: req.user.id,
+                scan_frequency: scan_frequency !== undefined ? scan_frequency : 'weekly',
+                notifications: notifications !== undefined ? notifications : true,
+                privacy_mode: privacy_mode !== undefined ? privacy_mode : false,
+                data_retention: data_retention !== undefined ? data_retention : '90',
+                message_scan: message_scan !== undefined ? message_scan : true,
+                link_check: link_check !== undefined ? link_check : true,
+                app_perms: app_perms !== undefined ? app_perms : true,
+                auto_scan: auto_scan !== undefined ? auto_scan : true
+            });
+        }
+
+        let settings = await Settings.findOne({ userId: req.user.id });
+        
+        if (!settings) {
+            settings = new Settings({ userId: req.user.id });
+        }
 
         if (scan_frequency !== undefined) settings.scan_frequency = scan_frequency;
         if (notifications !== undefined) settings.notifications = notifications;
