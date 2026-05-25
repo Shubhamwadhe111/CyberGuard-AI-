@@ -144,10 +144,15 @@
         display: block !important;
     }
 
-    /* App-like Card Stacking */
-    .grid, .row, .stats-grid, .features-grid, .mock-cards, .threat-grid {
+    /* App-like Card Stacking & Grid Collapses */
+    .grid, .row, .stats-grid, .features-grid, .mock-cards, .threat-grid,
+    .two-col-grid, .threat-details-grid, .tips-grid, .support-categories-grid,
+    .support-split-grid, .features-grid-full, .profile-grid, .db-kpi-row,
+    .scan-type-grid, .scan-coverage-grid, .db-main-grid, .scan-main-grid,
+    .hm-feat-grid, .hm-cred-container, .hm-hero-grid {
         display: flex !important;
         flex-direction: column !important;
+        grid-template-columns: 1fr !important;
         gap: 16px !important;
         width: 100% !important;
     }
