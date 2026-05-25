@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const auth = require('../middleware/auth');
 const Scan = require('../models/Scan');
 const Alert = require('../models/Alert');
 
+const isDbConnected = () => mongoose.connection.readyState === 1;
+
 // Helper to generate a random delay to simulate scanning
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// @route   POST /api/scan/start
-// @desc    Trigger a system scan
-// @access  Private
 const fs = require('fs');
 const path = require('path');
 
@@ -48,7 +48,7 @@ async function scanDirectory(dir, results = []) {
                     explanation: `Use of 'eval' or 'exec' detected. These can be used for Remote Code Execution (RCE).`
                 });
             }
-
+            
             // 3. Check for suspicious file types
             if (file.endsWith('.exe') || file.endsWith('.bat') || file.endsWith('.sh')) {
                 results.push({
@@ -76,17 +76,22 @@ router.post('/start', auth, async (req, res) => {
 
         let newAlerts = [];
         
-        // Save found threats to Database
-        for (let alertData of foundThreats) {
-            const newAlert = new Alert({
-                userId,
-                title: alertData.title,
-                type: alertData.type,
-                risk_level: alertData.risk_level,
-                explanation: alertData.explanation
-            });
-            await newAlert.save();
-            newAlerts.push(newAlert);
+        // Save found threats to Database if active
+        if (isDbConnected()) {
+            for (let alertData of foundThreats) {
+                const newAlert = new Alert({
+                    userId,
+                    title: alertData.title,
+                    type: alertData.type,
+                    risk_level: alertData.risk_level,
+                    explanation: alertData.explanation
+                });
+                await newAlert.save();
+                newAlerts.push(newAlert);
+            }
+        } else {
+            console.log("Database offline. Skipping Mongoose Alert saves during scan.");
+            newAlerts = foundThreats.map((a, index) => ({ _id: `mock_scan_alert_${index}`, ...a }));
         }
 
         // Calculate a score (Real calculation)
@@ -94,13 +99,17 @@ router.post('/start', auth, async (req, res) => {
         let deductions = newAlerts.length * 10;
         score = Math.max(0, score - deductions);
 
-        // Save Scan history
-        const newScan = new Scan({
-            userId,
-            score,
-            summary: `Real Workspace Scan completed. Analyzed files in ${workspacePath}. Found ${newAlerts.length} vulnerabilities.`
-        });
-        await newScan.save();
+        // Save Scan history if active
+        if (isDbConnected()) {
+            const newScan = new Scan({
+                userId,
+                score,
+                summary: `Real Workspace Scan completed. Analyzed files in ${workspacePath}. Found ${newAlerts.length} vulnerabilities.`
+            });
+            await newScan.save();
+        } else {
+            console.log("Database offline. Skipping Mongoose Scan log save.");
+        }
 
         res.status(200).json({
             message: 'Real workspace scan completed successfully',
@@ -121,12 +130,16 @@ router.post('/start', auth, async (req, res) => {
 router.post('/save', auth, async (req, res) => {
     try {
         const { scanType, score, threatsFound } = req.body;
-        const newScan = new Scan({
-            userId: req.user.id,
-            score: score || 100,
-            summary: `${scanType.toUpperCase()} Scan completed. Detected ${threatsFound} items.`
-        });
-        await newScan.save();
+        if (isDbConnected()) {
+            const newScan = new Scan({
+                userId: req.user.id,
+                score: score || 100,
+                summary: `${scanType.toUpperCase()} Scan completed. Detected ${threatsFound} items.`
+            });
+            await newScan.save();
+        } else {
+            console.log(`Database offline. Bypassing Scan history save for type ${scanType}.`);
+        }
         res.json({ message: 'Scan recorded successfully' });
     } catch (err) {
         console.error(err);

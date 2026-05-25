@@ -70,52 +70,51 @@
                 </div>
             </div>
 
-            <!-- Right Side: Product Preview -->
+            <!-- Right Side: Dynamic Security Pulse -->
             <div class="hm-dash-preview">
-                <div class="hm-preview-header">
-                    <div class="hm-score-wrap">
-                        <div class="hm-score">85</div>
-                        <div class="hm-score-max">/100</div>
-                    </div>
-                    <div class="hm-status-badge">
-                        <i class="fa-solid fa-shield-check"></i> Protected
-                    </div>
-                </div>
-                
-                <div class="hm-preview-grid">
-                    <div class="hm-preview-stat warning">
-                        <i class="fa-solid fa-message"></i>
-                        <div class="hm-preview-stat-val">3</div>
-                        <div class="hm-preview-stat-lbl">Suspicious SMS</div>
-                    </div>
-                    <div class="hm-preview-stat warning">
-                        <i class="fa-solid fa-link"></i>
-                        <div class="hm-preview-stat-val">2</div>
-                        <div class="hm-preview-stat-lbl">Risky Links</div>
-                    </div>
-                    <div class="hm-preview-stat danger">
-                        <i class="fa-solid fa-mobile-screen"></i>
-                        <div class="hm-preview-stat-val">5</div>
-                        <div class="hm-preview-stat-lbl">Permission Risks</div>
+                <div class="pulse-container">
+                    <div class="pulse-ring"></div>
+                    <div class="pulse-ring"></div>
+                    <div class="pulse-ring"></div>
+                    <div class="pulse-core">
+                        <i class="fa-solid fa-shield-halved"></i>
                     </div>
                 </div>
 
-                <div class="hm-preview-alert" style="margin-bottom: 1rem;">
-                    <i class="fa-solid fa-sparkles text-accent" style="font-size: 1.5rem;"></i>
-                    <div>
-                        <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem;">AI Recommendation</div>
-                        <div style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">Revoke location access for 2 unused apps.</div>
+                <div class="hm-floating-cards">
+                    <div class="floating-card threat-card">
+                        <div class="f-card-icon"><i class="fa-solid fa-virus-slash"></i></div>
+                        <div class="f-card-content">
+                            <div class="f-card-title">Threat Blocked</div>
+                            <div class="f-card-desc">Malicious APK detected</div>
+                        </div>
+                    </div>
+                    
+                    <div class="floating-card ai-card">
+                        <div class="f-card-icon"><i class="fa-solid fa-sparkles"></i></div>
+                        <div class="f-card-content">
+                            <div class="f-card-title">AI Insight</div>
+                            <div class="f-card-desc">Scan complete: 0 vulnerabilities</div>
+                        </div>
+                    </div>
+
+                    <div class="floating-card link-card">
+                        <div class="f-card-icon"><i class="fa-solid fa-link-slash"></i></div>
+                        <div class="f-card-content">
+                            <div class="f-card-title">Risky Link</div>
+                            <div class="f-card-desc">Blocked phishing attempt</div>
+                        </div>
                     </div>
                 </div>
-                
-                <div style="font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Recent Alert</div>
-                <div style="display: flex; gap: 1rem; align-items: center; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: var(--radius-md);">
-                    <i class="fa-solid fa-location-crosshairs text-danger"></i>
-                    <div>
-                        <div style="font-weight: 600; font-size: 0.9rem;">Flashlight App requests Location</div>
-                        <div style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">Excessive permission detected</div>
+
+                <div class="hm-live-stat-bar">
+                    <div class="live-indicator">
+                        <span class="dot"></span> LIVE PROTECTION ACTIVE
                     </div>
-                    <div style="margin-left: auto; font-size: 0.75rem; color: rgba(255,255,255,0.4);">2m ago</div>
+                    <div class="stat-divider"></div>
+                    <div class="live-counter">
+                        <span id="threatCounter">1,248</span> THREATS BLOCKED TODAY
+                    </div>
                 </div>
             </div>
 
@@ -244,24 +243,50 @@
     </section>
 
     <!-- Public Footer -->
-    <footer style="background:var(--color-primary);padding:2.5rem 2rem;">
-        <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
-            <div class="logo" style="color:white;">
-                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                <span class="brand-name">CyberGuard AI</span>
+    <!-- Premium Footer -->
+    <footer class="hm-footer">
+        <div class="hm-footer-container">
+            <div class="hm-footer-brand">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <span class="brand-name">CyberGuard AI</span>
+                </a>
+                <p class="hm-footer-tagline">Advanced AI-driven threat intelligence for your mobile security. Protecting your digital life 24/7.</p>
             </div>
-            <div style="display:flex;gap:1.5rem;">
-                <a href="index.html" style="color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:500;">Home</a>
-                <a href="features.html" style="color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:500;">Features</a>
-                <a href="support.html" style="color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:500;">Support</a>
-                <a href="login.html" style="color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:500;">Sign In</a>
-            </div>
-            <div style="display:flex;gap:1rem;">
-                <a href="#" style="color:rgba(255,255,255,0.5);font-size:1.1rem;"><i class="fa-brands fa-github"></i></a>
-                <a href="#" style="color:rgba(255,255,255,0.5);font-size:1.1rem;"><i class="fa-brands fa-linkedin"></i></a>
+            
+            <div class="hm-footer-links-group">
+                <div class="hm-footer-col">
+                    <h4>Platform</h4>
+                    <a href="index.html">Home</a>
+                    <a href="features.html">Features</a>
+                    <a href="scan.html">Security Scan</a>
+                </div>
+                <div class="hm-footer-col">
+                    <h4>Resources</h4>
+                    <a href="support.html">Help Center</a>
+                    <a href="security-tips.html">Security Tips</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+                <div class="hm-footer-col">
+                    <h4>Connect</h4>
+                    <div class="hm-social-links">
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
-        <div style="text-align:center;margin-top:1.5rem;color:rgba(255,255,255,0.35);font-size:0.8rem;">© 2026 CyberGuard AI. A Professional Security Prototype.</div>
+        
+        <div class="hm-footer-bottom">
+            <div class="hm-footer-bottom-container">
+                <p>&copy; 2026 CyberGuard AI. A Professional Security Prototype.</p>
+                <div class="hm-footer-legal">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <!-- Mobile Bottom Navigation -->
@@ -295,5 +320,24 @@
     <!-- Scripts -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/navigation.js"></script>
+    <script>
+        // Simple counter animation for threats blocked
+        document.addEventListener('DOMContentLoaded', () => {
+            const counter = document.getElementById('threatCounter');
+            if (counter) {
+                let val = 1248;
+                setInterval(() => {
+                    if (Math.random() > 0.7) {
+                        val += Math.floor(Math.random() * 3) + 1;
+                        counter.innerText = val.toLocaleString();
+                        
+                        // Small flash effect
+                        counter.style.color = '#34d399';
+                        setTimeout(() => counter.style.color = '', 200);
+                    }
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 </html>

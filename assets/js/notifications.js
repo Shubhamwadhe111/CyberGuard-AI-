@@ -163,6 +163,50 @@
             const btn = document.getElementById('notifBellBtn');
             if (btn) { btn.style.color = 'var(--color-danger)'; setTimeout(() => btn.style.color = '', 2000); }
         }, 30000);
+        // Dynamic load of Socket.io client script
+        const socketScript = document.createElement('script');
+        socketScript.src = '/socket.io/socket.io.js';
+        socketScript.onload = () => {
+            if (typeof io !== 'undefined') {
+                const socket = io();
+                socket.on('threat:alert', (data) => {
+                    console.log("WebSocket Threat Notification Received:", data);
+                    const notifs = getNotifs();
+                    const isDuplicate = notifs.some(n => n.title === data.title && n.desc === data.explanation);
+                    if (!isDuplicate) {
+                        const newN = {
+                            id: Date.now(),
+                            type: data.risk_level === 'critical' || data.risk_level === 'high' ? 'danger' : 'warning',
+                            icon: data.type === 'link' ? 'fa-link' : (data.type === 'sms' ? 'fa-message' : 'fa-triangle-exclamation'),
+                            title: data.title,
+                            desc: data.explanation || 'Anomaly flagged by active threat shield.',
+                            time: 'Just now',
+                            read: false,
+                            cat: 'threat',
+                            link: 'alerts.html'
+                        };
+                        notifs.unshift(newN);
+                        saveNotifs(notifs);
+                        window.__cgNotif.render();
+                        
+                        // Flash notifications bell red
+                        const btn = document.getElementById('notifBellBtn');
+                        if (btn) {
+                            btn.style.color = '#ef4444';
+                            setTimeout(() => btn.style.color = '', 4000);
+                        }
+                        
+                        // Dynamically render a floating safety toast at the bottom left
+                        const floatToast = document.createElement('div');
+                        floatToast.style.cssText = 'position:fixed;bottom:90px;left:20px;background:#ef4444;color:white;padding:0.9rem 1.4rem;border-radius:12px;box-shadow:0 10px 25px rgba(239,68,68,0.25);z-index:9999;font-weight:600;display:flex;align-items:center;gap:0.75rem;font-size:0.88rem;border:1px solid rgba(255,255,255,0.1);animation:slideIn 0.3s ease;';
+                        floatToast.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="font-size:1.1rem;"></i> <span><strong>${data.title}</strong><br><span style="font-size:0.78rem;font-weight:400;opacity:0.9;">${data.explanation}</span></span>`;
+                        document.body.appendChild(floatToast);
+                        setTimeout(() => { floatToast.style.opacity = '0'; floatToast.style.transition = 'opacity 0.5s'; setTimeout(() => floatToast.remove(), 500); }, 5000);
+                    }
+                });
+            }
+        };
+        document.head.appendChild(socketScript);
     }
 
     // Run after DOM ready

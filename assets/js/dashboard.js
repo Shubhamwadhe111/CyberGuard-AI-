@@ -62,6 +62,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const scoreCircle = document.getElementById('db-score-circle');
             if (scoreCircle) scoreCircle.innerHTML = `${data.metrics.score}<span>/100</span>`;
             
+            const scorePath = document.getElementById('db-score-path');
+            if (scorePath) {
+                const totalLength = 326.7;
+                const score = data.metrics.score !== undefined ? data.metrics.score : 100;
+                const offset = totalLength - (totalLength * score) / 100;
+                scorePath.style.strokeDashoffset = offset;
+            }
+            
             // Status Info
             const statusHeader = document.getElementById('db-status-header');
             const statusDesc = document.getElementById('db-status-desc');

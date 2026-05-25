@@ -111,14 +111,7 @@
         .feat-cta p { color: rgba(255,255,255,0.7); max-width: 520px; margin: 0 auto 2rem; }
         .feat-cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
-        /* Footer */
-        .pub-footer { background: var(--color-primary); padding: 2.5rem 2rem; }
-        .pub-footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-        .pub-footer .logo { color: white; }
-        .pub-footer-links { display: flex; gap: 1.5rem; }
-        .pub-footer-links a { color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
-        .pub-footer-links a:hover { color: white; }
-        .pub-footer-copy { color: rgba(255,255,255,0.4); font-size: 0.8rem; text-align: center; margin-top: 1.5rem; }
+
     </style>
 </head>
 <body class="public-layout">
@@ -271,21 +264,50 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="pub-footer">
-        <div class="pub-footer-inner">
-            <div class="logo">
-                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                CyberGuard AI
+    <!-- Premium Footer -->
+    <footer class="hm-footer">
+        <div class="hm-footer-container">
+            <div class="hm-footer-brand">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <span class="brand-name">CyberGuard AI</span>
+                </a>
+                <p class="hm-footer-tagline">Advanced AI-driven threat intelligence for your mobile security. Protecting your digital life 24/7.</p>
             </div>
-            <div class="pub-footer-links">
-                <a href="index.html">Home</a>
-                <a href="features.html">Features</a>
-                <a href="support.html">Support</a>
-                <a href="login.html">Sign In</a>
+            
+            <div class="hm-footer-links-group">
+                <div class="hm-footer-col">
+                    <h4>Platform</h4>
+                    <a href="index.html">Home</a>
+                    <a href="features.html">Features</a>
+                    <a href="scan.html">Security Scan</a>
+                </div>
+                <div class="hm-footer-col">
+                    <h4>Resources</h4>
+                    <a href="support.html">Help Center</a>
+                    <a href="security-tips.html">Security Tips</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+                <div class="hm-footer-col">
+                    <h4>Connect</h4>
+                    <div class="hm-social-links">
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="pub-footer-copy">© 2026 CyberGuard AI. A Professional Security Prototype.</div>
+        
+        <div class="hm-footer-bottom">
+            <div class="hm-footer-bottom-container">
+                <p>&copy; 2026 CyberGuard AI. A Professional Security Prototype.</p>
+                <div class="hm-footer-legal">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <!-- Mobile Bottom Navigation -->

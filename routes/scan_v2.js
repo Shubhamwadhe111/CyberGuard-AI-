@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
+const mongoose = require('mongoose');
 const multer = require('multer');
 const crypto = require('crypto');
 const axios = require('axios');
 const path = require('path');
 const Alert = require('../models/Alert');
 const Scan = require('../models/Scan');
+
+const isDbConnected = () => mongoose.connection.readyState === 1;
 
 // Multer Config
 const storage = multer.memoryStorage();
@@ -20,7 +23,7 @@ const calculateHash = (buffer) => {
     return crypto.createHash('sha256').update(buffer).digest('hex');
 };
 
-// @route   POST /api/scan/file
+// @route   POST /api/scan_v2/file
 // @desc    Real file scan with hash analysis
 // @access  Private
 router.post('/file', [auth, upload.single('file')], async (req, res) => {
@@ -32,14 +35,6 @@ router.post('/file', [auth, upload.single('file')], async (req, res) => {
         const fileHash = calculateHash(req.file.buffer);
         const fileName = req.file.originalname;
         const extension = path.extname(fileName).toLowerCase();
-
-        // Simulate multi-engine scanning steps
-        const steps = [
-            "Calculating file integrity hash...",
-            "Checking signatures against malware database...",
-            "Analyzing file structure for obfuscation...",
-            "Cross-referencing with Global Threat Intelligence..."
-        ];
 
         let results = [];
         let riskScore = 100;
@@ -97,21 +92,39 @@ router.post('/file', [auth, upload.single('file')], async (req, res) => {
             }
         }
 
-        // Save alerts to DB
-        for (let r of results) {
-            const alert = new Alert({
+        // Save alerts to DB if active
+        if (isDbConnected()) {
+            for (let r of results) {
+                const alert = new Alert({
+                    userId: req.user.id,
+                    ...r
+                });
+                await alert.save();
+            }
+
+            const newScan = new Scan({
                 userId: req.user.id,
-                ...r
+                score: riskScore,
+                summary: `File Scan: ${fileName} analyzed.`
             });
-            await alert.save();
+            await newScan.save();
+        } else {
+            console.log("Database offline. Skipping file scan persistence.");
         }
 
-        const newScan = new Scan({
-            userId: req.user.id,
-            score: riskScore,
-            summary: `File Scan: ${fileName} analyzed.`
-        });
-        await newScan.save();
+        // Real-time notification socket push
+        if (results.some(r => r.risk_level === 'high' || r.risk_level === 'critical')) {
+            const io = req.app.get('io');
+            if (io) {
+                io.emit('threat:alert', {
+                    userId: req.user.id,
+                    title: results[0].title,
+                    type: results[0].type,
+                    risk_level: results[0].risk_level,
+                    explanation: results[0].explanation
+                });
+            }
+        }
 
         res.json({
             fileName,
@@ -126,7 +139,7 @@ router.post('/file', [auth, upload.single('file')], async (req, res) => {
     }
 });
 
-// @route   POST /api/scan/url
+// @route   POST /api/scan_v2/url
 // @desc    Real URL scan (Safe Browsing Check)
 // @access  Private
 router.post('/url', auth, async (req, res) => {
@@ -186,14 +199,32 @@ router.post('/url', auth, async (req, res) => {
             }
         }
 
-        const alert = new Alert({
-            userId: req.user.id,
-            title: results.length > 0 ? results[0].title : "Safe URL",
-            type: "link",
-            risk_level: results.length > 0 ? results[0].risk_level : "low",
-            explanation: results.length > 0 ? results[0].explanation : "No threats found for this URL."
-        });
-        await alert.save();
+        if (isDbConnected()) {
+            const alert = new Alert({
+                userId: req.user.id,
+                title: results.length > 0 ? results[0].title : "Safe URL",
+                type: "link",
+                risk_level: results.length > 0 ? results[0].risk_level : "low",
+                explanation: results.length > 0 ? results[0].explanation : "No threats found for this URL."
+            });
+            await alert.save();
+        } else {
+            console.log("Database offline. Skipping URL alert persistence.");
+        }
+
+        // Real-time notification socket push
+        if (results.length > 0) {
+            const io = req.app.get('io');
+            if (io) {
+                io.emit('threat:alert', {
+                    userId: req.user.id,
+                    title: results[0].title,
+                    type: results[0].type,
+                    risk_level: results[0].risk_level,
+                    explanation: results[0].explanation
+                });
+            }
+        }
 
         res.json({ url, score, alerts: results });
 
@@ -217,22 +248,44 @@ router.post('/message', auth, async (req, res) => {
             aiResult = pythonRes.data;
         } catch (e) {
             console.log("Python service offline, using fallback logic");
-            aiResult = { label: "Unknown", score: 0, explanation: "AI service is currently unavailable." };
+            aiResult = { label: "Unknown", score: 0, explanation: "AI service is currently offline." };
         }
 
-        const alert = new Alert({
-            userId: req.user.id,
+        let alertData = {
             title: `AI Analysis: ${aiResult.label}`,
             type: "sms",
             risk_level: aiResult.label === 'Dangerous' ? 'critical' : (aiResult.label === 'Suspicious' ? 'high' : 'low'),
             explanation: aiResult.explanation
-        });
-        await alert.save();
+        };
+
+        if (isDbConnected()) {
+            const alert = new Alert({
+                userId: req.user.id,
+                ...alertData
+            });
+            await alert.save();
+        } else {
+            console.log("Database offline. Skipping message threat persistence.");
+        }
+
+        // Real-time notification socket push
+        if (alertData.risk_level === 'high' || alertData.risk_level === 'critical') {
+            const io = req.app.get('io');
+            if (io) {
+                io.emit('threat:alert', {
+                    userId: req.user.id,
+                    title: alertData.title,
+                    type: alertData.type,
+                    risk_level: alertData.risk_level,
+                    explanation: alertData.explanation
+                });
+            }
+        }
 
         res.json({
             message,
             score: (1 - aiResult.score) * 100,
-            alerts: aiResult.label !== 'Safe' ? [alert] : []
+            alerts: aiResult.label !== 'Safe' ? [alertData] : []
         });
 
     } catch (err) {

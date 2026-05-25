@@ -142,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Update all possible name/email/avatar fields globally
                 document.querySelectorAll('#nav-user-name').forEach(el => el.innerText = firstName);
+                document.querySelectorAll('#welcome-user-name').forEach(el => el.innerText = firstName);
                 document.querySelectorAll('#dd-full-name').forEach(el => el.innerText = data.name || 'User');
                 document.querySelectorAll('#dd-email').forEach(el => el.innerText = data.email || '');
                 

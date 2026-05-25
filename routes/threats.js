@@ -1,14 +1,46 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const auth = require('../middleware/auth');
 const Alert = require('../models/Alert');
 const ThreatDetails = require('../models/ThreatDetails');
+
+const isDbConnected = () => mongoose.connection.readyState === 1;
 
 // @route   GET /api/threats/:id
 // @desc    Get details for a specific threat/alert
 // @access  Private
 router.get('/:id', auth, async (req, res) => {
     try {
+        if (!isDbConnected()) {
+            console.log(`Database offline. Serving mock details for alert ${req.params.id}.`);
+            return res.json({
+                alert: {
+                    _id: req.params.id,
+                    userId: req.user.id,
+                    title: "Vulnerability Flagged in Workspace",
+                    type: "system",
+                    risk_level: "high",
+                    status: "active",
+                    explanation: "Development scanner found RCE risk or exposed secret parameters inside the codebase directory.",
+                    createdAt: new Date()
+                },
+                details: {
+                    alertId: req.params.id,
+                    risk_factors: [
+                        "Code content matches credential/token variable patterns.",
+                        "Dangerous utility function (eval/exec) executed in global scope.",
+                        "Executable script file (.exe/.bat/.sh) present without authorization."
+                    ],
+                    recommended_actions: [
+                        "Revoke/regenerate the exposed API keys immediately.",
+                        "Sanitize inputs to avoid Remote Code Execution (RCE) vectors.",
+                        "Isolate or delete suspicious files from the server directories."
+                    ]
+                }
+            });
+        }
+
         const alert = await Alert.findById(req.params.id);
         
         if (!alert) {

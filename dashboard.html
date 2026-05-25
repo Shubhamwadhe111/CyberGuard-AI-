@@ -81,7 +81,7 @@
             <div class="db-page-header">
                 <div>
                     <h1 class="db-page-title">Security Dashboard</h1>
-                    <p class="db-page-subtitle">Last updated: <span id="db-last-update">just now</span> &nbsp;|&nbsp; <i class="fa-solid fa-circle" style="color:var(--color-accent);font-size:0.6rem;"></i> All systems nominal</p>
+                    <p class="db-page-subtitle">Last updated: <span id="db-last-update">just now</span> &nbsp;|&nbsp; <span id="db-last-scan">Last scan: Never</span> &nbsp;|&nbsp; <span id="db-status-header"><i class="fa-solid fa-circle" style="color:var(--color-accent);font-size:0.6rem;"></i> All systems nominal</span> &nbsp;|&nbsp; <span id="db-status-desc" style="color:var(--text-muted);">No critical threats detected.</span></p>
                 </div>
                 <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
                     <a href="scan.html" class="btn btn-primary"><i class="fa-solid fa-satellite-dish"></i> Run Scan</a>
@@ -151,11 +151,11 @@
                             <div class="db-score-ring-wrap">
                                 <svg viewBox="0 0 120 120" class="db-score-svg">
                                     <circle cx="60" cy="60" r="52" fill="none" stroke="var(--border-color)" stroke-width="10"/>
-                                    <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-accent)" stroke-width="10"
+                                    <circle id="db-score-path" cx="60" cy="60" r="52" fill="none" stroke="var(--color-accent)" stroke-width="10"
                                         stroke-dasharray="326.7" stroke-dashoffset="49"
                                         stroke-linecap="round" transform="rotate(-90 60 60)"/>
                                 </svg>
-                                <div class="db-score-ring-label">85<span>/100</span></div>
+                                <div class="db-score-ring-label" id="db-score-circle">85<span>/100</span></div>
                             </div>
                             <div class="db-score-breakdown">
                                 <div class="db-score-row">
@@ -185,7 +185,7 @@
                     <!-- Threat Timeline -->
                     <div class="db-card">
                         <div class="db-card-title">Threat Timeline <a href="alerts.html" class="text-accent" style="font-size:0.85rem;font-weight:600;">View All</a></div>
-                        <div class="db-timeline">
+                        <div class="db-timeline" id="db-timeline">
                             <div class="db-timeline-item">
                                 <div class="db-timeline-dot danger"></div>
                                 <a href="threat-details.html" class="db-timeline-content">
@@ -415,6 +415,7 @@
 <script src="assets/js/navigation.js"></script>
     <script src="assets/js/notifications.js"></script>
     <script src="assets/js/profile.js"></script>
+    <script src="assets/js/dashboard.js"></script>
 <script>
     document.getElementById('db-last-update').textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
 </script>
