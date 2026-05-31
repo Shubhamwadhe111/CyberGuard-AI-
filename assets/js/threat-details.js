@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     let alertData = null;
+    const markReviewedBtn = document.getElementById('markReviewedBtn');
+    const ignoreBtn = document.getElementById('ignoreBtn');
+    const reportBtn = document.getElementById('reportBtn');
+    const askAgentBtn = document.getElementById('askAgentBtn');
 
     // Load Threat Details from Backend
     async function loadThreatDetails() {
@@ -39,6 +43,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadThreatDetails();
 
     function renderDetails(alert, details) {
+        // Dynamic class on header card border & accent stripe
+        const headerCard = document.querySelector('.threat-header-card');
+        if (headerCard) {
+            headerCard.className = 'threat-header-card';
+            headerCard.classList.add(`risk-${alert.risk_level}`);
+        }
+
         // 1. Risk Badge
         const badge = document.getElementById('threatRiskBadge');
         if (badge) {
@@ -53,7 +64,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             badge.style.background = color;
             badge.style.color = 'white';
-            badge.innerHTML = `<i class="fa-solid ${icon}"></i> ${alert.risk_level.toUpperCase()} RISK`;
+            
+            badge.textContent = '';
+            const badgeIcon = document.createElement('i');
+            badgeIcon.className = `fa-solid ${icon}`;
+            badge.appendChild(badgeIcon);
+            badge.appendChild(document.createTextNode(` ${alert.risk_level.toUpperCase()} RISK`));
         }
 
         // 2. Category / Header
@@ -76,19 +92,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         const detTime = document.getElementById('threatDetectedTime');
         if (detTime) {
             const date = new Date(alert.createdAt);
-            detTime.innerHTML = `<i class="fa-regular fa-clock"></i> Detected: ${date.toLocaleString()}`;
+            detTime.textContent = '';
+            const clockIcon = document.createElement('i');
+            clockIcon.className = 'fa-regular fa-clock';
+            detTime.appendChild(clockIcon);
+            detTime.appendChild(document.createTextNode(` Detected: ${date.toLocaleString()}`));
         }
 
         // 5. Source
         const sourceText = document.getElementById('threatSourceText');
         if (sourceText) {
-            const sources = {
-                sms: '<i class="fa-solid fa-message"></i> Source: Messages/SMS',
-                link: '<i class="fa-solid fa-link"></i> Source: Browser Links',
-                permission: '<i class="fa-solid fa-list-check"></i> Source: Installed Apps',
-                system: '<i class="fa-solid fa-microchip"></i> Source: Core System'
+            sourceText.textContent = '';
+            const sourceIcons = {
+                sms: 'fa-message',
+                link: 'fa-link',
+                permission: 'fa-list-check',
+                system: 'fa-microchip'
             };
-            sourceText.innerHTML = sources[alert.type] || `<i class="fa-solid fa-shield"></i> Source: ${alert.type}`;
+            const sourceLabels = {
+                sms: 'Source: Messages/SMS',
+                link: 'Source: Browser Links',
+                permission: 'Source: Installed Apps',
+                system: 'Source: Core System'
+            };
+            const iconClass = sourceIcons[alert.type] || 'fa-shield';
+            const labelText = sourceLabels[alert.type] || `Source: ${alert.type}`;
+
+            const iconEl = document.createElement('i');
+            iconEl.className = `fa-solid ${iconClass}`;
+            sourceText.appendChild(iconEl);
+            sourceText.appendChild(document.createTextNode(` ${labelText}`));
         }
 
         // 6. Overview Description
@@ -110,33 +143,61 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
+        // Disable buttons if resolved
+        if (alert.status === 'resolved') {
+            if (markReviewedBtn) {
+                markReviewedBtn.disabled = true;
+                markReviewedBtn.style.opacity = '0.5';
+            }
+            if (reportBtn) {
+                reportBtn.disabled = true;
+                reportBtn.style.opacity = '0.5';
+            }
+            if (ignoreBtn) {
+                ignoreBtn.disabled = true;
+                ignoreBtn.style.opacity = '0.5';
+            }
+        }
+
         // 8. Risk Factors List
         const factorsList = document.querySelector('.risk-factors-list');
         if (factorsList && details && details.risk_factors) {
-            factorsList.innerHTML = '';
+            factorsList.textContent = '';
             details.risk_factors.forEach(factor => {
-                factorsList.innerHTML += `
-                    <li>
-                        <i class="fa-solid fa-circle-exclamation" style="color:var(--color-warning);"></i>
-                        <div>
-                            <strong>${factor}</strong>
-                        </div>
-                    </li>
-                `;
+                const li = document.createElement('li');
+                const icon = document.createElement('i');
+                icon.className = 'fa-solid fa-circle-exclamation';
+                icon.style.color = 'var(--color-warning)';
+                
+                const textDiv = document.createElement('div');
+                const strong = document.createElement('strong');
+                strong.textContent = factor;
+                
+                textDiv.appendChild(strong);
+                li.appendChild(icon);
+                li.appendChild(textDiv);
+                factorsList.appendChild(li);
             });
         }
 
         // 9. Recommended Actions List
         const actionsList = document.querySelector('.recommended-actions-list');
         if (actionsList && details && details.recommended_actions) {
-            actionsList.innerHTML = '';
+            actionsList.textContent = '';
             details.recommended_actions.forEach(action => {
-                actionsList.innerHTML += `
-                    <li>
-                        <i class="fa-solid fa-shield-check" style="color:var(--color-success);"></i>
-                        <div><strong>${action}</strong></div>
-                    </li>
-                `;
+                const li = document.createElement('li');
+                const icon = document.createElement('i');
+                icon.className = 'fa-solid fa-shield-check';
+                icon.style.color = 'var(--color-success)';
+                
+                const textDiv = document.createElement('div');
+                const strong = document.createElement('strong');
+                strong.textContent = action;
+                
+                textDiv.appendChild(strong);
+                li.appendChild(icon);
+                li.appendChild(textDiv);
+                actionsList.appendChild(li);
             });
         }
     }
@@ -164,25 +225,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    const markReviewedBtn = document.getElementById('markReviewedBtn');
     if (markReviewedBtn) markReviewedBtn.addEventListener('click', resolveThreat);
-
-    const ignoreBtn = document.getElementById('ignoreBtn');
     if (ignoreBtn) ignoreBtn.addEventListener('click', resolveThreat);
 
     // ─── ACTION: REPORT PHISHING ──────────────────────────────────────
-    const reportBtn = document.getElementById('reportBtn');
     if (reportBtn) {
         reportBtn.addEventListener('click', () => {
             showToast('Threat reported to CyberGuard Global Database!', 'success');
             reportBtn.disabled = true;
-            reportBtn.innerHTML = '<i class="fa-solid fa-flag"></i> Reported';
+            reportBtn.textContent = '';
+            const flagIcon = document.createElement('i');
+            flagIcon.className = 'fa-solid fa-flag';
+            reportBtn.appendChild(flagIcon);
+            reportBtn.appendChild(document.createTextNode(' Reported'));
             reportBtn.style.opacity = '0.7';
         });
     }
 
     // ─── ACTION: ASK AI AGENT ─────────────────────────────────────────
-    const askAgentBtn = document.getElementById('askAgentBtn');
     if (askAgentBtn) {
         askAgentBtn.addEventListener('click', () => {
             if (!alertData) return;
@@ -197,7 +257,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const toast = document.createElement('div');
         const bg = type === 'success' ? '#10b981' : '#ef4444';
         toast.style.cssText = `background:${bg};color:white;padding:0.85rem 1.25rem;border-radius:10px;display:flex;align-items:center;gap:0.6rem;font-size:0.88rem;font-weight:500;animation:slideIn 0.3s ease;`;
-        toast.innerHTML = `<i class="fa-solid fa-${type === 'success' ? 'check-circle' : 'circle-xmark'}"></i> ${message}`;
+        
+        const toastIcon = document.createElement('i');
+        toastIcon.className = `fa-solid fa-${type === 'success' ? 'check-circle' : 'circle-xmark'}`;
+        toast.appendChild(toastIcon);
+        toast.appendChild(document.createTextNode(' ' + message));
         
         container.appendChild(toast);
         setTimeout(() => { 
