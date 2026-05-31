@@ -55,7 +55,15 @@
                     
                     <div class="form-group" id="passwordGroup">
                         <label class="form-label" for="password">Password</label>
-                        <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                            <button type="button" class="password-toggle-btn" id="togglePassword" aria-label="Toggle password visibility">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="caps-warning-badge" id="capsWarning">
+                            <i class="fa-solid fa-keyboard"></i> Caps Lock is ON
+                        </div>
                         <div class="error-msg">Please enter your password.</div>
                     </div>
                     
@@ -64,6 +72,16 @@
                             <input type="checkbox"> Remember me
                         </label>
                         <a href="#" class="text-accent">Forgot password?</a>
+                    </div>
+                    
+                    <div id="bruteForceNotice" style="display: none;">
+                        <div class="lockout-alert">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <div>
+                                <strong>Brute-Force Shield Active</strong><br>
+                                Too many failed attempts. Access locked for <span id="lockoutCountdown" style="font-weight:700;">30</span>s.
+                            </div>
+                        </div>
                     </div>
                     
                     <button type="submit" class="btn btn-primary btn-block">Sign In</button>

@@ -88,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-    }
 
     // 3. Handle App Navigation
     if (appPages.includes(currentPage)) {

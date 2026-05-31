@@ -65,14 +65,45 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div class="form-group" id="passSignupGroup">
                             <label class="form-label" for="passSignup">Password</label>
-                            <input type="password" id="passSignup" class="form-control" placeholder="••••••••" required>
-                            <div class="error-msg">Min 6 characters.</div>
+                            <div class="password-wrapper">
+                                <input type="password" id="passSignup" class="form-control" placeholder="••••••••" required>
+                                <button type="button" class="password-toggle-btn" id="toggleSignupPassword" aria-label="Toggle password visibility">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="error-msg">Min 8 characters with strength requirements.</div>
                         </div>
                         <div class="form-group" id="confirmPassGroup">
                             <label class="form-label" for="confirmPass">Confirm Password</label>
-                            <input type="password" id="confirmPass" class="form-control" placeholder="••••••••" required>
+                            <div class="password-wrapper">
+                                <input type="password" id="confirmPass" class="form-control" placeholder="••••••••" required>
+                                <button type="button" class="password-toggle-btn" id="toggleConfirmPassword" aria-label="Toggle password visibility">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
                             <div class="error-msg">Passwords must match.</div>
                         </div>
+                    </div>
+                    
+                    <div class="caps-warning-badge" id="capsWarningSignup">
+                        <i class="fa-solid fa-keyboard"></i> Caps Lock is ON
+                    </div>
+
+                    <div class="strength-meter-container" id="strengthContainer">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.25rem;">
+                            <span style="color: var(--text-muted);">Password Strength:</span>
+                            <span id="strengthLabel" style="font-weight: 600; color: #ef4444;">Too Short</span>
+                        </div>
+                        <div class="strength-bar-bg">
+                            <div class="strength-bar" id="strengthBar"></div>
+                        </div>
+                        <ul class="requirement-list">
+                            <li class="requirement-item" id="req-length"><i class="fa-solid fa-circle-xmark"></i> Min 8 chars</li>
+                            <li class="requirement-item" id="req-upper"><i class="fa-solid fa-circle-xmark"></i> Upper case</li>
+                            <li class="requirement-item" id="req-lower"><i class="fa-solid fa-circle-xmark"></i> Lower case</li>
+                            <li class="requirement-item" id="req-number"><i class="fa-solid fa-circle-xmark"></i> Number</li>
+                            <li class="requirement-item" id="req-special"><i class="fa-solid fa-circle-xmark"></i> Special char</li>
+                        </ul>
                     </div>
                     
                     <div class="form-group" id="termsGroup" style="margin-top: 0.5rem;">

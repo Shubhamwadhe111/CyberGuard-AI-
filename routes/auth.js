@@ -3,9 +3,17 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const rateLimit = require('express-rate-limit');
 const User = require('../models/User');
 const OTP = require('../models/OTP');
 const auth = require('../middleware/auth');
+
+// Scoped auth rate limiter: max 10 attempts per 15 minutes per IP
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: { message: 'Too many authentication attempts. Please try again after 15 minutes.' }
+});
 
 // Helper function to generate 6-digit OTP
 const generateOTP = () => {
@@ -50,10 +58,10 @@ const sendEmailOTP = async (email, otpValue) => {
                 <div style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
                     <h2>CyberGuard AI</h2>
                     <p>Your two-factor authentication code is:</p>
-                    <h1 style="color: #00ff88; background: #1a1a2e; padding: 15px; border-radius: 8px; display: inline-block;">${otpValue}</h1>
+                    <h1 style="color: #00ff88; background: #1a1a2e; padding: 15px; border-radius: 8px; display: inline-block;">{{OTP}}</h1>
                     <p>Do not share this code with anyone.</p>
                 </div>
-            `,
+            `.replace('{{OTP}}', Number(otpValue).toString()),
         });
 
         console.log("Email sent: %s", info.messageId);
@@ -71,7 +79,7 @@ const sendEmailOTP = async (email, otpValue) => {
 };
 
 // Signup Route
-router.post('/signup', async (req, res) => {
+router.post('/signup', authLimiter, async (req, res) => {
     try {
         const { name, email, phone, password } = req.body;
         
@@ -144,7 +152,7 @@ router.post('/verify-otp', auth, async (req, res) => {
 });
 
 // Login Route
-router.post('/login', async (req, res) => {
+router.post('/login', authLimiter, async (req, res) => {
     try {
         const { email, password } = req.body;
 
