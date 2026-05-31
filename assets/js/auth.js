@@ -366,24 +366,34 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
 
-                    const appVerifier = recaptchaVerifier;
-                    const confirmationResult = await firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier);
-                    
-                    window.confirmationResult = confirmationResult;
-                    sessionStorage.setItem('verificationId', confirmationResult.verificationId);
-                    
-                    sessionStorage.setItem('pendingSignupData', JSON.stringify({
-                        name: fullname.value.trim(),
-                        email: email.value.trim(),
-                        phone: phoneNumber,
-                        password: password.value
-                    }));
+                    // Register directly with backend API
+                    const res = await fetch('/api/auth/signup', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: fullname.value.trim(),
+                            email: email.value.trim(),
+                            phone: phoneNumber,
+                            password: password.value
+                        })
+                    });
 
-                    window.location.href = 'otp.html';
+                    const data = await res.json();
+
+                    if (res.ok) {
+                        localStorage.setItem('cyberguard_token', data.token);
+                        localStorage.setItem('isLoggedIn', 'true');
+                        alert('Account created successfully! Welcome to CyberGuard AI.');
+                        window.location.href = 'home.html';
+                    } else {
+                        alert(data.message || 'Signup failed. Please try again.');
+                        btn.disabled = false;
+                        btn.textContent = originalText;
+                    }
 
                 } catch (err) {
-                    console.error("Firebase Auth Error:", err);
-                    alert('Error: ' + err.message);
+                    console.error("Signup Error:", err);
+                    alert('An error occurred during signup. Please try again.');
                     btn.disabled = false;
                     btn.textContent = originalText;
                 }
