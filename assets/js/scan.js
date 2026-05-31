@@ -20,21 +20,49 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Update History List on right
                 const historyContainer = document.querySelector('.scan-right-col .db-card:nth-child(3) div');
                 if (historyContainer && data.timeline) {
-                    historyContainer.innerHTML = '';
+                    historyContainer.textContent = '';
                     data.timeline.forEach(item => {
                         let iconClass = item.risk_level === 'high' ? 'danger' : (item.risk_level === 'medium' ? 'warning' : 'safe');
                         let icon = item.risk_level === 'high' ? 'fa-triangle-exclamation' : (item.risk_level === 'medium' ? 'fa-circle-exclamation' : 'fa-check');
                         
-                        historyContainer.innerHTML += `
-                            <div class="scan-history-item">
-                                <div class="scan-hist-icon ${iconClass}"><i class="fa-solid ${icon}"></i></div>
-                                <div style="flex:1;">
-                                    <div style="font-size:0.88rem;font-weight:600;">${item.title}</div>
-                                    <div style="font-size:0.78rem;color:var(--text-muted);">${new Date(item.createdAt).toLocaleString()}</div>
-                                </div>
-                                <a href="threat-details.html" style="font-size:0.8rem;color:var(--color-accent);text-decoration:none;font-weight:600;">View</a>
-                            </div>
-                        `;
+                        const historyItem = document.createElement('div');
+                        historyItem.className = 'scan-history-item';
+                        
+                        const iconDiv = document.createElement('div');
+                        iconDiv.className = `scan-hist-icon ${iconClass}`;
+                        const iconEl = document.createElement('i');
+                        iconEl.className = `fa-solid ${icon}`;
+                        iconDiv.appendChild(iconEl);
+                        
+                        const contentDiv = document.createElement('div');
+                        contentDiv.style.flex = '1';
+                        
+                        const titleEl = document.createElement('div');
+                        titleEl.style.fontSize = '0.88rem';
+                        titleEl.style.fontWeight = '600';
+                        titleEl.textContent = item.title;
+                        
+                        const dateEl = document.createElement('div');
+                        dateEl.style.fontSize = '0.78rem';
+                        dateEl.style.color = 'var(--text-muted)';
+                        dateEl.textContent = new Date(item.createdAt).toLocaleString();
+                        
+                        contentDiv.appendChild(titleEl);
+                        contentDiv.appendChild(dateEl);
+                        
+                        const viewLink = document.createElement('a');
+                        viewLink.href = 'threat-details.html';
+                        viewLink.style.fontSize = '0.8rem';
+                        viewLink.style.color = 'var(--color-accent)';
+                        viewLink.style.textDecoration = 'none';
+                        viewLink.style.fontWeight = '600';
+                        viewLink.textContent = 'View';
+                        
+                        historyItem.appendChild(iconDiv);
+                        historyItem.appendChild(contentDiv);
+                        historyItem.appendChild(viewLink);
+                        
+                        historyContainer.appendChild(historyItem);
                     });
                 }
             }
@@ -49,8 +77,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const toast = document.createElement('div');
         const bg = type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#ef4444';
         toast.style.cssText = `background:${bg};color:white;padding:0.9rem 1.25rem;border-radius:10px;display:flex;align-items:center;gap:0.6rem;font-size:0.9rem;font-weight:500;animation:slideIn 0.3s ease;`;
-        const icon = type === 'success' ? 'fa-check-circle' : type === 'warning' ? 'fa-circle-exclamation' : 'fa-circle-xmark';
-        toast.innerHTML = `<i class="fa-solid ${icon}"></i> ${message}`;
+        
+        const icon = document.createElement('i');
+        const iconClass = type === 'success' ? 'fa-check-circle' : type === 'warning' ? 'fa-circle-exclamation' : 'fa-circle-xmark';
+        icon.className = `fa-solid ${iconClass}`;
+        
+        toast.appendChild(icon);
+        toast.appendChild(document.createTextNode(' ' + message));
+        
         container.appendChild(toast);
         setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
     }
@@ -68,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     window.clearLog = function() {
-        if (logConsole) logConsole.innerHTML = '';
+        if (logConsole) logConsole.textContent = '';
         addLog('Console cleared.', 'info');
     };
 
@@ -122,10 +156,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!chip || !cs) return;
         if (state === 'scanning') {
             chip.className = 'scan-chip scanning';
-            cs.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Scanning';
+            cs.textContent = '';
+            const spinIcon = document.createElement('i');
+            spinIcon.className = 'fa-solid fa-circle-notch fa-spin';
+            cs.appendChild(spinIcon);
+            cs.appendChild(document.createTextNode(' Scanning'));
         } else if (state === 'done') {
             chip.className = 'scan-chip done';
-            cs.innerHTML = '<i class="fa-solid fa-check"></i> Done';
+            cs.textContent = '';
+            const checkIcon = document.createElement('i');
+            checkIcon.className = 'fa-solid fa-check';
+            cs.appendChild(checkIcon);
+            cs.appendChild(document.createTextNode(' Done'));
         }
     }
 
@@ -133,32 +175,68 @@ document.addEventListener('DOMContentLoaded', async () => {
     function renderResults(results) {
         const container = document.getElementById('resultsContainer');
         if (!container) return;
-        let html = '';
+        container.textContent = '';
         let high = 0, med = 0, safe = 0;
+        
         results.forEach(r => {
             if (r.risk_level === 'high' || r.risk_level === 'critical') high++;
             else if (r.risk_level === 'medium' || r.risk_level === 'warning') med++;
             else safe++;
             
             const dotClass = (r.risk_level === 'high' || r.risk_level === 'critical') ? 'danger' : ((r.risk_level === 'medium' || r.risk_level === 'warning') ? 'warning' : 'safe');
-            const icon = dotClass === 'danger' ? 'fa-triangle-exclamation' : (dotClass === 'warning' ? 'fa-circle-exclamation' : 'fa-shield-check');
+            const iconClass = dotClass === 'danger' ? 'fa-triangle-exclamation' : (dotClass === 'warning' ? 'fa-circle-exclamation' : 'fa-shield-check');
 
-            html += `
-            <div class="scan-result-item risk-${dotClass}">
-                <div class="scan-result-info">
-                    <div class="scan-result-icon"><i class="fa-solid ${icon}"></i></div>
-                    <div>
-                        <div class="scan-result-title">${r.title}</div>
-                        <div class="scan-result-desc">${r.explanation || r.type}</div>
-                        <span class="badge scan-badge-${dotClass}">${r.risk_level.toUpperCase()}</span>
-                    </div>
-                </div>
-                <div class="scan-result-actions">
-                    <a href="threat-details.html" class="btn btn-outline" style="padding:0.5rem 0.85rem;font-size:0.82rem;">View Details</a>
-                </div>
-            </div>`;
+            const item = document.createElement('div');
+            item.className = `scan-result-item risk-${dotClass}`;
+            
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'scan-result-info';
+            
+            const iconDiv = document.createElement('div');
+            iconDiv.className = 'scan-result-icon';
+            const iconEl = document.createElement('i');
+            iconEl.className = `fa-solid ${iconClass}`;
+            iconDiv.appendChild(iconEl);
+            
+            const detailsDiv = document.createElement('div');
+            
+            const titleEl = document.createElement('div');
+            titleEl.className = 'scan-result-title';
+            titleEl.textContent = r.title;
+            
+            const descEl = document.createElement('div');
+            descEl.className = 'scan-result-desc';
+            descEl.textContent = r.explanation || r.type;
+            
+            const badgeEl = document.createElement('span');
+            badgeEl.className = `badge scan-badge-${dotClass}`;
+            badgeEl.textContent = r.risk_level.toUpperCase();
+            
+            detailsDiv.appendChild(titleEl);
+            detailsDiv.appendChild(descEl);
+            detailsDiv.appendChild(badgeEl);
+            
+            infoDiv.appendChild(iconDiv);
+            infoDiv.appendChild(detailsDiv);
+            
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'scan-result-actions';
+            
+            const actionLink = document.createElement('a');
+            actionLink.href = 'threat-details.html';
+            actionLink.className = 'btn btn-outline';
+            actionLink.style.padding = '0.5rem 0.85rem';
+            actionLink.style.fontSize = '0.82rem';
+            actionLink.textContent = 'View Details';
+            
+            actionsDiv.appendChild(actionLink);
+            
+            item.appendChild(infoDiv);
+            item.appendChild(actionsDiv);
+            
+            container.appendChild(item);
         });
-        container.innerHTML = html;
+        
         document.getElementById('countHigh').textContent = high + ' High';
         document.getElementById('countMed').textContent  = med  + ' Med';
         document.getElementById('countSafe').textContent = safe + ' Clear';
@@ -188,7 +266,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             activeCats.forEach((c, i) => { c.range = [i * step, (i + 1) * step]; });
 
             btnStartScan.disabled = true;
-            btnStartScan.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Scanning...';
+            btnStartScan.textContent = '';
+            const startSpin = document.createElement('i');
+            startSpin.className = 'fa-solid fa-circle-notch fa-spin';
+            btnStartScan.appendChild(startSpin);
+            btnStartScan.appendChild(document.createTextNode(' Scanning...'));
+
             document.getElementById('btnStopScan').style.display = '';
             document.getElementById('scanProgressArea').style.display = 'block';
             document.getElementById('scanResultsArea').style.display = 'none';
@@ -201,17 +284,33 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sdet = document.getElementById('scanStatusDetail');
 
             let progress = 0, catIdx = 0;
-            addLog(`Starting ${scanTitles[currentScanType].title}...`, 'info');
+            const scanTypeLabel = scanTitles[currentScanType].title;
+            addLog(`Starting ${scanTypeLabel}...`, 'info');
 
-            // Trigger the real workspace scan in the background for Full Scan type
+            // Dispatch calls to the correct endpoint depending on scan type
             let realScanPromise = null;
+            let endpoint = '';
             if (currentScanType === 'full') {
-                addLog('Contacting workspace threat auditor...', 'info');
-                realScanPromise = fetch('/api/scan/start', {
+                endpoint = '/api/scan/start';
+            } else if (currentScanType === 'quick') {
+                endpoint = '/api/scan/quick';
+            } else if (currentScanType === 'sms') {
+                endpoint = '/api/scan/sms';
+            } else if (currentScanType === 'app') {
+                endpoint = '/api/scan/app-audit';
+            }
+
+            if (endpoint) {
+                addLog(`Contacting scanning engine endpoint: ${endpoint}...`, 'info');
+                realScanPromise = fetch(endpoint, {
                     method: 'POST',
                     headers: { 'x-auth-token': token }
-                }).then(res => res.json()).catch(err => {
-                    console.error("Real workspace scan failed:", err);
+                }).then(res => {
+                    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+                    return res.json();
+                }).catch(err => {
+                    console.error(`${scanTypeLabel} backend call failed:`, err);
+                    addLog(`Error contacting backend: ${err.message}`, 'danger');
                     return null;
                 });
             }
@@ -248,11 +347,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                     try {
                         let data = null;
                         
-                        // If it is a full scan, resolve the real scan promise
-                        if (currentScanType === 'full' && realScanPromise) {
+                        // Resolve the backend promise if it exists
+                        if (realScanPromise) {
                             const scanResult = await realScanPromise;
                             if (scanResult && scanResult.newAlerts) {
-                                addLog(`Workspace threat auditor completed. Found ${scanResult.alertsFound} security issues.`, 'info');
+                                addLog(`${scanTypeLabel} backend finished. Found ${scanResult.alertsFound} issue(s).`, 'info');
+                                
+                                // Print alerts in console logs
+                                scanResult.newAlerts.forEach(alert => {
+                                    const logClass = alert.risk_level === 'critical' || alert.risk_level === 'high' ? 'danger' : (alert.risk_level === 'medium' || alert.risk_level === 'warning' ? 'warning' : 'safe');
+                                    addLog(`[Threat Found] ${alert.title} - ${alert.explanation || alert.type}`, logClass);
+                                });
+
                                 data = {
                                     timeline: scanResult.newAlerts,
                                     metrics: { score: scanResult.score }
@@ -260,8 +366,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                             }
                         }
                         
-                        // Fallback to active alerts in dashboard if not full scan or if real scan failed
+                        // Fallback to active alerts in dashboard if backend call failed or was empty
                         if (!data) {
+                            addLog('Loading active alerts timeline as fallback...', 'warning');
                             const alertRes = await fetch('/api/dashboard', {
                                 method: 'GET',
                                 headers: { 'x-auth-token': token }
@@ -282,7 +389,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                         setTimeout(() => {
                             btnStartScan.disabled = false;
-                            btnStartScan.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Run Again';
+                            btnStartScan.textContent = '';
+                            const rotateIcon = document.createElement('i');
+                            rotateIcon.className = 'fa-solid fa-rotate-right';
+                            btnStartScan.appendChild(rotateIcon);
+                            btnStartScan.appendChild(document.createTextNode(' Run Again'));
+
                             document.getElementById('btnStopScan').style.display = 'none';
                             document.getElementById('scanProgressArea').style.display = 'none';
                             document.getElementById('scanResultsArea').style.display = 'block';
@@ -313,7 +425,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!url) { result.style.display = 'none'; return; }
 
         result.style.display = 'block';
-        result.innerHTML = `<div class="url-result-box" style="display:flex;align-items:center;gap:0.5rem;padding:1rem;background:var(--surface);border-radius:var(--radius-md);"><i class="fa-solid fa-circle-notch fa-spin"></i> Checking URL against Google Safe Browsing...</div>`;
+        result.textContent = '';
+        
+        const loadingBox = document.createElement('div');
+        loadingBox.className = 'url-result-box';
+        loadingBox.style.display = 'flex';
+        loadingBox.style.alignItems = 'center';
+        loadingBox.style.gap = '0.5rem';
+        loadingBox.style.padding = '1rem';
+        loadingBox.style.background = 'var(--surface)';
+        loadingBox.style.borderRadius = 'var(--radius-md)';
+        
+        const spinIcon = document.createElement('i');
+        spinIcon.className = 'fa-solid fa-circle-notch fa-spin';
+        
+        loadingBox.appendChild(spinIcon);
+        loadingBox.appendChild(document.createTextNode(' Checking URL against Google Safe Browsing...'));
+        result.appendChild(loadingBox);
+
         addLog(`Checking URL: ${url}`, 'info');
 
         try {
@@ -328,37 +457,115 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (res.ok) {
                 const data = await res.json();
-                let cls, icon, title, body;
+                let cls, iconClass, title, body;
 
                 if (data.score < 50) {
-                    cls = 'danger'; icon = 'fa-circle-xmark';
+                    cls = 'danger'; iconClass = 'fa-circle-xmark';
                     title = data.alerts.length > 0 ? data.alerts[0].title : 'High Risk';
-                    body  = data.alerts.length > 0 ? data.alerts[0].explanation : 'This URL matches known threat patterns. Do <strong>not</strong> open it.';
+                    body  = data.alerts.length > 0 ? data.alerts[0].explanation : 'This URL matches known threat patterns. Do not open it.';
                     addLog(`URL check: HIGH RISK — ${url}`, 'danger');
                 } else if (data.score < 100) {
-                    cls = 'warning'; icon = 'fa-triangle-exclamation';
+                    cls = 'warning'; iconClass = 'fa-triangle-exclamation';
                     title = data.alerts.length > 0 ? data.alerts[0].title : 'Caution';
                     body  = data.alerts.length > 0 ? data.alerts[0].explanation : 'This URL is suspicious.';
                     addLog(`URL check: WARNING — ${url}`, 'warning');
                 } else {
-                    cls = 'safe'; icon = 'fa-circle-check';
+                    cls = 'safe'; iconClass = 'fa-circle-check';
                     title = 'Appears Safe';
                     body  = 'Google Safe Browsing found no known threats for this URL.';
                     addLog(`URL check: SAFE — ${url}`, 'safe');
                 }
 
-                result.innerHTML = `
-                    <div class="url-result-box ${cls}">
-                        <i class="fa-solid ${icon}" style="font-size:1.3rem;flex-shrink:0;margin-top:2px;"></i>
-                        <div><strong>${title}</strong><br><span style="font-size:0.85rem;opacity:0.85;">${body}</span></div>
-                    </div>`;
+                result.textContent = '';
+                
+                const resultBox = document.createElement('div');
+                resultBox.className = `url-result-box ${cls}`;
+                
+                const iconEl = document.createElement('i');
+                iconEl.className = `fa-solid ${iconClass}`;
+                iconEl.style.fontSize = '1.3rem';
+                iconEl.style.flexShrink = '0';
+                iconEl.style.marginTop = '2px';
+                
+                const contentDiv = document.createElement('div');
+                
+                const titleStrong = document.createElement('strong');
+                titleStrong.textContent = title;
+                
+                const brEl = document.createElement('br');
+                
+                const bodySpan = document.createElement('span');
+                bodySpan.style.fontSize = '0.85rem';
+                bodySpan.style.opacity = '0.85';
+                bodySpan.textContent = body;
+                
+                contentDiv.appendChild(titleStrong);
+                contentDiv.appendChild(brEl);
+                contentDiv.appendChild(bodySpan);
+                
+                resultBox.appendChild(iconEl);
+                resultBox.appendChild(contentDiv);
+                
+                result.appendChild(resultBox);
             } else {
-                result.innerHTML = `<div class="url-result-box warning" style="display:flex;gap:0.5rem;padding:1rem;background:rgba(245,158,11,0.1);color:var(--color-warning);border-radius:var(--radius-md);"><i class="fa-solid fa-circle-exclamation"></i><div><strong>Error</strong><br>Failed to scan URL.</div></div>`;
+                result.textContent = '';
+                const errorBox = document.createElement('div');
+                errorBox.className = 'url-result-box warning';
+                errorBox.style.display = 'flex';
+                errorBox.style.gap = '0.5rem';
+                errorBox.style.padding = '1rem';
+                errorBox.style.background = 'rgba(245,158,11,0.1)';
+                errorBox.style.color = 'var(--color-warning)';
+                errorBox.style.borderRadius = 'var(--radius-md)';
+                
+                const warnIcon = document.createElement('i');
+                warnIcon.className = 'fa-solid fa-circle-exclamation';
+                
+                const textDiv = document.createElement('div');
+                const errStrong = document.createElement('strong');
+                errStrong.textContent = 'Error';
+                const errBr = document.createElement('br');
+                const errMsg = document.createTextNode('Failed to scan URL.');
+                
+                textDiv.appendChild(errStrong);
+                textDiv.appendChild(errBr);
+                textDiv.appendChild(errMsg);
+                
+                errorBox.appendChild(warnIcon);
+                errorBox.appendChild(textDiv);
+                result.appendChild(errorBox);
+                
                 addLog('URL scan failed.', 'warning');
             }
         } catch (err) {
             console.error(err);
-            result.innerHTML = `<div class="url-result-box warning" style="display:flex;gap:0.5rem;padding:1rem;background:rgba(245,158,11,0.1);color:var(--color-warning);border-radius:var(--radius-md);"><i class="fa-solid fa-circle-exclamation"></i><div><strong>Error</strong><br>Failed to connect to scanner.</div></div>`;
+            result.textContent = '';
+            const errorBox = document.createElement('div');
+            errorBox.className = 'url-result-box warning';
+            errorBox.style.display = 'flex';
+            errorBox.style.gap = '0.5rem';
+            errorBox.style.padding = '1rem';
+            errorBox.style.background = 'rgba(245,158,11,0.1)';
+            errorBox.style.color = 'var(--color-warning)';
+            errorBox.style.borderRadius = 'var(--radius-md)';
+            
+            const warnIcon = document.createElement('i');
+            warnIcon.className = 'fa-solid fa-circle-exclamation';
+            
+            const textDiv = document.createElement('div');
+            const errStrong = document.createElement('strong');
+            errStrong.textContent = 'Error';
+            const errBr = document.createElement('br');
+            const errMsg = document.createTextNode('Failed to connect to scanner.');
+            
+            textDiv.appendChild(errStrong);
+            textDiv.appendChild(errBr);
+            textDiv.appendChild(errMsg);
+            
+            errorBox.appendChild(warnIcon);
+            errorBox.appendChild(textDiv);
+            result.appendChild(errorBox);
+            
             addLog('URL scan error.', 'warning');
         }
     };

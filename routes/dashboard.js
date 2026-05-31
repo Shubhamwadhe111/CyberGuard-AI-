@@ -88,6 +88,8 @@ router.get('/', auth, async (req, res) => {
             createdAt: { $gte: startOfDay }
         });
 
+        const activeAlerts = await Alert.find({ userId, status: 'active' });
+
         let metrics = {
             suspiciousMessages: 0,
             riskyLinks: 0,
