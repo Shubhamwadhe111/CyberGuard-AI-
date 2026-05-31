@@ -27,7 +27,10 @@ router.get('/', auth, async (req, res) => {
                     recentAlerts: 6,
                     score: 85,
                     lastScanTime: new Date(Date.now() - 3 * 3600000), // 3 hours ago
-                    userName: "User (Offline Mode)"
+                    userName: "User (Offline Mode)",
+                    scansToday: 5,
+                    activeThreats: 6,
+                    activeDevices: 2
                 },
                 timeline: [
                     {
@@ -78,8 +81,13 @@ router.get('/', auth, async (req, res) => {
         const latestScan = await Scan.findOne({ userId }).sort({ createdAt: -1 });
 
         // Fetch active alerts count by type
-        const activeAlerts = await Alert.find({ userId, status: 'active' });
-        
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+        const scansToday = await Scan.countDocuments({
+            userId,
+            createdAt: { $gte: startOfDay }
+        });
+
         let metrics = {
             suspiciousMessages: 0,
             riskyLinks: 0,
@@ -87,7 +95,10 @@ router.get('/', auth, async (req, res) => {
             recentAlerts: activeAlerts.length,
             score: latestScan ? latestScan.score : 100, // Default to 100 if no scans yet
             lastScanTime: latestScan ? latestScan.createdAt : null,
-            userName: name
+            userName: name,
+            scansToday: scansToday,
+            activeThreats: activeAlerts.length,
+            activeDevices: 2 // Mock active devices count
         };
 
         // Calculate specifics

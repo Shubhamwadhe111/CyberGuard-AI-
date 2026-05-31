@@ -159,4 +159,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     syncIdentity();
+
+    // 4. Fetch and populate homepage real data
+    async function loadHomeMetrics() {
+        if (currentPage !== 'home.html') return;
+        if (!isLoggedIn || !token) return;
+        
+        try {
+            const res = await fetch('/api/dashboard', {
+                method: 'GET',
+                headers: { 'x-auth-token': token }
+            });
+            
+            if (res.ok) {
+                const data = await res.json();
+                
+                const scansTodayEl = document.getElementById('health-scans-today');
+                const activeThreatsEl = document.getElementById('health-active-threats');
+                const activeDevicesEl = document.getElementById('health-active-devices');
+                
+                if (scansTodayEl && data.metrics && data.metrics.scansToday !== undefined) {
+                    scansTodayEl.textContent = data.metrics.scansToday.toString();
+                }
+                if (activeThreatsEl && data.metrics && data.metrics.activeThreats !== undefined) {
+                    activeThreatsEl.textContent = data.metrics.activeThreats.toString();
+                }
+                if (activeDevicesEl && data.metrics && data.metrics.activeDevices !== undefined) {
+                    activeDevicesEl.textContent = data.metrics.activeDevices.toString();
+                }
+            }
+        } catch (err) {
+            console.error("Error loading home metrics:", err);
+        }
+    }
+    loadHomeMetrics();
 });
