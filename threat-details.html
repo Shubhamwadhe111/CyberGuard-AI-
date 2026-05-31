@@ -21,9 +21,29 @@
             <i class="fa-solid fa-shield-halved"></i>
             <span>CyberGuard AI</span>
         </div>
-        <div class="mobile-top-actions">
-            <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
-            <a href="profile.html" class="mobile-avatar">U</a>
+                <div class="mobile-top-actions">
+            <span id="mobileNavBellLink"></span>
+            <div class="prof-nav-wrap" id="mobileProfNavWrap">
+                <button class="mobile-avatar" id="mobileProfNavBtn" style="cursor:pointer;padding:0;overflow:hidden;border:none;display:flex;align-items:center;justify-content:center;">
+                    <img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" id="mobile-nav-avatar-img" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                </button>
+                <div class="prof-nav-dropdown" id="mobileProfNavDropdown">
+                    <div class="prof-nav-dd-header">
+                        <img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" style="width:42px;height:42px;border-radius:50%;" id="mobile-dd-avatar-img">
+                        <div>
+                            <div style="font-weight:700;font-size:0.88rem;" id="mobile-dd-full-name">User Name</div>
+                            <div style="font-size:0.73rem;color:var(--text-muted);" id="mobile-dd-email">user@example.com</div>
+                            <span class="prof-plan-badge">Free Plan</span>
+                        </div>
+                    </div>
+                    <div class="prof-nav-dd-list">
+                        <a href="profile.html" class="prof-nav-dd-item"><i class="fa-solid fa-user"></i> My Profile</a>
+                        <a href="settings.html" class="prof-nav-dd-item"><i class="fa-solid fa-gear"></i> App Settings</a>
+                        <div class="prof-nav-dd-divider"></div>
+                        <button class="prof-nav-dd-item danger" onclick="localStorage.removeItem('isLoggedIn');window.location.href='login.html'"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 

@@ -1,0 +1,82 @@
+/* ===== SECURITY TIPS PAGE ===== */
+
+/* KPI Row */
+.tips-kpi-row { display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem; }
+@media(max-width:600px){ .tips-kpi-row{grid-template-columns:repeat(2,1fr);} }
+.tips-kpi { background:var(--bg-surface);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.1rem;text-align:center; }
+.tips-kpi-val { font-size:1.8rem;font-weight:800;color:var(--text-main);line-height:1; }
+.tips-kpi-lbl { font-size:0.75rem;color:var(--text-muted);margin-top:0.25rem; }
+
+/* Banner */
+.tips-banner {
+    display:flex;align-items:center;gap:1.25rem;
+    background:linear-gradient(135deg,var(--color-primary),#0f766e);
+    border-radius:var(--radius-xl);padding:1.5rem 1.75rem;
+    color:white;margin-bottom:1.75rem;flex-wrap:wrap;
+}
+.tips-banner-icon { width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0; }
+.tips-banner-btn { background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:0.5rem 1rem;border-radius:8px;text-decoration:none;font-size:0.82rem;font-weight:600;white-space:nowrap;transition:background 0.2s; }
+.tips-banner-btn:hover { background:rgba(255,255,255,0.25); }
+
+/* Main layout */
+.tips-main-grid { display:grid;grid-template-columns:1fr 290px;gap:1.5rem;align-items:start; }
+@media(max-width:1024px){ .tips-main-grid{grid-template-columns:1fr;} }
+.tips-sidebar { display:flex;flex-direction:column;gap:1.25rem; }
+
+/* Toolbar */
+.tips-toolbar { display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem;flex-wrap:wrap;gap:0.75rem; }
+.tips-filter-tabs { display:flex;gap:0.35rem;flex-wrap:wrap; }
+.tips-tab { padding:0.35rem 0.8rem;border-radius:20px;border:1px solid var(--border-color);background:var(--bg-surface);font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--text-muted);transition:all 0.2s; }
+.tips-tab:hover { border-color:var(--color-accent); }
+.tips-tab.active { background:var(--color-primary);color:white;border-color:var(--color-primary); }
+.tips-select { background:var(--bg-surface);border:1px solid var(--border-color);color:var(--text-main);padding:0.35rem 0.7rem;border-radius:8px;font-size:0.8rem;cursor:pointer;font-family:inherit;outline:none; }
+
+/* Tips Grid */
+.tips-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:1rem; }
+@media(max-width:700px){ .tips-grid{grid-template-columns:1fr;} }
+
+/* Tip Card */
+.tip-card { background:var(--bg-surface);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.1rem;display:flex;flex-direction:column;gap:0.6rem;transition:transform 0.2s;position:relative; }
+.tip-card:hover { transform:translateY(-2px); }
+.tip-card.read { opacity:0.55; }
+.tip-card-top { display:flex;align-items:center;gap:0.6rem; }
+.tip-icon-wrap { width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0; }
+.tip-icon-wrap.critical { background:rgba(239,68,68,0.1); color:var(--color-danger); }
+.tip-icon-wrap.high     { background:rgba(245,158,11,0.1); color:var(--color-warning); }
+.tip-icon-wrap.medium   { background:rgba(96,165,250,0.1);  color:#60a5fa; }
+.tip-icon-wrap.low      { background:rgba(13,148,136,0.1);  color:var(--color-accent); }
+
+.tip-badge { display:inline-block;padding:0.18rem 0.5rem;border-radius:20px;font-size:0.68rem;font-weight:700;text-transform:uppercase;margin-right:0.25rem; }
+.tip-badge.critical { background:rgba(239,68,68,0.1); color:var(--color-danger); }
+.tip-badge.high     { background:rgba(245,158,11,0.1); color:var(--color-warning); }
+.tip-badge.medium   { background:rgba(96,165,250,0.1);  color:#60a5fa; }
+.tip-badge.tag      { background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-muted); }
+
+.tip-save-btn { margin-left:auto;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:0.9rem;padding:0.2rem;transition:color 0.2s;flex-shrink:0; }
+.tip-save-btn.saved { color:var(--color-warning); }
+.tip-title { font-size:0.88rem;font-weight:700;margin:0;line-height:1.35; }
+.tip-desc  { font-size:0.78rem;color:var(--text-muted);line-height:1.55;margin:0;flex:1; }
+.tip-footer { display:flex;gap:0.5rem;margin-top:0.25rem; }
+.tip-read-btn { padding:0.3rem 0.7rem;border-radius:20px;border:1px solid var(--border-color);background:var(--bg-main);font-size:0.72rem;font-weight:600;cursor:pointer;color:var(--text-muted);transition:all 0.2s;font-family:inherit; }
+.tip-read-btn:hover,.tip-read-btn.done { border-color:var(--color-accent);color:var(--color-accent);background:rgba(13,148,136,0.06); }
+.tip-ask-btn { padding:0.3rem 0.7rem;border-radius:20px;border:1px solid var(--border-color);background:var(--bg-main);font-size:0.72rem;font-weight:600;cursor:pointer;color:var(--text-muted);transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.3rem; }
+.tip-ask-btn:hover { border-color:var(--color-accent);color:var(--color-accent); }
+
+/* Challenge Card */
+.tips-challenge-card { background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid rgba(245,158,11,0.3);border-radius:var(--radius-lg);padding:1.25rem;color:white; }
+
+/* Sidebar db-card reuse */
+.db-card { background:var(--bg-surface);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.25rem; }
+
+/* Quick Links */
+.tips-quick-link { display:flex;align-items:center;gap:0.6rem;padding:0.55rem 0.75rem;background:var(--bg-main);border:1px solid var(--border-color);border-radius:8px;text-decoration:none;font-size:0.82rem;font-weight:500;color:var(--text-main);transition:all 0.2s; }
+.tips-quick-link i { color:var(--color-accent);width:14px;text-align:center; }
+.tips-quick-link:hover { border-color:var(--color-accent);color:var(--color-accent); }
+
+/* Threat items */
+.tips-threat-item { display:flex;align-items:flex-start;gap:0.6rem;padding:0.35rem 0;border-bottom:1px solid var(--border-color); }
+.tips-threat-item:last-child { border-bottom:none; }
+.tips-threat-dot { width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:5px; }
+.tips-threat-dot.danger  { background:var(--color-danger); }
+.tips-threat-dot.warning { background:var(--color-warning); }
+.tips-threat-dot.safe    { background:var(--color-accent); }

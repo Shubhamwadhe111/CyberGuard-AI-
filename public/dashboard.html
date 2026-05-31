@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - CyberGuard AI</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/mobile-app.css">
     <link rel="stylesheet" href="assets/css/profile.css">
     <link rel="stylesheet" href="assets/css/dashboard-premium.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,6 +15,39 @@
     </style>
 </head>
 <body>
+    
+    <!-- Mobile Top App Bar -->
+    <header class="mobile-top-bar">
+        <div class="mobile-logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>CyberGuard AI</span>
+        </div>
+                <div class="mobile-top-actions">
+            <span id="mobileNavBellLink"></span>
+            <div class="prof-nav-wrap" id="mobileProfNavWrap">
+                <button class="mobile-avatar" id="mobileProfNavBtn" style="cursor:pointer;padding:0;overflow:hidden;border:none;display:flex;align-items:center;justify-content:center;">
+                    <img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" id="mobile-nav-avatar-img" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                </button>
+                <div class="prof-nav-dropdown" id="mobileProfNavDropdown">
+                    <div class="prof-nav-dd-header">
+                        <img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" style="width:42px;height:42px;border-radius:50%;" id="mobile-dd-avatar-img">
+                        <div>
+                            <div style="font-weight:700;font-size:0.88rem;" id="mobile-dd-full-name">User Name</div>
+                            <div style="font-size:0.73rem;color:var(--text-muted);" id="mobile-dd-email">user@example.com</div>
+                            <span class="prof-plan-badge">Free Plan</span>
+                        </div>
+                    </div>
+                    <div class="prof-nav-dd-list">
+                        <a href="profile.html" class="prof-nav-dd-item"><i class="fa-solid fa-user"></i> My Profile</a>
+                        <a href="settings.html" class="prof-nav-dd-item"><i class="fa-solid fa-gear"></i> App Settings</a>
+                        <div class="prof-nav-dd-divider"></div>
+                        <button class="prof-nav-dd-item danger" onclick="localStorage.removeItem('isLoggedIn');window.location.href='login.html'"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
 <div class="dashboard-layout">
 
     <!-- Top Navbar -->
@@ -59,17 +93,6 @@
         </div>
     </nav>
 
-    <!-- Mobile Header -->
-    <header class="mobile-app-header">
-        <div class="logo" style="font-size:1rem;">
-            <div class="logo-icon" style="width:24px;height:24px;font-size:0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>
-            CyberGuard
-        </div>
-        <div class="header-actions">
-            <a href="alerts.html" class="text-main" style="font-size:1.25rem;"><i class="fa-regular fa-bell"></i></a>
-            <a href="profile.html" class="text-main" style="font-size:1.25rem;"><i class="fa-regular fa-circle-user"></i></a>
-        </div>
-    </header>
 
     <main class="dashboard-main">
         <div class="dashboard-content">
@@ -78,7 +101,7 @@
             <div class="db-page-header">
                 <div>
                     <h1 class="db-page-title">Security Dashboard</h1>
-                    <p class="db-page-subtitle">Last updated: <span id="db-last-update">just now</span> &nbsp;|&nbsp; <i class="fa-solid fa-circle" style="color:var(--color-accent);font-size:0.6rem;"></i> All systems nominal</p>
+                    <p class="db-page-subtitle">Last updated: <span id="db-last-update">just now</span> &nbsp;|&nbsp; <span id="db-last-scan">Last scan: Never</span> &nbsp;|&nbsp; <span id="db-status-header"><i class="fa-solid fa-circle" style="color:var(--color-accent);font-size:0.6rem;"></i> All systems nominal</span> &nbsp;|&nbsp; <span id="db-status-desc" style="color:var(--text-muted);">No critical threats detected.</span></p>
                 </div>
                 <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
                     <a href="scan.html" class="btn btn-primary"><i class="fa-solid fa-satellite-dish"></i> Run Scan</a>
@@ -148,11 +171,11 @@
                             <div class="db-score-ring-wrap">
                                 <svg viewBox="0 0 120 120" class="db-score-svg">
                                     <circle cx="60" cy="60" r="52" fill="none" stroke="var(--border-color)" stroke-width="10"/>
-                                    <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-accent)" stroke-width="10"
+                                    <circle id="db-score-path" cx="60" cy="60" r="52" fill="none" stroke="var(--color-accent)" stroke-width="10"
                                         stroke-dasharray="326.7" stroke-dashoffset="49"
                                         stroke-linecap="round" transform="rotate(-90 60 60)"/>
                                 </svg>
-                                <div class="db-score-ring-label">85<span>/100</span></div>
+                                <div class="db-score-ring-label" id="db-score-circle">85<span>/100</span></div>
                             </div>
                             <div class="db-score-breakdown">
                                 <div class="db-score-row">
@@ -182,7 +205,7 @@
                     <!-- Threat Timeline -->
                     <div class="db-card">
                         <div class="db-card-title">Threat Timeline <a href="alerts.html" class="text-accent" style="font-size:0.85rem;font-weight:600;">View All</a></div>
-                        <div class="db-timeline">
+                        <div class="db-timeline" id="db-timeline">
                             <div class="db-timeline-item">
                                 <div class="db-timeline-dot danger"></div>
                                 <a href="threat-details.html" class="db-timeline-content">
@@ -380,20 +403,39 @@
         </div>
     </main>
 
-    <!-- Mobile Bottom Nav -->
-    <nav class="bottom-nav">
-        <a href="dashboard.html" class="bottom-nav-item active"><i class="fa-solid fa-house"></i><span>Home</span></a>
-        <a href="scan.html" class="bottom-nav-item"><i class="fa-solid fa-satellite-dish"></i><span>Scan</span></a>
-        <a href="ai-agent.html" class="bottom-nav-item chat-fab"><div class="fab-icon"><i class="fa-solid fa-robot"></i></div></a>
-        <a href="alerts.html" class="bottom-nav-item"><i class="fa-solid fa-bell"></i><span>Alerts</span></a>
-        <a href="settings.html" class="bottom-nav-item"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <a href="home.html" class="nav-item-mobile">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="dashboard.html" class="nav-item-mobile active">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="ai-agent.html" class="nav-item-mobile">
+            <i class="fa-solid fa-robot"></i>
+            <span>AI Agent</span>
+        </a>
+        <a href="scan.html" class="nav-item-mobile">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Scan</span>
+        </a>
+        <a href="alerts.html" class="nav-item-mobile">
+            <i class="fa-solid fa-bell"></i>
+            <span>Alerts</span>
+        </a>
+        <a href="security-tips.html" class="nav-item-mobile">
+            <i class="fa-solid fa-lightbulb"></i>
+            <span>Tips</span>
+        </a>
     </nav>
-
 </div>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/navigation.js"></script>
     <script src="assets/js/notifications.js"></script>
     <script src="assets/js/profile.js"></script>
+    <script src="assets/js/dashboard.js"></script>
 <script>
     document.getElementById('db-last-update').textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
 </script>

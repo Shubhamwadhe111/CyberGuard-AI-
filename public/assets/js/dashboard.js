@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         // 2. Fetch User Profile for Name/Email
-        const userRes = await fetch('http://localhost:3000/api/user/profile', {
+        const userRes = await fetch('/api/user/profile', {
             method: 'GET',
             headers: { 'x-auth-token': token }
         });
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // 3. Fetch Dashboard Data
-        const res = await fetch('http://localhost:3000/api/dashboard', {
+        const res = await fetch('/api/dashboard', {
             method: 'GET',
             headers: { 'x-auth-token': token }
         });
@@ -61,6 +61,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Special handling for score circle
             const scoreCircle = document.getElementById('db-score-circle');
             if (scoreCircle) scoreCircle.innerHTML = `${data.metrics.score}<span>/100</span>`;
+            
+            const scorePath = document.getElementById('db-score-path');
+            if (scorePath) {
+                const totalLength = 326.7;
+                const score = data.metrics.score !== undefined ? data.metrics.score : 100;
+                const offset = totalLength - (totalLength * score) / 100;
+                scorePath.style.strokeDashoffset = offset;
+            }
             
             // Status Info
             const statusHeader = document.getElementById('db-status-header');

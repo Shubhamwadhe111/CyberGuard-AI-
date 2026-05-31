@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const publicPages = ['index.html', 'features.html', 'security-tips.html', 'support.html', ''];
     const authPages = ['login.html', 'signup.html', 'otp.html'];
-    const appPages = ['dashboard.html', 'scan.html', 'alerts.html', 'ai-agent.html', 'profile.html', 'settings.html', 'threat-details.html'];
+    const appPages = ['home.html', 'permissions.html', 'dashboard.html', 'scan.html', 'alerts.html', 'ai-agent.html', 'profile.html', 'settings.html', 'threat-details.html'];
     
     let currentPage = window.location.pathname.split('/').pop() || 'index.html';
     if (currentPage === '/' || currentPage === '') currentPage = 'index.html';
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (isLoggedIn && authPages.includes(currentPage)) {
-        window.location.href = 'dashboard.html';
+        window.location.href = 'home.html';
         return;
     }
 
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (navActions && isLoggedIn) {
             navActions.innerHTML = `
-                <a href="dashboard.html" class="btn btn-primary">Go to Dashboard →</a>
+                <a href="home.html" class="btn btn-primary">Go to Home →</a>
             `;
         }
     }
@@ -88,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-    }
 
     // 3. Handle App Navigation
     if (appPages.includes(currentPage)) {
@@ -131,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isLoggedIn || !token) return;
 
         try {
-            const res = await fetch('http://localhost:3000/api/user/profile', {
+            const res = await fetch('/api/user/profile', {
                 method: 'GET',
                 headers: { 'x-auth-token': token }
             });
@@ -142,11 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Update all possible name/email/avatar fields globally
                 document.querySelectorAll('#nav-user-name').forEach(el => el.innerText = firstName);
-                document.querySelectorAll('#dd-full-name').forEach(el => el.innerText = data.name || 'User');
-                document.querySelectorAll('#dd-email').forEach(el => el.innerText = data.email || '');
+                document.querySelectorAll('#welcome-user-name').forEach(el => el.innerText = firstName);
+                document.querySelectorAll('#dd-full-name, #mobile-dd-full-name').forEach(el => el.innerText = data.name || 'User');
+                document.querySelectorAll('#dd-email, #mobile-dd-email').forEach(el => el.innerText = data.email || '');
                 
                 const avatarImg = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'U')}&background=0d9488&color=fff`;
-                document.querySelectorAll('#nav-avatar-img').forEach(el => el.src = avatarImg);
+                document.querySelectorAll('#nav-avatar-img, #mobile-nav-avatar-img, #mobile-dd-avatar-img').forEach(el => el.src = avatarImg);
                 
                 // Also update profile-specific fields if they exist on the page
                 const dispName = document.getElementById('displayUserName');
@@ -159,4 +159,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     syncIdentity();
+
+    // 4. Fetch and populate homepage real data
+    async function loadHomeMetrics() {
+        if (currentPage !== 'home.html') return;
+        if (!isLoggedIn || !token) return;
+        
+        try {
+            const res = await fetch('/api/dashboard', {
+                method: 'GET',
+                headers: { 'x-auth-token': token }
+            });
+            
+            if (res.ok) {
+                const data = await res.json();
+                
+                const scansTodayEl = document.getElementById('health-scans-today');
+                const activeThreatsEl = document.getElementById('health-active-threats');
+                const activeDevicesEl = document.getElementById('health-active-devices');
+                
+                if (scansTodayEl && data.metrics && data.metrics.scansToday !== undefined) {
+                    scansTodayEl.textContent = data.metrics.scansToday.toString();
+                }
+                if (activeThreatsEl && data.metrics && data.metrics.activeThreats !== undefined) {
+                    activeThreatsEl.textContent = data.metrics.activeThreats.toString();
+                }
+                if (activeDevicesEl && data.metrics && data.metrics.activeDevices !== undefined) {
+                    activeDevicesEl.textContent = data.metrics.activeDevices.toString();
+                }
+            }
+        } catch (err) {
+            console.error("Error loading home metrics:", err);
+        }
+    }
+    loadHomeMetrics();
 });

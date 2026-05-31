@@ -176,7 +176,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // eslint-disable-next-line no-unused-vars
     function setChip(cat, state) {
         const chip = document.getElementById(cat.id);
         const cs   = document.getElementById(cat.chip);

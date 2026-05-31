@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alerts - CyberGuard AI</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/mobile-app.css">
     <link rel="stylesheet" href="assets/css/profile.css">
     <link rel="stylesheet" href="assets/css/alerts.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,6 +15,39 @@
     </style>
 </head>
 <body>
+    
+    <!-- Mobile Top App Bar -->
+    <header class="mobile-top-bar">
+        <div class="mobile-logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>CyberGuard AI</span>
+        </div>
+                <div class="mobile-top-actions">
+            <span id="mobileNavBellLink"></span>
+            <div class="prof-nav-wrap" id="mobileProfNavWrap">
+                <button class="mobile-avatar" id="mobileProfNavBtn" style="cursor:pointer;padding:0;overflow:hidden;border:none;display:flex;align-items:center;justify-content:center;">
+                    <img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" id="mobile-nav-avatar-img" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                </button>
+                <div class="prof-nav-dropdown" id="mobileProfNavDropdown">
+                    <div class="prof-nav-dd-header">
+                        <img src="https://ui-avatars.com/api/?name=User&background=0d9488&color=fff" alt="Profile" style="width:42px;height:42px;border-radius:50%;" id="mobile-dd-avatar-img">
+                        <div>
+                            <div style="font-weight:700;font-size:0.88rem;" id="mobile-dd-full-name">User Name</div>
+                            <div style="font-size:0.73rem;color:var(--text-muted);" id="mobile-dd-email">user@example.com</div>
+                            <span class="prof-plan-badge">Free Plan</span>
+                        </div>
+                    </div>
+                    <div class="prof-nav-dd-list">
+                        <a href="profile.html" class="prof-nav-dd-item"><i class="fa-solid fa-user"></i> My Profile</a>
+                        <a href="settings.html" class="prof-nav-dd-item"><i class="fa-solid fa-gear"></i> App Settings</a>
+                        <div class="prof-nav-dd-divider"></div>
+                        <button class="prof-nav-dd-item danger" onclick="localStorage.removeItem('isLoggedIn');window.location.href='login.html'"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
 <div class="dashboard-layout">
     <nav class="app-topnav">
         <a href="index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div><span class="brand-name">CyberGuard</span></a>
@@ -53,10 +87,6 @@
             </div>
         </div>
     </nav>
-    <header class="mobile-app-header">
-        <div class="logo" style="font-size:1rem;"><div class="logo-icon" style="width:24px;height:24px;font-size:0.6rem;"><i class="fa-solid fa-shield-halved"></i></div>CyberGuard</div>
-        <div class="header-actions"><a href="profile.html" class="text-main" style="font-size:1.25rem;"><i class="fa-regular fa-circle-user"></i></a></div>
-    </header>
 
     <main class="dashboard-main">
         <div class="dashboard-content">
@@ -127,176 +157,9 @@
                     <!-- Alert Cards -->
                     <div id="alertsList">
 
-                        <div class="al-card" data-status="high">
-                            <div class="al-card-stripe danger"></div>
-                            <div class="al-card-icon danger"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                            <div class="al-card-body">
-                                <div class="al-card-top">
-                                    <div>
-                                        <span class="al-badge danger">High Risk</span>
-                                        <span class="al-badge tag">SMS Phishing</span>
-                                    </div>
-                                    <span class="al-time"><i class="fa-regular fa-clock"></i> Today, 10:45 AM</span>
-                                </div>
-                                <h3 class="al-card-title">Suspicious bank verification message</h3>
-                                <p class="al-card-desc">Urgent language detected requesting OTP from unknown sender. URL matches known phishing domain database.</p>
-                                <div class="al-card-footer">
-                                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                                        <a href="threat-details.html" class="btn btn-primary" style="padding:0.4rem 0.9rem;font-size:0.82rem;"><i class="fa-solid fa-eye"></i> View Details</a>
-                                        <a href="ai-agent.html" class="btn btn-outline" style="padding:0.4rem 0.9rem;font-size:0.82rem;"><i class="fa-solid fa-robot"></i> Ask AI</a>
-                                        <button class="btn btn-outline al-resolve-btn" style="padding:0.4rem 0.9rem;font-size:0.82rem;" onclick="resolveAlert(this)"><i class="fa-solid fa-check"></i> Resolve</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="al-card" data-status="high">
-                            <div class="al-card-stripe danger"></div>
-                            <div class="al-card-icon danger"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                            <div class="al-card-body">
-                                <div class="al-card-top">
-                                    <div>
-                                        <span class="al-badge danger">High Risk</span>
-                                        <span class="al-badge tag">Phishing Link</span>
-                                    </div>
-                                    <span class="al-time"><i class="fa-regular fa-clock"></i> Today, 9:15 AM</span>
-                                </div>
-                                <h3 class="al-card-title">Fake banking login page intercepted</h3>
-                                <p class="al-card-desc">Browser blocked access to a domain registered 2 days ago masquerading as a major Indian bank's login portal.</p>
-                                <div class="al-card-footer">
-                                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                                        <a href="threat-details.html" class="btn btn-primary" style="padding:0.4rem 0.9rem;font-size:0.82rem;"><i class="fa-solid fa-eye"></i> View Details</a>
-                                        <a href="ai-agent.html" class="btn btn-outline" style="padding:0.4rem 0.9rem;font-size:0.82rem;"><i class="fa-solid fa-robot"></i> Ask AI</a>
-                                        <button class="btn btn-outline al-resolve-btn" style="padding:0.4rem 0.9rem;font-size:0.82rem;" onclick="resolveAlert(this)"><i class="fa-solid fa-check"></i> Resolve</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="al-card" data-status="warning">
-                            <div class="al-card-stripe warning"></div>
-                            <div class="al-card-icon warning"><i class="fa-solid fa-circle-exclamation"></i></div>
-                            <div class="al-card-body">
-                                <div class="al-card-top">
-                                    <div>
-                                        <span class="al-badge warning">Warning</span>
-                                        <span class="al-badge tag">Clipboard Link</span>
-                                    </div>
-                                    <span class="al-time"><i class="fa-regular fa-clock"></i> Yesterday, 2:15 PM</span>
-                                </div>
-                                <h3 class="al-card-title">Unknown shortened payment URL in clipboard</h3>
-                                <p class="al-card-desc">A bit.ly redirect found in clipboard pointing to an unverified payment gateway. Destination URL unknown.</p>
-                                <div class="al-card-footer">
-                                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                                        <a href="threat-details.html" class="btn btn-outline" style="padding:0.4rem 0.9rem;font-size:0.82rem;"><i class="fa-solid fa-eye"></i> View Details</a>
-                                        <button class="btn btn-outline al-resolve-btn" style="padding:0.4rem 0.9rem;font-size:0.82rem;" onclick="resolveAlert(this)"><i class="fa-solid fa-check"></i> Resolve</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="al-card" data-status="warning">
-                            <div class="al-card-stripe warning"></div>
-                            <div class="al-card-icon warning"><i class="fa-solid fa-mobile-screen"></i></div>
-                            <div class="al-card-body">
-                                <div class="al-card-top">
-                                    <div>
-                                        <span class="al-badge warning">Warning</span>
-                                        <span class="al-badge tag">App Permission</span>
-                                    </div>
-                                    <span class="al-time"><i class="fa-regular fa-clock"></i> Yesterday, 9:30 AM</span>
-                                </div>
-                                <h3 class="al-card-title">Calculator App requests Contacts &amp; Microphone</h3>
-                                <p class="al-card-desc">"Calculator Pro" is requesting microphone and contact access — permissions unrelated to its core function.</p>
-                                <div class="al-card-footer">
-                                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                                        <a href="threat-details.html" class="btn btn-outline" style="padding:0.4rem 0.9rem;font-size:0.82rem;"><i class="fa-solid fa-eye"></i> View Details</a>
-                                        <button class="btn btn-outline al-resolve-btn" style="padding:0.4rem 0.9rem;font-size:0.82rem;" onclick="resolveAlert(this)"><i class="fa-solid fa-check"></i> Resolve</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="al-card" data-status="warning">
-                            <div class="al-card-stripe warning"></div>
-                            <div class="al-card-icon warning"><i class="fa-solid fa-wifi"></i></div>
-                            <div class="al-card-body">
-                                <div class="al-card-top">
-                                    <div>
-                                        <span class="al-badge warning">Warning</span>
-                                        <span class="al-badge tag">Network</span>
-                                    </div>
-                                    <span class="al-time"><i class="fa-regular fa-clock"></i> May 9, 4:00 PM</span>
-                                </div>
-                                <h3 class="al-card-title">Unsecured public Wi-Fi connection detected</h3>
-                                <p class="al-card-desc">Device connected to "Free_Airport_WiFi" — an open network with no encryption. Data may be exposed.</p>
-                                <div class="al-card-footer">
-                                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                                        <a href="threat-details.html" class="btn btn-outline" style="padding:0.4rem 0.9rem;font-size:0.82rem;"><i class="fa-solid fa-eye"></i> View Details</a>
-                                        <button class="btn btn-outline al-resolve-btn" style="padding:0.4rem 0.9rem;font-size:0.82rem;" onclick="resolveAlert(this)"><i class="fa-solid fa-check"></i> Resolve</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="al-card" data-status="info">
-                            <div class="al-card-stripe info"></div>
-                            <div class="al-card-icon info"><i class="fa-solid fa-circle-info"></i></div>
-                            <div class="al-card-body">
-                                <div class="al-card-top">
-                                    <div>
-                                        <span class="al-badge info">Info</span>
-                                        <span class="al-badge tag">System</span>
-                                    </div>
-                                    <span class="al-time"><i class="fa-regular fa-clock"></i> May 8, 8:00 AM</span>
-                                </div>
-                                <h3 class="al-card-title">Security patch available — Android KB-2024-05</h3>
-                                <p class="al-card-desc">A new OS security patch is available. Updating keeps your device protected against newly discovered vulnerabilities.</p>
-                                <div class="al-card-footer">
-                                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                                        <button class="btn btn-primary" style="padding:0.4rem 0.9rem;font-size:0.82rem;" onclick="resolveAlert(this)"><i class="fa-solid fa-download"></i> Update Now</button>
-                                        <button class="btn btn-outline al-resolve-btn" style="padding:0.4rem 0.9rem;font-size:0.82rem;" onclick="resolveAlert(this)"><i class="fa-solid fa-xmark"></i> Dismiss</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="al-card resolved" data-status="resolved">
-                            <div class="al-card-stripe safe"></div>
-                            <div class="al-card-icon safe"><i class="fa-solid fa-shield-check"></i></div>
-                            <div class="al-card-body" style="opacity:0.6;">
-                                <div class="al-card-top">
-                                    <div>
-                                        <span class="al-badge safe">Resolved</span>
-                                        <span class="al-badge tag">SMS Phishing</span>
-                                    </div>
-                                    <span class="al-time"><i class="fa-regular fa-clock"></i> May 7, 11:00 AM</span>
-                                </div>
-                                <h3 class="al-card-title" style="text-decoration:line-through;">Fake delivery notification from unknown sender</h3>
-                                <p class="al-card-desc">User blocked the sender and reported to carrier. Threat neutralized.</p>
-                                <div class="al-card-footer">
-                                    <span style="font-size:0.82rem;color:var(--color-accent);font-weight:600;"><i class="fa-solid fa-check-circle"></i> Resolved by user on May 7</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="al-card resolved" data-status="resolved">
-                            <div class="al-card-stripe safe"></div>
-                            <div class="al-card-icon safe"><i class="fa-solid fa-shield-check"></i></div>
-                            <div class="al-card-body" style="opacity:0.6;">
-                                <div class="al-card-top">
-                                    <div>
-                                        <span class="al-badge safe">Resolved</span>
-                                        <span class="al-badge tag">App Permission</span>
-                                    </div>
-                                    <span class="al-time"><i class="fa-regular fa-clock"></i> May 6, 3:30 PM</span>
-                                </div>
-                                <h3 class="al-card-title" style="text-decoration:line-through;">Flashlight app location access revoked</h3>
-                                <p class="al-card-desc">User revoked GPS permission from Flashlight App. Risk eliminated.</p>
-                                <div class="al-card-footer">
-                                    <span style="font-size:0.82rem;color:var(--color-accent);font-weight:600;"><i class="fa-solid fa-check-circle"></i> Resolved by user on May 6</span>
-                                </div>
-                            </div>
+                        <div class="al-card loading-card" style="text-align: center; padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; width: 100%;">
+                            <div style="font-size: 1.5rem; color: var(--color-accent);"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                            <div style="color: var(--text-muted); font-size: 0.9rem;">Fetching live threats from security database...</div>
                         </div>
 
                     </div>
@@ -378,12 +241,32 @@
         </div>
     </main>
 
-    <nav class="bottom-nav">
-        <a href="dashboard.html" class="bottom-nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
-        <a href="scan.html" class="bottom-nav-item"><i class="fa-solid fa-satellite-dish"></i><span>Scan</span></a>
-        <a href="ai-agent.html" class="bottom-nav-item chat-fab"><div class="fab-icon"><i class="fa-solid fa-robot"></i></div></a>
-        <a href="alerts.html" class="bottom-nav-item active"><i class="fa-solid fa-bell"></i><span>Alerts</span></a>
-        <a href="settings.html" class="bottom-nav-item"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <a href="home.html" class="nav-item-mobile">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="dashboard.html" class="nav-item-mobile">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="ai-agent.html" class="nav-item-mobile">
+            <i class="fa-solid fa-robot"></i>
+            <span>AI Agent</span>
+        </a>
+        <a href="scan.html" class="nav-item-mobile">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Scan</span>
+        </a>
+        <a href="alerts.html" class="nav-item-mobile active">
+            <i class="fa-solid fa-bell"></i>
+            <span>Alerts</span>
+        </a>
+        <a href="security-tips.html" class="nav-item-mobile">
+            <i class="fa-solid fa-lightbulb"></i>
+            <span>Tips</span>
+        </a>
     </nav>
 </div>
 

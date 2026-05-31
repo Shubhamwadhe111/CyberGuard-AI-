@@ -142,11 +142,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Update all possible name/email/avatar fields globally
                 document.querySelectorAll('#nav-user-name').forEach(el => el.innerText = firstName);
                 document.querySelectorAll('#welcome-user-name').forEach(el => el.innerText = firstName);
-                document.querySelectorAll('#dd-full-name').forEach(el => el.innerText = data.name || 'User');
-                document.querySelectorAll('#dd-email').forEach(el => el.innerText = data.email || '');
+                document.querySelectorAll('#dd-full-name, #mobile-dd-full-name').forEach(el => el.innerText = data.name || 'User');
+                document.querySelectorAll('#dd-email, #mobile-dd-email').forEach(el => el.innerText = data.email || '');
                 
                 const avatarImg = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'U')}&background=0d9488&color=fff`;
-                document.querySelectorAll('#nav-avatar-img').forEach(el => el.src = avatarImg);
+                document.querySelectorAll('#nav-avatar-img, #mobile-nav-avatar-img, #mobile-dd-avatar-img').forEach(el => el.src = avatarImg);
                 
                 // Also update profile-specific fields if they exist on the page
                 const dispName = document.getElementById('displayUserName');

@@ -14,14 +14,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (res.ok) {
                 const data = await res.json();
                 
-                // 1. Update Navbar elements (Common)
+                // 1. Update Navbar elements (Common Desktop & Mobile)
                 const firstName = data.name ? data.name.split(' ')[0] : 'User';
                 if (document.getElementById('nav-user-name')) document.getElementById('nav-user-name').innerText = firstName;
                 if (document.getElementById('dd-full-name')) document.getElementById('dd-full-name').innerText = data.name || 'User';
                 if (document.getElementById('dd-email')) document.getElementById('dd-email').innerText = data.email || '';
                 
+                if (document.getElementById('mobile-dd-full-name')) document.getElementById('mobile-dd-full-name').innerText = data.name || 'User';
+                if (document.getElementById('mobile-dd-email')) document.getElementById('mobile-dd-email').innerText = data.email || '';
+                
                 const avatarImg = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'U')}&background=0d9488&color=fff`;
                 if (document.getElementById('nav-avatar-img')) document.getElementById('nav-avatar-img').src = avatarImg;
+                if (document.getElementById('mobile-nav-avatar-img')) document.getElementById('mobile-nav-avatar-img').src = avatarImg;
+                if (document.getElementById('mobile-dd-avatar-img')) document.getElementById('mobile-dd-avatar-img').src = avatarImg;
 
                 // 2. Update Profile Page Specifics
                 if (document.getElementById('displayUserName')) document.getElementById('displayUserName').innerText = data.name || 'User';
@@ -43,22 +48,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     loadUserProfile();
 
-    // ===== PROFILE DROPDOWN (navbar) =====
-    function initProfileDropdown() {
+    // ===== PROFILE DROPDOWN (navbar & mobile top bar) =====
+    function initProfileDropdowns() {
         const wrap = document.getElementById('profNavWrap');
         const btn  = document.getElementById('profNavBtn');
-        const dd   = document.getElementById('profNavDropdown');
-        if (!wrap || !btn || !dd) return;
+        if (wrap && btn) {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const mWrap = document.getElementById('mobileProfNavWrap');
+                if (mWrap) mWrap.classList.remove('open');
+                wrap.classList.toggle('open');
+            });
+        }
 
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            wrap.classList.toggle('open');
-        });
+        const mWrap = document.getElementById('mobileProfNavWrap');
+        const mBtn  = document.getElementById('mobileProfNavBtn');
+        if (mWrap && mBtn) {
+            mBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const dWrap = document.getElementById('profNavWrap');
+                if (dWrap) dWrap.classList.remove('open');
+                mWrap.classList.toggle('open');
+            });
+        }
+
         document.addEventListener('click', (e) => {
-            if (!wrap.contains(e.target)) wrap.classList.remove('open');
+            if (wrap && !wrap.contains(e.target)) wrap.classList.remove('open');
+            if (mWrap && !mWrap.contains(e.target)) mWrap.classList.remove('open');
         });
     }
-    initProfileDropdown();
+    initProfileDropdowns();
 
     // ===== PROFILE EDIT LOGIC =====
     const profileForm = document.getElementById('profileForm');
@@ -120,8 +139,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (document.getElementById('dd-full-name')) document.getElementById('dd-full-name').innerText = data.name || 'User';
                     if (document.getElementById('dd-email')) document.getElementById('dd-email').innerText = data.email || '';
                     
+                    if (document.getElementById('mobile-dd-full-name')) document.getElementById('mobile-dd-full-name').innerText = data.name || 'User';
+                    if (document.getElementById('mobile-dd-email')) document.getElementById('mobile-dd-email').innerText = data.email || '';
+                    
                     const avatarImg = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'U')}&background=0d9488&color=fff`;
                     if (document.getElementById('nav-avatar-img')) document.getElementById('nav-avatar-img').src = avatarImg;
+                    if (document.getElementById('mobile-nav-avatar-img')) document.getElementById('mobile-nav-avatar-img').src = avatarImg;
+                    if (document.getElementById('mobile-dd-avatar-img')) document.getElementById('mobile-dd-avatar-img').src = avatarImg;
 
                     if (document.getElementById('profInitials')) {
                         const initials = data.name ? data.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'U';
