@@ -189,20 +189,37 @@ function getTime() {
   return new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 }
 
-function appendMsg(html, role, time) {
+function appendMsg(htmlOrText, role, time) {
   const chat = document.getElementById('chatMessages');
   const isBot = role === 'bot';
-  const avatar = isBot
-    ? `<div class="ag-msg-avatar"><i class="fa-solid fa-robot"></i></div>`
-    : `<div class="ag-msg-avatar"><i class="fa-solid fa-user"></i></div>`;
   const div = document.createElement('div');
   div.className = `ag-msg ${role}`;
-  div.innerHTML = `
-    ${avatar}
-    <div class="ag-msg-content">
-      <div class="ag-msg-bubble ${role}">${html}</div>
-      <div class="ag-msg-time">${time}</div>
-    </div>`;
+
+  const avatarDiv = document.createElement('div');
+  avatarDiv.className = 'ag-msg-avatar';
+  const avatarIcon = document.createElement('i');
+  avatarIcon.className = isBot ? 'fa-solid fa-robot' : 'fa-solid fa-user';
+  avatarDiv.appendChild(avatarIcon);
+  div.appendChild(avatarDiv);
+
+  const contentDiv = document.createElement('div');
+  contentDiv.className = 'ag-msg-content';
+
+  const bubbleDiv = document.createElement('div');
+  bubbleDiv.className = `ag-msg-bubble ${role}`;
+  if (role === 'user') {
+    bubbleDiv.textContent = htmlOrText;
+  } else {
+    bubbleDiv.innerHTML = htmlOrText;
+  }
+  contentDiv.appendChild(bubbleDiv);
+
+  const timeDiv = document.createElement('div');
+  timeDiv.className = 'ag-msg-time';
+  timeDiv.textContent = time;
+  contentDiv.appendChild(timeDiv);
+
+  div.appendChild(contentDiv);
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
 }
@@ -256,10 +273,25 @@ window.sendMessage = async function() {
       if (isHigh || isMed) {
         const level = isHigh ? 'HIGH' : 'MEDIUM';
         const color = isHigh ? 'var(--color-danger)' : 'var(--color-warning)';
-        rc.innerHTML = `<div style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">
-          <div style="font-size:1.5rem;font-weight:800;color:${color};">${level}</div>
-          <div style="margin-top:0.25rem;">Risk level for this query. <a href="scan.html" style="color:var(--color-accent);">Run a scan</a> for real-time analysis.</div>
-        </div>`;
+        rc.innerHTML = '';
+        const wrapper = document.createElement('div');
+        wrapper.style.fontSize = '0.85rem';
+        wrapper.style.color = 'var(--text-muted)';
+        wrapper.style.marginTop = '0.5rem';
+        
+        const levelDiv = document.createElement('div');
+        levelDiv.style.fontSize = '1.5rem';
+        levelDiv.style.fontWeight = '800';
+        levelDiv.style.color = color;
+        levelDiv.textContent = level;
+        
+        const descDiv = document.createElement('div');
+        descDiv.style.marginTop = '0.25rem';
+        descDiv.innerHTML = 'Risk level for this query. <a href="scan.html" style="color:var(--color-accent);">Run a scan</a> for real-time analysis.';
+        
+        wrapper.appendChild(levelDiv);
+        wrapper.appendChild(descDiv);
+        rc.appendChild(wrapper);
         rp.style.display = 'block';
       }
     }

@@ -35,12 +35,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!container) return;
 
         if (alertsList.length === 0) {
-            container.innerHTML = `
-                <div class="al-card" style="text-align: center; padding: 2rem; width: 100%;">
-                    <div style="font-size: 2.5rem; color: var(--color-accent); margin-bottom: 0.5rem;"><i class="fa-solid fa-shield-check"></i></div>
-                    <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem;">Your Device is Clear</div>
-                    <div style="color: var(--text-muted); font-size: 0.9rem;">No active threat alerts recorded in your database.</div>
-                </div>`;
+            container.innerHTML = '';
+            const alCard = document.createElement('div');
+            alCard.className = 'al-card';
+            alCard.style.textAlign = 'center';
+            alCard.style.padding = '2rem';
+            alCard.style.width = '100%';
+
+            const shieldIcon = document.createElement('div');
+            shieldIcon.style.fontSize = '2.5rem';
+            shieldIcon.style.color = 'var(--color-accent)';
+            shieldIcon.style.marginBottom = '0.5rem';
+            shieldIcon.innerHTML = '<i class="fa-solid fa-shield-check"></i>';
+            alCard.appendChild(shieldIcon);
+
+            const cardTitle = document.createElement('div');
+            cardTitle.style.fontWeight = '700';
+            cardTitle.style.fontSize = '1.1rem';
+            cardTitle.style.marginBottom = '0.25rem';
+            cardTitle.textContent = 'Your Device is Clear';
+            alCard.appendChild(cardTitle);
+
+            const cardDesc = document.createElement('div');
+            cardDesc.style.color = 'var(--text-muted)';
+            cardDesc.style.fontSize = '0.9rem';
+            cardDesc.textContent = 'No active threat alerts recorded in your database.';
+            alCard.appendChild(cardDesc);
+
+            container.appendChild(alCard);
             updateCounts([]);
             return;
         }
@@ -63,34 +85,95 @@ document.addEventListener('DOMContentLoaded', async () => {
             card.dataset.status = alert.status;
             card.dataset.id = alert._id;
 
-            card.innerHTML = `
-                <div class="al-card-stripe ${stripeClass}"></div>
-                <div class="al-card-icon ${iconClass}"><i class="fa-solid ${icon}"></i></div>
-                <div class="al-card-body" ${isResolved ? 'style="opacity:0.6;"' : ''}>
-                    <div class="al-card-top">
-                        <div>
-                            <span class="al-badge ${badgeClass}">${riskLabel}</span>
-                            <span class="al-badge tag">${alert.type.toUpperCase()}</span>
-                        </div>
-                        <span class="al-time"><i class="fa-regular fa-clock"></i> ${timeStr}</span>
-                    </div>
-                    <h3 class="al-card-title" ${isResolved ? 'style="text-decoration:line-through;"' : ''}>${alert.title}</h3>
-                    <p class="al-card-desc">${alert.explanation || 'No detailed explanation provided.'}</p>
-                    <div class="al-card-footer">
-                        ${isResolved ? `
-                            <span style="font-size:0.82rem;color:var(--color-accent);font-weight:600;">
-                                <i class="fa-solid fa-check-circle"></i> Resolved by user
-                            </span>
-                        ` : `
-                            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                                <a href="threat-details.html?id=${alert._id}" class="btn btn-primary" style="padding:0.4rem 0.9rem;font-size:0.82rem;"><i class="fa-solid fa-eye"></i> View Details</a>
-                                <a href="ai-agent.html" class="btn btn-outline" style="padding:0.4rem 0.9rem;font-size:0.82rem;"><i class="fa-solid fa-robot"></i> Ask AI</a>
-                                <button class="btn btn-outline al-resolve-btn" style="padding:0.4rem 0.9rem;font-size:0.82rem;" onclick="resolveAlert(this)"><i class="fa-solid fa-check"></i> Resolve</button>
-                            </div>
-                        `}
-                    </div>
-                </div>
-            `;
+            const stripe = document.createElement('div');
+            stripe.className = `al-card-stripe ${stripeClass}`;
+            card.appendChild(stripe);
+
+            const iconDiv = document.createElement('div');
+            iconDiv.className = `al-card-icon ${iconClass}`;
+            const iconI = document.createElement('i');
+            iconI.className = `fa-solid ${icon}`;
+            iconDiv.appendChild(iconI);
+            card.appendChild(iconDiv);
+
+            const body = document.createElement('div');
+            body.className = 'al-card-body';
+            if (isResolved) body.style.opacity = '0.6';
+
+            const topDiv = document.createElement('div');
+            topDiv.className = 'al-card-top';
+
+            const badgeWrap = document.createElement('div');
+            const riskBadge = document.createElement('span');
+            riskBadge.className = `al-badge ${badgeClass}`;
+            riskBadge.textContent = riskLabel;
+            badgeWrap.appendChild(riskBadge);
+
+            const typeBadge = document.createElement('span');
+            typeBadge.className = 'al-badge tag';
+            typeBadge.textContent = alert.type.toUpperCase();
+            badgeWrap.appendChild(typeBadge);
+            topDiv.appendChild(badgeWrap);
+
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'al-time';
+            timeSpan.innerHTML = '<i class="fa-regular fa-clock"></i> ';
+            timeSpan.appendChild(document.createTextNode(timeStr));
+            topDiv.appendChild(timeSpan);
+
+            body.appendChild(topDiv);
+
+            const title = document.createElement('h3');
+            title.className = 'al-card-title';
+            if (isResolved) title.style.textDecoration = 'line-through';
+            title.textContent = alert.title;
+            body.appendChild(title);
+
+            const desc = document.createElement('p');
+            desc.className = 'al-card-desc';
+            desc.textContent = alert.explanation || 'No detailed explanation provided.';
+            body.appendChild(desc);
+
+            const footer = document.createElement('div');
+            footer.className = 'al-card-footer';
+            if (isResolved) {
+                footer.innerHTML = '<span style="font-size:0.82rem;color:var(--color-accent);font-weight:600;"><i class="fa-solid fa-check-circle"></i> Resolved by user</span>';
+            } else {
+                const btnWrap = document.createElement('div');
+                btnWrap.style.display = 'flex';
+                btnWrap.style.gap = '0.5rem';
+                btnWrap.style.flexWrap = 'wrap';
+
+                const detailsLink = document.createElement('a');
+                detailsLink.href = `threat-details.html?id=${alert._id}`;
+                detailsLink.className = 'btn btn-primary';
+                detailsLink.style.padding = '0.4rem 0.9rem';
+                detailsLink.style.fontSize = '0.82rem';
+                detailsLink.innerHTML = '<i class="fa-solid fa-eye"></i> View Details';
+                btnWrap.appendChild(detailsLink);
+
+                const askLink = document.createElement('a');
+                askLink.href = 'ai-agent.html';
+                askLink.className = 'btn btn-outline';
+                askLink.style.padding = '0.4rem 0.9rem';
+                askLink.style.fontSize = '0.82rem';
+                askLink.innerHTML = '<i class="fa-solid fa-robot"></i> Ask AI';
+                btnWrap.appendChild(askLink);
+
+                const resolveBtn = document.createElement('button');
+                resolveBtn.className = 'btn btn-outline al-resolve-btn';
+                resolveBtn.style.padding = '0.4rem 0.9rem';
+                resolveBtn.style.fontSize = '0.82rem';
+                resolveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Resolve';
+                resolveBtn.addEventListener('click', function() {
+                    window.resolveAlert(resolveBtn);
+                });
+                btnWrap.appendChild(resolveBtn);
+
+                footer.appendChild(btnWrap);
+            }
+            body.appendChild(footer);
+            card.appendChild(body);
             container.appendChild(card);
         });
 
@@ -256,7 +339,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const toast = document.createElement('div');
         const bg = type === 'success' ? '#10b981' : '#ef4444';
         toast.style.cssText = `background:${bg};color:white;padding:0.85rem 1.25rem;border-radius:10px;display:flex;align-items:center;gap:0.6rem;font-size:0.88rem;font-weight:500;animation:slideIn 0.3s ease;`;
-        toast.innerHTML = `<i class="fa-solid fa-check-circle"></i> ${message}`;
+        toast.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span></span>`;
+        toast.querySelector('span').textContent = message;
         container.appendChild(toast);
         setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
     }

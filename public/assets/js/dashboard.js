@@ -60,7 +60,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Special handling for score circle
             const scoreCircle = document.getElementById('db-score-circle');
-            if (scoreCircle) scoreCircle.innerHTML = `${data.metrics.score}<span>/100</span>`;
+            if (scoreCircle) {
+                scoreCircle.textContent = '';
+                scoreCircle.appendChild(document.createTextNode(data.metrics.score));
+                const spanEl = document.createElement('span');
+                spanEl.textContent = '/100';
+                scoreCircle.appendChild(spanEl);
+            }
             
             const scorePath = document.getElementById('db-score-path');
             if (scorePath) {
@@ -74,15 +80,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             const statusHeader = document.getElementById('db-status-header');
             const statusDesc = document.getElementById('db-status-desc');
             if (statusHeader && statusDesc) {
+                statusHeader.textContent = '';
+                const shIcon = document.createElement('i');
+                shIcon.style.fontSize = '1.5rem';
                 if (data.metrics.score > 80) {
-                    statusHeader.innerHTML = `<i class="fa-solid fa-shield-check text-safe" style="font-size: 1.5rem;"></i> Protected`;
-                    statusDesc.innerText = `No critical threats detected in the last scan.`;
+                    shIcon.className = 'fa-solid fa-shield-check text-safe';
+                    statusHeader.appendChild(shIcon);
+                    statusHeader.appendChild(document.createTextNode(' Protected'));
+                    statusDesc.innerText = 'No critical threats detected in the last scan.';
                 } else if (data.metrics.score > 50) {
-                    statusHeader.innerHTML = `<i class="fa-solid fa-shield-halved text-warning" style="font-size: 1.5rem;"></i> Needs Attention`;
-                    statusDesc.innerText = `Moderate risks detected. Please review alerts.`;
+                    shIcon.className = 'fa-solid fa-shield-halved text-warning';
+                    statusHeader.appendChild(shIcon);
+                    statusHeader.appendChild(document.createTextNode(' Needs Attention'));
+                    statusDesc.innerText = 'Moderate risks detected. Please review alerts.';
                 } else {
-                    statusHeader.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-danger" style="font-size: 1.5rem;"></i> High Risk`;
-                    statusDesc.innerText = `Critical threats found! Immediate action required.`;
+                    shIcon.className = 'fa-solid fa-triangle-exclamation text-danger';
+                    statusHeader.appendChild(shIcon);
+                    statusHeader.appendChild(document.createTextNode(' High Risk'));
+                    statusDesc.innerText = 'Critical threats found! Immediate action required.';
                 }
             }
 
@@ -102,17 +117,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (data.timeline) {
             const timelineEl = document.getElementById('db-timeline');
             if (timelineEl) {
-                timelineEl.innerHTML = ''; 
+                timelineEl.textContent = '';
 
                 if (data.timeline.length === 0) {
-                    timelineEl.innerHTML = `
-                        <div class="db-timeline-item">
-                            <div class="db-timeline-dot safe"></div>
-                            <div class="db-timeline-content" style="cursor: default;">
-                                <div class="db-timeline-title">System Secure</div>
-                                <div class="db-timeline-desc">No recent threats recorded.</div>
-                            </div>
-                        </div>`;
+                    const emptyItem = document.createElement('div');
+                    emptyItem.className = 'db-timeline-item';
+                    const emptyDot = document.createElement('div');
+                    emptyDot.className = 'db-timeline-dot safe';
+                    const emptyContent = document.createElement('div');
+                    emptyContent.className = 'db-timeline-content';
+                    emptyContent.style.cursor = 'default';
+                    const emptyTitle = document.createElement('div');
+                    emptyTitle.className = 'db-timeline-title';
+                    emptyTitle.textContent = 'System Secure';
+                    const emptyDesc = document.createElement('div');
+                    emptyDesc.className = 'db-timeline-desc';
+                    emptyDesc.textContent = 'No recent threats recorded.';
+                    emptyContent.appendChild(emptyTitle);
+                    emptyContent.appendChild(emptyDesc);
+                    emptyItem.appendChild(emptyDot);
+                    emptyItem.appendChild(emptyContent);
+                    timelineEl.appendChild(emptyItem);
                 } else {
                     data.timeline.forEach(alert => {
                         let dotClass = 'warning';
@@ -122,15 +147,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const date = new Date(alert.createdAt);
                         const timeAgo = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
 
-                        timelineEl.innerHTML += `
-                            <div class="db-timeline-item">
-                                <div class="db-timeline-dot ${dotClass}"></div>
-                                <a href="threat-details.html" class="db-timeline-content">
-                                    <div class="db-timeline-title">${alert.title}</div>
-                                    <div class="db-timeline-desc">${alert.explanation || alert.type} • ${timeAgo}</div>
-                                </a>
-                            </div>
-                        `;
+                        const item = document.createElement('div');
+                        item.className = 'db-timeline-item';
+                        const dot = document.createElement('div');
+                        dot.className = `db-timeline-dot ${dotClass}`;
+                        const link = document.createElement('a');
+                        link.href = `threat-details.html?id=${alert._id || ''}`;
+                        link.className = 'db-timeline-content';
+                        const titleDiv = document.createElement('div');
+                        titleDiv.className = 'db-timeline-title';
+                        titleDiv.textContent = alert.title;
+                        const descDiv = document.createElement('div');
+                        descDiv.className = 'db-timeline-desc';
+                        descDiv.textContent = (alert.explanation || alert.type) + ' \u2022 ' + timeAgo;
+                        link.appendChild(titleDiv);
+                        link.appendChild(descDiv);
+                        item.appendChild(dot);
+                        item.appendChild(link);
+                        timelineEl.appendChild(item);
                     });
                 }
             }

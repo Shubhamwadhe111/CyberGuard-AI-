@@ -103,7 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const t = document.createElement('div');
         const bg = type === 'success' ? '#10b981' : type === 'info' ? '#3b82f6' : '#ef4444';
         t.style.cssText = `background:${bg};color:white;padding:0.75rem 1.1rem;border-radius:10px;font-size:0.85rem;font-weight:500;display:flex;align-items:center;gap:0.5rem;`;
-        t.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${msg}`;
+        const icon = document.createElement('i');
+        icon.className = 'fa-solid fa-circle-check';
+        t.appendChild(icon);
+        t.appendChild(document.createTextNode(' ' + msg));
         c.appendChild(t);
         setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; setTimeout(() => t.remove(), 300); }, 3000);
     }

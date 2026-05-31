@@ -167,7 +167,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const toast = document.createElement('div');
         const bg = type === 'success' ? '#10b981' : '#ef4444';
         toast.style.cssText = `background:${bg};color:white;padding:0.85rem 1.25rem;border-radius:10px;display:flex;align-items:center;gap:0.6rem;font-size:0.88rem;font-weight:500;animation:slideIn 0.3s ease;`;
-        toast.innerHTML = `<i class="fa-solid fa-${type === 'success' ? 'check-circle' : 'circle-xmark'}"></i> ${message}`;
+        const toastIcon = document.createElement('i');
+        toastIcon.className = `fa-solid fa-${type === 'success' ? 'check-circle' : 'circle-xmark'}`;
+        toast.appendChild(toastIcon);
+        toast.appendChild(document.createTextNode(' ' + message));
         
         container.appendChild(toast);
         setTimeout(() => { 

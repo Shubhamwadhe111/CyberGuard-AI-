@@ -237,7 +237,21 @@
                         // Dynamically render a floating safety toast at the bottom left
                         const floatToast = document.createElement('div');
                         floatToast.style.cssText = 'position:fixed;bottom:90px;left:20px;background:#ef4444;color:white;padding:0.9rem 1.4rem;border-radius:12px;box-shadow:0 10px 25px rgba(239,68,68,0.25);z-index:9999;font-weight:600;display:flex;align-items:center;gap:0.75rem;font-size:0.88rem;border:1px solid rgba(255,255,255,0.1);animation:slideIn 0.3s ease;';
-                        floatToast.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="font-size:1.1rem;"></i> <span><strong>${data.title}</strong><br><span style="font-size:0.78rem;font-weight:400;opacity:0.9;">${data.explanation}</span></span>`;
+                        const ftIcon = document.createElement('i');
+                        ftIcon.className = 'fa-solid fa-triangle-exclamation';
+                        ftIcon.style.fontSize = '1.1rem';
+                        const ftSpan = document.createElement('span');
+                        const ftStrong = document.createElement('strong');
+                        ftStrong.textContent = data.title;
+                        const ftBr = document.createElement('br');
+                        const ftDesc = document.createElement('span');
+                        ftDesc.style.cssText = 'font-size:0.78rem;font-weight:400;opacity:0.9;';
+                        ftDesc.textContent = data.explanation;
+                        ftSpan.appendChild(ftStrong);
+                        ftSpan.appendChild(ftBr);
+                        ftSpan.appendChild(ftDesc);
+                        floatToast.appendChild(ftIcon);
+                        floatToast.appendChild(ftSpan);
                         document.body.appendChild(floatToast);
                         setTimeout(() => { floatToast.style.opacity = '0'; floatToast.style.transition = 'opacity 0.5s'; setTimeout(() => floatToast.remove(), 500); }, 5000);
                     }
