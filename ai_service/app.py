@@ -57,6 +57,9 @@ def analyze_message():
     result = classify_message(message)
     return jsonify(result)
 
+import os
+
 if __name__ == '__main__':
-    print("AI Threat Analysis Microservice starting on port 5000...")
-    app.run(port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    print(f"AI Threat Analysis Microservice starting on port {port}...")
+    app.run(host="0.0.0.0", port=port)

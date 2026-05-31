@@ -244,7 +244,8 @@ router.post('/message', auth, async (req, res) => {
         // Call Python AI Microservice
         let aiResult;
         try {
-            const pythonRes = await axios.post('http://localhost:5000/analyze/message', { message });
+            const aiServiceUrl = process.env.AI_SERVICE_URL || 'http://localhost:5000';
+            const pythonRes = await axios.post(`${aiServiceUrl}/analyze/message`, { message });
             aiResult = pythonRes.data;
         } catch (e) {
             console.log("Python service offline, using fallback logic");

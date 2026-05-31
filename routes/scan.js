@@ -234,7 +234,8 @@ router.post('/sms', auth, async (req, res) => {
             let aiResult;
             try {
                 // Call Python Flask AI microservice
-                const pythonRes = await axios.post('http://localhost:5000/analyze/message', { message });
+                const aiServiceUrl = process.env.AI_SERVICE_URL || 'http://localhost:5000';
+                const pythonRes = await axios.post(`${aiServiceUrl}/analyze/message`, { message });
                 aiResult = pythonRes.data;
             } catch (e) {
                 // Fallback basic classifier if Flask is offline
