@@ -53,9 +53,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ─── SAVE SETTINGS ────────────────────────────────────────────────
     if (btnSaveBottom) {
         btnSaveBottom.addEventListener('click', async () => {
-            const originalText = btnSaveBottom.innerHTML;
             btnSaveBottom.disabled = true;
-            btnSaveBottom.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+            btnSaveBottom.textContent = '';
+            const spinIcon = document.createElement('i');
+            spinIcon.className = 'fa-solid fa-circle-notch fa-spin';
+            btnSaveBottom.appendChild(spinIcon);
+            btnSaveBottom.appendChild(document.createTextNode(' Saving...'));
 
             const payload = {
                 message_scan: setMsgScan ? setMsgScan.checked : true,
@@ -94,7 +97,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showToast('Network error while saving settings.', 'danger');
             } finally {
                 btnSaveBottom.disabled = false;
-                btnSaveBottom.innerHTML = originalText;
+                btnSaveBottom.textContent = '';
+                const saveIcon = document.createElement('i');
+                saveIcon.className = 'fa-solid fa-check';
+                btnSaveBottom.appendChild(saveIcon);
+                btnSaveBottom.appendChild(document.createTextNode(' Save All Settings'));
             }
         });
     }

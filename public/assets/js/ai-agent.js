@@ -209,7 +209,11 @@ function appendMsg(htmlOrText, role, time) {
   bubbleDiv.className = `ag-msg-bubble ${role}`;
   if (role === 'user') {
     bubbleDiv.textContent = htmlOrText;
+  } else if (htmlOrText instanceof Node) {
+    // Safe: DOM node passed directly (e.g. from Gemini API reply built with createElement)
+    bubbleDiv.appendChild(htmlOrText);
   } else {
+    // Trusted HTML from local knowledge base only
     bubbleDiv.innerHTML = htmlOrText;
   }
   contentDiv.appendChild(bubbleDiv);
@@ -252,16 +256,21 @@ window.sendMessage = async function() {
   try {
     const reply = await fetchGeminiReply(text);
     removeTyping();
-    // Convert plain text reply to HTML paragraphs
-    const htmlReply = reply
-      .split('\n')
-      .filter(line => line.trim())
-      .map(line => `<p style="margin:0.25rem 0;">${line}</p>`)
-      .join('');
+    // Build bot reply as DOM paragraphs (safe — no innerHTML for user/server text)
+    const replyFrag = document.createDocumentFragment();
+    reply.split('\n').filter(line => line.trim()).forEach(line => {
+      const p = document.createElement('p');
+      p.style.margin = '0.25rem 0';
+      p.textContent = line;
+      replyFrag.appendChild(p);
+    });
     statMessages++;
     const el = document.getElementById('statMessages');
     if (el) el.textContent = statMessages;
-    appendMsg(htmlReply, 'bot', getTime());
+    // Wrap fragment in a div to pass to appendMsg
+    const replyWrapper = document.createElement('div');
+    replyWrapper.appendChild(replyFrag);
+    appendMsg(replyWrapper, 'bot', getTime());
 
     // Show risk panel for dangerous keywords
     const rp = document.getElementById('riskPanel');

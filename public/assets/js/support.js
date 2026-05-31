@@ -80,9 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const btn = contactForm.querySelector('button[type="submit"]');
-            const originalText = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Submitting...';
+            btn.textContent = '';
+            const spinI = document.createElement('i');
+            spinI.className = 'fa-solid fa-circle-notch fa-spin';
+            btn.appendChild(spinI);
+            btn.appendChild(document.createTextNode(' Submitting...'));
 
             try {
                 // If user is not logged in, they can still submit mock ticket (bypass token auth)
@@ -117,7 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast('Network error, please try again.', 'danger');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = originalText;
+                btn.textContent = '';
+                const sendI = document.createElement('i');
+                sendI.className = 'fa-solid fa-paper-plane';
+                btn.appendChild(sendI);
+                btn.appendChild(document.createTextNode(' Send Message'));
             }
         });
     }

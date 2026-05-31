@@ -59,9 +59,13 @@ document.addEventListener('DOMContentLoaded', () => {
     window.sortTips = function(val) {
         const grid = document.getElementById('tipsGrid');
         const cards = Array.from(grid.querySelectorAll('.tip-card'));
-        const order = { critical: 0, high: 1, medium: 2, low: 3 };
+        const priorityOrder = ['critical', 'high', 'medium', 'low'];
         if (val === 'priority') {
-            cards.sort((a, b) => (order[a.dataset.priority] || 9) - (order[b.dataset.priority] || 9));
+            cards.sort((a, b) => {
+                const pa = priorityOrder.indexOf(a.dataset.priority);
+                const pb = priorityOrder.indexOf(b.dataset.priority);
+                return (pa === -1 ? 9 : pa) - (pb === -1 ? 9 : pb);
+            });
         } else if (val === 'unread') {
             cards.sort((a, b) => (a.classList.contains('read') ? 1 : 0) - (b.classList.contains('read') ? 1 : 0));
         }
@@ -86,7 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { text: 'Run a full CyberGuard device scan', desc: 'Open the Scan page and run a full scan to check for threats on your device right now.' },
     ];
     const today = new Date().getDay();
-    const ch = challenges[today % challenges.length];
+    const todayIdx = today % challenges.length;
+    const ch = (todayIdx >= 0 && todayIdx < challenges.length) ? challenges[todayIdx] : challenges[0];
     document.getElementById('challengeText').textContent = ch.text;
     document.getElementById('challengeDesc').textContent = ch.desc;
 

@@ -142,6 +142,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     window.selectScanType = function(btn, type) {
+        const VALID_SCAN_TYPES = ['full', 'quick', 'sms', 'app'];
+        if (!VALID_SCAN_TYPES.includes(type)) return;
         document.querySelectorAll('.scan-type-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentScanType = type;

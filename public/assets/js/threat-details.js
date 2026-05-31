@@ -81,7 +81,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 permission: 'Excessive App Permissions',
                 system: 'OS Integrity Event'
             };
-            catHeader.textContent = typeLabels[alert.type] || `${alert.type.toUpperCase()} Security Event`;
+            const KNOWN_TYPES = ['sms', 'link', 'permission', 'system'];
+            const isKnownType = KNOWN_TYPES.includes(alert.type);
+            catHeader.textContent = isKnownType ? typeLabels[alert.type] : (alert.type.toUpperCase() + ' Security Event');
         }
 
         // 3. Title
@@ -115,8 +117,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 permission: 'Source: Installed Apps',
                 system: 'Source: Core System'
             };
-            const iconClass = sourceIcons[alert.type] || 'fa-shield';
-            const labelText = sourceLabels[alert.type] || `Source: ${alert.type}`;
+            const KNOWN_SRC_TYPES = ['sms', 'link', 'permission', 'system'];
+            const isKnownSrc = KNOWN_SRC_TYPES.includes(alert.type);
+            const iconClass = isKnownSrc ? sourceIcons[alert.type] : 'fa-shield';
+            const labelText = isKnownSrc ? sourceLabels[alert.type] : ('Source: ' + alert.type);
 
             const iconEl = document.createElement('i');
             iconEl.className = `fa-solid ${iconClass}`;

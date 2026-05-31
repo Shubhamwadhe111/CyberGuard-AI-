@@ -31,40 +31,124 @@
     }
     function unreadCount(notifs) { return notifs.filter(n => !n.read).length; }
 
-    // ---- Build Dropdown HTML ----
+    // ---- Build a single notification item as a DOM element ----
+    function buildNotifItem(n) {
+        const div = document.createElement('div');
+        div.className = 'notif-item' + (n.read ? '' : ' unread');
+        div.dataset.id = n.id;
+        div.addEventListener('click', () => window.__cgNotif.openItem(n.id));
+
+        const iconDiv = document.createElement('div');
+        iconDiv.className = `notif-item-icon notif-icon-${n.type}`;
+        const iconI = document.createElement('i');
+        iconI.className = `fa-solid ${n.icon}`;
+        iconDiv.appendChild(iconI);
+
+        const bodyDiv = document.createElement('div');
+        bodyDiv.className = 'notif-item-body';
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'notif-item-title';
+        titleDiv.textContent = n.title;
+
+        const descDiv = document.createElement('div');
+        descDiv.className = 'notif-item-desc';
+        descDiv.textContent = n.desc;
+
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'notif-item-time';
+        const clockI = document.createElement('i');
+        clockI.className = 'fa-regular fa-clock';
+        clockI.style.fontSize = '0.6rem';
+        timeDiv.appendChild(clockI);
+        timeDiv.appendChild(document.createTextNode(' ' + n.time));
+
+        bodyDiv.appendChild(titleDiv);
+        bodyDiv.appendChild(descDiv);
+        bodyDiv.appendChild(timeDiv);
+
+        const dismissBtn = document.createElement('button');
+        dismissBtn.className = 'notif-item-dismiss';
+        dismissBtn.title = 'Dismiss';
+        dismissBtn.addEventListener('click', (e) => { e.stopPropagation(); window.__cgNotif.dismiss(n.id); });
+        const xmarkI = document.createElement('i');
+        xmarkI.className = 'fa-solid fa-xmark';
+        dismissBtn.appendChild(xmarkI);
+
+        div.appendChild(iconDiv);
+        div.appendChild(bodyDiv);
+        div.appendChild(dismissBtn);
+        return div;
+    }
+
+    // ---- Build Dropdown as DocumentFragment ----
     function buildDropdown(notifs, filter) {
         const filtered = filter === 'all' ? notifs : notifs.filter(n => n.cat === filter);
-        const items = filtered.length ? filtered.map(n => `
-            <div class="notif-item ${n.read ? '' : 'unread'}" data-id="${n.id}" onclick="window.__cgNotif.openItem(${n.id})">
-                <div class="notif-item-icon notif-icon-${n.type}"><i class="fa-solid ${n.icon}"></i></div>
-                <div class="notif-item-body">
-                    <div class="notif-item-title">${n.title}</div>
-                    <div class="notif-item-desc">${n.desc}</div>
-                    <div class="notif-item-time"><i class="fa-regular fa-clock" style="font-size:0.6rem;"></i> ${n.time}</div>
-                </div>
-                <button class="notif-item-dismiss" onclick="event.stopPropagation();window.__cgNotif.dismiss(${n.id})" title="Dismiss"><i class="fa-solid fa-xmark"></i></button>
-            </div>`).join('') :
-            `<div class="notif-empty"><i class="fa-regular fa-bell-slash"></i>No notifications</div>`;
+        const frag = document.createDocumentFragment();
 
-        return `
-        <div class="notif-header">
-            <div class="notif-header-title">
-                Notifications
-                ${unreadCount(notifs) > 0 ? `<span class="notif-unread-pill">${unreadCount(notifs)} new</span>` : ''}
-            </div>
-            <button class="notif-mark-all" onclick="window.__cgNotif.markAll()">Mark all read</button>
-        </div>
-        <div class="notif-tabs">
-            <button class="notif-tab ${filter === 'all' ? 'active' : ''}" onclick="window.__cgNotif.setFilter('all')">All</button>
-            <button class="notif-tab ${filter === 'threat' ? 'active' : ''}" onclick="window.__cgNotif.setFilter('threat')">Threats</button>
-            <button class="notif-tab ${filter === 'scan' ? 'active' : ''}" onclick="window.__cgNotif.setFilter('scan')">Scans</button>
-            <button class="notif-tab ${filter === 'system' ? 'active' : ''}" onclick="window.__cgNotif.setFilter('system')">System</button>
-        </div>
-        <div class="notif-list">${items}</div>
-        <div class="notif-footer">
-            <a href="alerts.html">View All Alerts</a>
-            <button onclick="window.__cgNotif.clearAll()">Clear All</button>
-        </div>`;
+        // Header
+        const header = document.createElement('div');
+        header.className = 'notif-header';
+        const headerTitle = document.createElement('div');
+        headerTitle.className = 'notif-header-title';
+        headerTitle.textContent = 'Notifications';
+        const uc = unreadCount(notifs);
+        if (uc > 0) {
+            const pill = document.createElement('span');
+            pill.className = 'notif-unread-pill';
+            pill.textContent = uc + ' new';
+            headerTitle.appendChild(pill);
+        }
+        const markAllBtn = document.createElement('button');
+        markAllBtn.className = 'notif-mark-all';
+        markAllBtn.textContent = 'Mark all read';
+        markAllBtn.addEventListener('click', () => window.__cgNotif.markAll());
+        header.appendChild(headerTitle);
+        header.appendChild(markAllBtn);
+        frag.appendChild(header);
+
+        // Tabs
+        const tabsDiv = document.createElement('div');
+        tabsDiv.className = 'notif-tabs';
+        [['all', 'All'], ['threat', 'Threats'], ['scan', 'Scans'], ['system', 'System']].forEach(([val, label]) => {
+            const tabBtn = document.createElement('button');
+            tabBtn.className = 'notif-tab' + (filter === val ? ' active' : '');
+            tabBtn.textContent = label;
+            tabBtn.addEventListener('click', () => window.__cgNotif.setFilter(val));
+            tabsDiv.appendChild(tabBtn);
+        });
+        frag.appendChild(tabsDiv);
+
+        // List
+        const listDiv = document.createElement('div');
+        listDiv.className = 'notif-list';
+        if (filtered.length) {
+            filtered.forEach(n => listDiv.appendChild(buildNotifItem(n)));
+        } else {
+            const empty = document.createElement('div');
+            empty.className = 'notif-empty';
+            const emptyI = document.createElement('i');
+            emptyI.className = 'fa-regular fa-bell-slash';
+            empty.appendChild(emptyI);
+            empty.appendChild(document.createTextNode('No notifications'));
+            listDiv.appendChild(empty);
+        }
+        frag.appendChild(listDiv);
+
+        // Footer
+        const footerDiv = document.createElement('div');
+        footerDiv.className = 'notif-footer';
+        const footerLink = document.createElement('a');
+        footerLink.href = 'alerts.html';
+        footerLink.textContent = 'View All Alerts';
+        const clearBtn = document.createElement('button');
+        clearBtn.textContent = 'Clear All';
+        clearBtn.addEventListener('click', () => window.__cgNotif.clearAll());
+        footerDiv.appendChild(footerLink);
+        footerDiv.appendChild(clearBtn);
+        frag.appendChild(footerDiv);
+
+        return frag;
     }
 
     // ---- Controller ----
@@ -96,16 +180,21 @@
         render() {
             const notifs = getNotifs();
             const uc = unreadCount(notifs);
-            const html = buildDropdown(notifs, currentFilter);
-            
+
             // Render on desktop dropdown if it exists
             const dd = document.getElementById('notifDropdown');
-            if (dd) dd.innerHTML = html;
-            
+            if (dd) {
+                dd.textContent = '';
+                dd.appendChild(buildDropdown(notifs, currentFilter));
+            }
+
             // Render on mobile dropdown if it exists
             const ddMobile = document.getElementById('notifDropdownMobile');
-            if (ddMobile) ddMobile.innerHTML = html;
-            
+            if (ddMobile) {
+                ddMobile.textContent = '';
+                ddMobile.appendChild(buildDropdown(notifs, currentFilter));
+            }
+
             // Update badges
             const badge = document.getElementById('notifBadge');
             if (badge) {
@@ -141,15 +230,31 @@
             const uc = unreadCount(getNotifs());
             wrapper = document.createElement('div');
             wrapper.className = 'notif-wrapper';
-            wrapper.innerHTML = `
-                <button class="notif-bell-btn" id="notifBellBtn" aria-label="Notifications" title="Notifications">
-                    <i class="fa-solid fa-bell"></i>
-                    <span class="notif-badge" id="notifBadge" style="display:${uc > 0 ? 'flex' : 'none'};">${uc}</span>
-                </button>
-                <div class="notif-dropdown" id="notifDropdown"></div>`;
+
+            const bellBtn = document.createElement('button');
+            bellBtn.className = 'notif-bell-btn';
+            bellBtn.id = 'notifBellBtn';
+            bellBtn.setAttribute('aria-label', 'Notifications');
+            bellBtn.title = 'Notifications';
+            const bellI = document.createElement('i');
+            bellI.className = 'fa-solid fa-bell';
+            bellBtn.appendChild(bellI);
+            const bellBadge = document.createElement('span');
+            bellBadge.className = 'notif-badge';
+            bellBadge.id = 'notifBadge';
+            bellBadge.textContent = uc;
+            bellBadge.style.display = uc > 0 ? 'flex' : 'none';
+            bellBtn.appendChild(bellBadge);
+
+            const dropdownDiv = document.createElement('div');
+            dropdownDiv.className = 'notif-dropdown';
+            dropdownDiv.id = 'notifDropdown';
+
+            wrapper.appendChild(bellBtn);
+            wrapper.appendChild(dropdownDiv);
             anchor.replaceWith(wrapper);
-            
-            document.getElementById('notifBellBtn').addEventListener('click', (e) => {
+
+            bellBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 window.__cgNotif.toggle(document.getElementById('notifDropdown'));
             });
@@ -162,15 +267,31 @@
             const uc = unreadCount(getNotifs());
             mobileWrapper = document.createElement('div');
             mobileWrapper.className = 'notif-wrapper';
-            mobileWrapper.innerHTML = `
-                <button class="notif-bell-btn" id="notifBellBtnMobile" aria-label="Notifications" title="Notifications">
-                    <i class="fa-solid fa-bell"></i>
-                    <span class="notif-badge" id="notifBadgeMobile" style="display:${uc > 0 ? 'flex' : 'none'};">${uc}</span>
-                </button>
-                <div class="notif-dropdown" id="notifDropdownMobile"></div>`;
+
+            const mobileBellBtn = document.createElement('button');
+            mobileBellBtn.className = 'notif-bell-btn';
+            mobileBellBtn.id = 'notifBellBtnMobile';
+            mobileBellBtn.setAttribute('aria-label', 'Notifications');
+            mobileBellBtn.title = 'Notifications';
+            const mobileBellI = document.createElement('i');
+            mobileBellI.className = 'fa-solid fa-bell';
+            mobileBellBtn.appendChild(mobileBellI);
+            const mobileBadge = document.createElement('span');
+            mobileBadge.className = 'notif-badge';
+            mobileBadge.id = 'notifBadgeMobile';
+            mobileBadge.textContent = uc;
+            mobileBadge.style.display = uc > 0 ? 'flex' : 'none';
+            mobileBellBtn.appendChild(mobileBadge);
+
+            const mobileDropdownDiv = document.createElement('div');
+            mobileDropdownDiv.className = 'notif-dropdown';
+            mobileDropdownDiv.id = 'notifDropdownMobile';
+
+            mobileWrapper.appendChild(mobileBellBtn);
+            mobileWrapper.appendChild(mobileDropdownDiv);
             mobileAnchor.replaceWith(mobileWrapper);
-            
-            document.getElementById('notifBellBtnMobile').addEventListener('click', (e) => {
+
+            mobileBellBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 window.__cgNotif.toggle(document.getElementById('notifDropdownMobile'));
             });

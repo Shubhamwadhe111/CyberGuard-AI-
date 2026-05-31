@@ -86,11 +86,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const btnSave    = document.getElementById('btnSaveProfile');
         const btnCancel  = document.getElementById('btnCancelEdit');
         const inputs     = profileForm.querySelectorAll('.prof-input');
-        let original = {};
+        const original = new Map();
 
         btnEdit.addEventListener('click', () => {
             inputs.forEach(i => {
-                original[i.id] = i.value;
+                original.set(i.id, i.value);
                 i.disabled = false;
                 i.style.borderColor = 'var(--color-accent)';
             });
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         btnCancel.addEventListener('click', () => {
-            inputs.forEach(i => { i.value = original[i.id]; i.disabled = true; i.style.borderColor = ''; });
+            inputs.forEach(i => { i.value = original.get(i.id) ?? ''; i.disabled = true; i.style.borderColor = ''; });
             btnEdit.style.display   = '';
             btnSave.style.display   = 'none';
             btnCancel.style.display = 'none';
