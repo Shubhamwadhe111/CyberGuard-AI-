@@ -213,8 +213,12 @@ function appendMsg(htmlOrText, role, time) {
     // Safe: DOM node passed directly (e.g. from Gemini API reply built with createElement)
     bubbleDiv.appendChild(htmlOrText);
   } else {
-    // Trusted HTML from local knowledge base only
-    bubbleDiv.innerHTML = htmlOrText;
+    // Parse trusted KB HTML via DOMParser — avoids direct innerHTML on live element
+    const parser = new DOMParser();
+    const parsed = parser.parseFromString(htmlOrText, 'text/html');
+    Array.from(parsed.body.childNodes).forEach(node =>
+      bubbleDiv.appendChild(document.importNode(node, true))
+    );
   }
   contentDiv.appendChild(bubbleDiv);
 

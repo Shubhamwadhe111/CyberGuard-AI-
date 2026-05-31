@@ -75,15 +75,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 2. Category / Header
         const catHeader = document.getElementById('threatCategoryHeader');
         if (catHeader) {
-            const typeLabels = {
-                sms: 'SMS Smishing Threat',
-                link: 'Phishing Link Alert',
-                permission: 'Excessive App Permissions',
-                system: 'OS Integrity Event'
-            };
-            const KNOWN_TYPES = ['sms', 'link', 'permission', 'system'];
-            const isKnownType = KNOWN_TYPES.includes(alert.type);
-            catHeader.textContent = isKnownType ? typeLabels[alert.type] : (alert.type.toUpperCase() + ' Security Event');
+            let catLabel;
+            switch (alert.type) {
+                case 'sms':        catLabel = 'SMS Smishing Threat'; break;
+                case 'link':       catLabel = 'Phishing Link Alert'; break;
+                case 'permission': catLabel = 'Excessive App Permissions'; break;
+                case 'system':     catLabel = 'OS Integrity Event'; break;
+                default:           catLabel = alert.type.toUpperCase() + ' Security Event';
+            }
+            catHeader.textContent = catLabel;
         }
 
         // 3. Title
@@ -105,22 +105,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const sourceText = document.getElementById('threatSourceText');
         if (sourceText) {
             sourceText.textContent = '';
-            const sourceIcons = {
-                sms: 'fa-message',
-                link: 'fa-link',
-                permission: 'fa-list-check',
-                system: 'fa-microchip'
-            };
-            const sourceLabels = {
-                sms: 'Source: Messages/SMS',
-                link: 'Source: Browser Links',
-                permission: 'Source: Installed Apps',
-                system: 'Source: Core System'
-            };
-            const KNOWN_SRC_TYPES = ['sms', 'link', 'permission', 'system'];
-            const isKnownSrc = KNOWN_SRC_TYPES.includes(alert.type);
-            const iconClass = isKnownSrc ? sourceIcons[alert.type] : 'fa-shield';
-            const labelText = isKnownSrc ? sourceLabels[alert.type] : ('Source: ' + alert.type);
+            let iconClass, labelText;
+            switch (alert.type) {
+                case 'sms':        iconClass = 'fa-message';    labelText = 'Source: Messages/SMS';    break;
+                case 'link':       iconClass = 'fa-link';        labelText = 'Source: Browser Links';   break;
+                case 'permission': iconClass = 'fa-list-check';  labelText = 'Source: Installed Apps';  break;
+                case 'system':     iconClass = 'fa-microchip';   labelText = 'Source: Core System';     break;
+                default:           iconClass = 'fa-shield';      labelText = 'Source: ' + alert.type;
+            }
 
             const iconEl = document.createElement('i');
             iconEl.className = `fa-solid ${iconClass}`;

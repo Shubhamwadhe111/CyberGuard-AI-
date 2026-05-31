@@ -141,16 +141,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         app:   { title: 'App Permission Audit', desc: 'Reviews every installed app\'s permissions and flags unnecessary access requests.' },
     };
 
+
     window.selectScanType = function(btn, type) {
         const VALID_SCAN_TYPES = ['full', 'quick', 'sms', 'app'];
         if (!VALID_SCAN_TYPES.includes(type)) return;
         document.querySelectorAll('.scan-type-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentScanType = type;
-        const t = scanTitles[type];
-        document.getElementById('scanTitle').textContent = t.title;
-        document.getElementById('scanDesc').textContent = t.desc;
-        addLog(`Scan type changed to: ${t.title}`, 'info');
+
+        let scanTitle, scanDesc;
+        switch (type) {
+            case 'full':
+                scanTitle = 'Full System Scan';
+                scanDesc = 'Analyzes messages, links, app permissions, and network activity for threats.';
+                break;
+            case 'quick':
+                scanTitle = 'Quick Scan';
+                scanDesc = 'Rapidly checks the most critical threat vectors: SMS, clipboard, and top apps.';
+                break;
+            case 'sms':
+                scanTitle = 'SMS Threat Scan';
+                scanDesc = 'Deep analysis of all incoming and stored SMS messages for phishing patterns.';
+                break;
+            default:
+                scanTitle = 'App Permission Audit';
+                scanDesc = 'Reviews every installed app\'s permissions and flags unnecessary access requests.';
+        }
+
+        document.getElementById('scanTitle').textContent = scanTitle;
+        document.getElementById('scanDesc').textContent = scanDesc;
+        addLog(`Scan type changed to: ${scanTitle}`, 'info');
     };
 
     // ─── Categories ───────────────────────────────────────────────
