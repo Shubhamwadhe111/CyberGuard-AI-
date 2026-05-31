@@ -1,6 +1,32 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('cyberguard_token');
 
+    function formatRelativeTime(dateInput) {
+        if (!dateInput) return 'Never';
+        const date = new Date(dateInput);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins} min ago`;
+        if (diffHours < 24) return `${diffHours} hours ago`;
+        return date.toLocaleDateString();
+    }
+
+    let lastScanDate = null;
+
+    function updateLastScanTimeDisplay() {
+        const lst = document.getElementById('lastScanTime');
+        if (lst && lastScanDate) {
+            lst.textContent = formatRelativeTime(lastScanDate);
+        }
+    }
+
+    // Auto-refresh the relative time every 10 seconds
+    setInterval(updateLastScanTimeDisplay, 10000);
+
     // ─── FETCH SCAN HISTORY ──────────────────────────────────────────
     async function loadScanHistory() {
         if (!token) return;
@@ -13,12 +39,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const data = await res.json();
                 // Update Last Scan Time on header
                 if (data.metrics && data.metrics.lastScanTime) {
-                    const date = new Date(data.metrics.lastScanTime);
-                    document.getElementById('lastScanTime').innerText = date.toLocaleString();
+                    lastScanDate = new Date(data.metrics.lastScanTime);
+                    updateLastScanTimeDisplay();
                 }
                 
                 // Update History List on right
-                const historyContainer = document.querySelector('.scan-right-col .db-card:nth-child(3) div');
+                const historyContainer = document.getElementById('scanHistoryContainer');
                 if (historyContainer && data.timeline) {
                     historyContainer.textContent = '';
                     data.timeline.forEach(item => {
@@ -283,6 +309,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const stxt = document.getElementById('scanStatusText');
             const sdet = document.getElementById('scanStatusDetail');
 
+            // Update status at top header
+            const statusHeader = document.getElementById('scanStatusHeader');
+            if (statusHeader) {
+                statusHeader.textContent = 'Scanning...';
+                statusHeader.style.color = 'var(--color-warning)';
+            }
+
             let progress = 0, catIdx = 0;
             const scanTypeLabel = scanTitles[currentScanType].title;
             addLog(`Starting ${scanTypeLabel}...`, 'info');
@@ -375,6 +408,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                             });
                             data = await alertRes.json();
                         }
+
+                        // Update status at top header
+                        const statusHeader = document.getElementById('scanStatusHeader');
+                        if (statusHeader) {
+                            const threatsCount = data.timeline ? data.timeline.length : 0;
+                            if (threatsCount > 0) {
+                                statusHeader.textContent = 'Threats Found';
+                                statusHeader.style.color = 'var(--color-danger)';
+                            } else {
+                                statusHeader.textContent = 'System Protected';
+                                statusHeader.style.color = 'var(--color-success)';
+                            }
+                        }
                         
                         // 2. Perform a "Save Scan" call to update history
                         await fetch('/api/scan/save', {
@@ -402,6 +448,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                             renderResults(data.timeline || []);
                             showToast('Scan complete and saved!', 'success');
+                            lastScanDate = new Date();
+                            updateLastScanTimeDisplay();
                             loadScanHistory(); // Refresh history list
                         }, 1000);
 
@@ -572,7 +620,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const urlInput = document.getElementById('urlInput');
     if (urlInput) urlInput.addEventListener('keydown', e => { if (e.key === 'Enter') window.checkURL(); });
-    
-    const lst = document.getElementById('lastScanTime');
-    if (lst) lst.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
 });

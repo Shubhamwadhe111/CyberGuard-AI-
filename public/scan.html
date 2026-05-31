@@ -77,7 +77,7 @@
             <div class="db-page-header" style="margin-bottom:1.75rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
                 <div>
                     <h1 style="font-size:1.75rem;font-weight:800;margin:0;">Threat Scanner</h1>
-                    <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.25rem;">Last scan: <span id="lastScanTime">3 hours ago</span> &nbsp;|&nbsp; Status: <span style="color:var(--color-accent);font-weight:600;">System Ready</span></p>
+                    <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.25rem;">Last scan: <span id="lastScanTime">3 hours ago</span> &nbsp;|&nbsp; Status: <span id="scanStatusHeader" style="color:var(--color-accent);font-weight:600;">System Ready</span></p>
                 </div>
                 <a href="alerts.html" class="btn btn-outline"><i class="fa-solid fa-list-check"></i> View All Results</a>
             </div>
@@ -345,7 +345,7 @@
                     <!-- Scan History -->
                     <div class="db-card">
                         <div class="db-card-title" style="font-size:1rem;font-weight:700;margin-bottom:1rem;">Scan History</div>
-                        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                        <div id="scanHistoryContainer" style="display:flex;flex-direction:column;gap:0.6rem;">
                             <div class="scan-history-item">
                                 <div class="scan-hist-icon danger"><i class="fa-solid fa-triangle-exclamation"></i></div>
                                 <div style="flex:1;">
