@@ -58,6 +58,10 @@ app.use('/api/', limiter);
 
 // Input Sanitization Middleware to prevent XSS
 const sanitizeInput = (req, res, next) => {
+    // Skip sanitization for AI Agent endpoints to preserve natural punctuation (like apostrophes/quotes)
+    if (req.path === '/api/agent/analyze' || req.path.startsWith('/api/agent/')) {
+        return next();
+    }
     const sanitizeValue = (val) => {
         if (typeof val === 'string') {
             return val
