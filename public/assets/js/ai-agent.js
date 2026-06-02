@@ -352,6 +352,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('chatInput');
   if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') window.sendMessage(); });
 
+  // Bind all buttons with onclick attributes dynamically to bypass global scope resolution issues
+  document.querySelectorAll('button[onclick]').forEach(btn => {
+      const onclickAttr = btn.getAttribute('onclick');
+      if (onclickAttr.startsWith('quickAsk(')) {
+          const match = onclickAttr.match(/quickAsk\('(.*)'\)/);
+          if (match && match[1]) {
+              const question = match[1];
+              btn.removeAttribute('onclick');
+              btn.addEventListener('click', () => {
+                  window.quickAsk(question);
+              });
+          }
+      } else if (onclickAttr.startsWith('sendChip(')) {
+          btn.removeAttribute('onclick');
+          btn.addEventListener('click', function() {
+              window.sendChip(this);
+          });
+      } else if (onclickAttr.includes('exportChat()')) {
+          btn.removeAttribute('onclick');
+          btn.addEventListener('click', window.exportChat);
+      } else if (onclickAttr.includes('clearChat()')) {
+          btn.removeAttribute('onclick');
+          btn.addEventListener('click', window.clearChat);
+      } else if (onclickAttr.includes('sendMessage()')) {
+          btn.removeAttribute('onclick');
+          btn.addEventListener('click', window.sendMessage);
+      }
+  });
+
   // Automatically trigger query from URL parameter
   const urlParams = new URLSearchParams(window.location.search);
   const urlQuery = urlParams.get('query');

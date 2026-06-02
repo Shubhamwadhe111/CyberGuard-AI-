@@ -184,13 +184,13 @@
                     </div>
 
                     <!-- Input -->
-                    <div class="ag-input-area">
+                    <form id="chatForm" class="ag-input-area" onsubmit="event.preventDefault(); window.sendMessage();">
                         <div class="ag-input-wrap">
                             <input type="text" id="chatInput" class="ag-input" placeholder="Ask about threats, links, SMS, permissions..." autocomplete="off">
-                            <button id="sendBtn" class="ag-send-btn" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+                            <button type="submit" id="sendBtn" class="ag-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
                         </div>
                         <div class="ag-input-hint"><i class="fa-solid fa-lock"></i> Conversations are private and processed locally</div>
-                    </div>
+                    </form>
 
                 </div>
             </div>
