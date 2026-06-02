@@ -50,12 +50,12 @@ router.post('/analyze', auth, async (req, res) => {
             // Non-critical — proceed without alert context
         }
 
-        // Build conversation context
-        const fullPrompt = `${SYSTEM_PROMPT}${alertContext}\n\nUser message: ${message}`;
-
-        // Call Gemini
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-        const result = await model.generateContent(fullPrompt);
+        // Call Gemini with proper systemInstruction configuration
+        const model = genAI.getGenerativeModel({ 
+            model: 'gemini-2.5-flash',
+            systemInstruction: `${SYSTEM_PROMPT}${alertContext}`
+        });
+        const result = await model.generateContent(message);
         const reply = result.response.text();
 
         // Determine risk score based on message content for logging

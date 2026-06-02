@@ -77,7 +77,8 @@ const sanitizeInput = (req, res, next) => {
                     if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
                         continue;
                     }
-                    val[key] = sanitizeValue(val[key]);
+                    const sanitizedVal = sanitizeValue(val[key]);
+                    Reflect.set(val, key, sanitizedVal);
                 }
             }
         }
