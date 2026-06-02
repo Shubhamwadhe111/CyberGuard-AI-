@@ -41,7 +41,7 @@ app.use(helmet({
 
 app.use(cors({
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1 || origin.includes('onrender.com')) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
