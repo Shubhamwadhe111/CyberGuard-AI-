@@ -145,8 +145,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.selectScanType = function(btn, type) {
         const VALID_SCAN_TYPES = ['full', 'quick', 'sms', 'app'];
         if (!VALID_SCAN_TYPES.includes(type)) return;
+        
+        // Remove active class from all buttons and add to the clicked one
         document.querySelectorAll('.scan-type-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        if (btn) {
+            btn.classList.add('active');
+        } else {
+            const matchBtn = document.querySelector(`.scan-type-btn[data-type="${type}"]`);
+            if (matchBtn) matchBtn.classList.add('active');
+        }
+        
         currentScanType = type;
 
         let scanTitle, scanDesc;
@@ -168,22 +176,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 scanDesc = 'Reviews every installed app\'s permissions and flags unnecessary access requests.';
         }
 
-        document.getElementById('scanTitle').textContent = scanTitle;
-        document.getElementById('scanDesc').textContent = scanDesc;
+        const scanTitleEl = document.getElementById('scanTitle');
+        const scanDescEl = document.getElementById('scanDesc');
+        if (scanTitleEl) scanTitleEl.textContent = scanTitle;
+        if (scanDescEl) scanDescEl.textContent = scanDesc;
         addLog(`Scan type changed to: ${scanTitle}`, 'info');
 
-        // Dynamic visual feedback: Dim inactive chips for selected scan type
-        const activeCats = getActiveCats();
-        allCats.forEach(cat => {
-            const chip = document.getElementById(cat.id);
-            if (chip) {
-                if (activeCats.some(ac => ac.id === cat.id)) {
-                    chip.style.opacity = '1';
-                } else {
-                    chip.style.opacity = '0.4';
-                }
-            }
-        });
+        // Reset the chips visually and textually to match the selected scan type
+        resetChips();
     };
 
     // ─── Categories ───────────────────────────────────────────────
@@ -582,7 +582,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadingBox.style.alignItems = 'center';
         loadingBox.style.gap = '0.5rem';
         loadingBox.style.padding = '1rem';
-        loadingBox.style.background = 'var(--surface)';
+        loadingBox.style.background = 'var(--bg-surface)';
         loadingBox.style.borderRadius = 'var(--radius-md)';
         
         const spinIcon = document.createElement('i');
@@ -719,6 +719,32 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
+    // Bind Quick URL Checker button dynamically
+    const checkBtn = document.querySelector('button[onclick="checkURL()"]');
+    if (checkBtn) {
+        checkBtn.removeAttribute('onclick'); // remove inline onclick to prevent double execution
+        checkBtn.addEventListener('click', window.checkURL);
+    }
+
+    // Bind scan type buttons dynamically to guarantee clicks always work
+    document.querySelectorAll('.scan-type-btn').forEach(btn => {
+        btn.removeAttribute('onclick'); // remove inline onclick
+        btn.addEventListener('click', function(e) {
+            if (this.getAttribute('disabled') === 'true' || this.style.pointerEvents === 'none') {
+                return;
+            }
+            const type = this.getAttribute('data-type');
+            window.selectScanType(this, type);
+        });
+    });
+
     const urlInput = document.getElementById('urlInput');
-    if (urlInput) urlInput.addEventListener('keydown', e => { if (e.key === 'Enter') window.checkURL(); });
+    if (urlInput) {
+        urlInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                window.checkURL();
+            }
+        });
+    }
 });
