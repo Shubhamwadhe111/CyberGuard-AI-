@@ -65,8 +65,7 @@ const sanitizeInput = (req, res, next) => {
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#x27;')
-                .replace(/\//g, '&#x2F;');
+                .replace(/'/g, '&#x27;');
         }
         if (typeof val === 'object' && val !== null) {
             for (let key in val) {

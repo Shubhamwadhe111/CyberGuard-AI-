@@ -171,6 +171,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('scanTitle').textContent = scanTitle;
         document.getElementById('scanDesc').textContent = scanDesc;
         addLog(`Scan type changed to: ${scanTitle}`, 'info');
+
+        // Dynamic visual feedback: Dim inactive chips for selected scan type
+        const activeCats = getActiveCats();
+        allCats.forEach(cat => {
+            const chip = document.getElementById(cat.id);
+            if (chip) {
+                if (activeCats.some(ac => ac.id === cat.id)) {
+                    chip.style.opacity = '1';
+                } else {
+                    chip.style.opacity = '0.4';
+                }
+            }
+        });
     };
 
     // ─── Categories ───────────────────────────────────────────────
@@ -190,11 +203,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function resetChips() {
+        const activeCats = getActiveCats();
         allCats.forEach(c => {
             const chip = document.getElementById(c.id);
             const cs   = document.getElementById(c.chip);
-            if (chip) chip.className = 'scan-chip';
-            if (cs)   cs.textContent = 'Pending';
+            if (chip) {
+                chip.className = 'scan-chip';
+                if (activeCats.some(ac => ac.id === c.id)) {
+                    chip.style.opacity = '1';
+                } else {
+                    chip.style.opacity = '0.4';
+                }
+            }
+            if (cs) {
+                cs.textContent = activeCats.some(ac => ac.id === c.id) ? 'Pending' : 'Skipped';
+            }
         });
     }
 
@@ -293,14 +316,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // ─── Scan Engine ──────────────────────────────────────────────
     let scanInterval = null;
+    let isScanCancelled = false;
 
     window.stopScan = function() {
+        isScanCancelled = true;
         if (scanInterval) { clearInterval(scanInterval); scanInterval = null; }
+        
+        // Restore start button state
         document.getElementById('btnStartScan').disabled = false;
         document.getElementById('btnStartScan').innerHTML = '<i class="fa-solid fa-satellite-dish"></i> Start Scan';
         document.getElementById('btnStopScan').style.display = 'none';
         document.getElementById('scanProgressArea').style.display = 'none';
         document.querySelector('.scan-engine-card').classList.remove('scanning');
+        
+        // Re-enable and restore styling of scan type selection buttons
+        document.querySelectorAll('.scan-type-btn').forEach(btn => {
+            btn.removeAttribute('disabled');
+            btn.style.pointerEvents = '';
+            btn.style.opacity = '';
+        });
+
         addLog('Scan stopped by user.', 'warning');
         showToast('Scan stopped.', 'warning');
         resetChips();
@@ -309,6 +344,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnStartScan = document.getElementById('btnStartScan');
     if (btnStartScan) {
         btnStartScan.addEventListener('click', async () => {
+            isScanCancelled = false;
             const activeCats = getActiveCats();
             const step = Math.floor(100 / activeCats.length);
             activeCats.forEach((c, i) => { c.range = [i * step, (i + 1) * step]; });
@@ -325,6 +361,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('scanResultsArea').style.display = 'none';
             document.querySelector('.scan-engine-card').classList.add('scanning');
             resetChips();
+
+            // Disable and dim the scan type buttons during scan
+            document.querySelectorAll('.scan-type-btn').forEach(btn => {
+                btn.setAttribute('disabled', 'true');
+                btn.style.pointerEvents = 'none';
+                btn.style.opacity = '0.5';
+            });
 
             const bar  = document.getElementById('scanProgressBar');
             const pct  = document.getElementById('scanPercentage');
@@ -371,6 +414,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             scanInterval = setInterval(async () => {
+                if (isScanCancelled) {
+                    clearInterval(scanInterval);
+                    return;
+                }
+
                 progress += Math.floor(Math.random() * 3) + 2;
                 if (progress > 100) progress = 100;
 
@@ -395,6 +443,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 if (progress >= 100) {
                     clearInterval(scanInterval);
+                    if (isScanCancelled) return;
+
                     stxt.textContent = 'Scan Complete';
                     sdet.textContent = 'Finalizing report and saving...';
                     addLog('All modules scanned. Saving to database...', 'info');
@@ -405,6 +455,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         // Resolve the backend promise if it exists
                         if (realScanPromise) {
                             const scanResult = await realScanPromise;
+                            if (isScanCancelled) return;
+
                             if (scanResult && scanResult.newAlerts) {
                                 addLog(`${scanTypeLabel} backend finished. Found ${scanResult.alertsFound} issue(s).`, 'info');
                                 
@@ -421,6 +473,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                             }
                         }
                         
+                        if (isScanCancelled) return;
+
                         // Fallback to active alerts in dashboard if backend call failed or was empty
                         if (!data) {
                             addLog('Loading active alerts timeline as fallback...', 'warning');
@@ -428,6 +482,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 method: 'GET',
                                 headers: { 'x-auth-token': token }
                             });
+                            if (isScanCancelled) return;
                             data = await alertRes.json();
                         }
 
@@ -455,7 +510,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                             })
                         });
 
+                        if (isScanCancelled) return;
+
                         setTimeout(() => {
+                            if (isScanCancelled) return;
+
                             btnStartScan.disabled = false;
                             btnStartScan.textContent = '';
                             const rotateIcon = document.createElement('i');
@@ -468,6 +527,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                             document.getElementById('scanResultsArea').style.display = 'block';
                             document.querySelector('.scan-engine-card').classList.remove('scanning');
 
+                            // Re-enable and restore scan type buttons
+                            document.querySelectorAll('.scan-type-btn').forEach(btn => {
+                                btn.removeAttribute('disabled');
+                                btn.style.pointerEvents = '';
+                                btn.style.opacity = '';
+                            });
+
                             renderResults(data.timeline || []);
                             showToast('Scan complete and saved!', 'success');
                             lastScanDate = new Date();
@@ -478,6 +544,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                     } catch (err) {
                         console.error("Scan save error:", err);
                         showToast("Error saving scan result.", "error");
+
+                        // UI Safety recovery (never leave UI permanently disabled)
+                        btnStartScan.disabled = false;
+                        btnStartScan.innerHTML = '<i class="fa-solid fa-satellite-dish"></i> Start Scan';
+                        document.getElementById('btnStopScan').style.display = 'none';
+                        document.getElementById('scanProgressArea').style.display = 'none';
+                        document.querySelector('.scan-engine-card').classList.remove('scanning');
+
+                        document.querySelectorAll('.scan-type-btn').forEach(btn => {
+                            btn.removeAttribute('disabled');
+                            btn.style.pointerEvents = '';
+                            btn.style.opacity = '';
+                        });
                     }
                 }
             }, 50);

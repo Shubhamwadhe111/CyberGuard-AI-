@@ -159,9 +159,45 @@ router.post('/url', auth, async (req, res) => {
                 title: "Phishing Indicator Detected",
                 type: "link",
                 risk_level: "high",
-                explanation: `URL contains sensitive keywords without SSL encryption. Likely a credential harvester.`
+                explanation: `URL contains sensitive banking/login keywords without SSL encryption (HTTP). Likely a credential harvester.`
             });
-            score = 30;
+            score = Math.min(score, 30);
+        }
+
+        // HEURISTICS: Check for URL shorteners (often used to obscure phishing links)
+        const shorteners = ['bit.ly', 'tinyurl.com', 't.co', 'ow.ly', 'shorturl.at', 'is.gd', 'buff.ly', 'adf.ly'];
+        if (shorteners.some(s => urlLower.includes(s))) {
+            results.push({
+                title: "Obscured Short URL Detected",
+                type: "link",
+                risk_level: "medium",
+                explanation: `This link uses a URL shortener service to hide the final destination, a common tactic for phishing.`
+            });
+            score = Math.min(score, 60);
+        }
+
+        // HEURISTICS: Check for direct IP address links
+        const ipPattern = /https?:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/i;
+        if (ipPattern.test(urlLower)) {
+            results.push({
+                title: "Raw IP Domain Detected",
+                type: "link",
+                risk_level: "high",
+                explanation: `This link points directly to a raw IP address instead of a registered domain. Official services do not link to raw IPs.`
+            });
+            score = Math.min(score, 40);
+        }
+
+        // HEURISTICS: Check for high-risk OTP / reward claim phrases
+        const highRiskKeywords = ['otpverify', 'reward-claim', 'bank-auth', 'free-prize', 'secure-login', 'claim-gift'];
+        if (highRiskKeywords.some(kw => urlLower.includes(kw))) {
+            results.push({
+                title: "Suspicious Domain Signature",
+                type: "link",
+                risk_level: "high",
+                explanation: `URL hostname or path contains high-risk fraud triggers (OTP verification, fake prize claims).`
+            });
+            score = Math.min(score, 20);
         }
 
         // REAL LOGIC: Call Google Safe Browsing API
