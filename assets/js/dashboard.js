@@ -58,6 +58,35 @@ document.addEventListener('DOMContentLoaded', async () => {
             updateMetric('metric-alerts', data.metrics.recentAlerts || 0);
             updateMetric('metric-score', data.metrics.score || 100);
 
+            // Calculate category safety percentages based on real metrics
+            const smsSafety = Math.max(0, 100 - ((data.metrics.suspiciousMessages || 0) * 25));
+            const linkSafety = Math.max(0, 100 - ((data.metrics.riskyLinks || 0) * 25));
+            const permSafety = Math.max(0, 100 - ((data.metrics.permissionRisks || 0) * 20));
+            const networkSafety = Math.max(0, 100 - ((data.metrics.systemRisks || 0) * 25));
+
+            const updateCategorySafety = (barId, valId, score) => {
+                const bar = document.getElementById(barId);
+                const valEl = document.getElementById(valId);
+                if (valEl) {
+                    valEl.textContent = `${score}%`;
+                    valEl.classList.remove('safe', 'warning', 'danger');
+                    if (score >= 80) valEl.classList.add('safe');
+                    else if (score >= 50) valEl.classList.add('warning');
+                    else valEl.classList.add('danger');
+                }
+                if (bar) {
+                    bar.style.width = `${score}%`;
+                    if (score >= 80) bar.style.backgroundColor = 'var(--color-accent)';
+                    else if (score >= 50) bar.style.backgroundColor = 'var(--color-warning)';
+                    else bar.style.backgroundColor = 'var(--color-danger)';
+                }
+            };
+
+            updateCategorySafety('db-score-sms-bar', 'db-score-sms-val', smsSafety);
+            updateCategorySafety('db-score-links-bar', 'db-score-links-val', linkSafety);
+            updateCategorySafety('db-score-perms-bar', 'db-score-perms-val', permSafety);
+            updateCategorySafety('db-score-network-bar', 'db-score-network-val', networkSafety);
+
             // Special handling for score circle
             const scoreCircle = document.getElementById('db-score-circle');
             if (scoreCircle) {

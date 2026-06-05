@@ -24,12 +24,13 @@ router.get('/', auth, async (req, res) => {
                     suspiciousMessages: 1,
                     riskyLinks: 2,
                     permissionRisks: 3,
-                    recentAlerts: 6,
+                    systemRisks: 1,
+                    recentAlerts: 7,
                     score: 85,
                     lastScanTime: new Date(Date.now() - 3 * 3600000), // 3 hours ago
                     userName: "User (Offline Mode)",
                     scansToday: 5,
-                    activeThreats: 6,
+                    activeThreats: 7,
                     activeDevices: 2
                 },
                 timeline: [
@@ -94,6 +95,7 @@ router.get('/', auth, async (req, res) => {
             suspiciousMessages: 0,
             riskyLinks: 0,
             permissionRisks: 0,
+            systemRisks: 0,
             recentAlerts: activeAlerts.length,
             score: latestScan ? latestScan.score : 100, // Default to 100 if no scans yet
             lastScanTime: latestScan ? latestScan.createdAt : null,
@@ -108,6 +110,7 @@ router.get('/', auth, async (req, res) => {
             if (alert.type === 'sms') metrics.suspiciousMessages++;
             if (alert.type === 'link') metrics.riskyLinks++;
             if (alert.type === 'permission') metrics.permissionRisks++;
+            if (alert.type === 'system') metrics.systemRisks++;
         });
 
         // Get 4 most recent alerts for the timeline

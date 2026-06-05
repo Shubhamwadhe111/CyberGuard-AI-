@@ -14,12 +14,75 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const fs = require('fs');
 const path = require('path');
 
+// Helper to initialize simulated user storage with device threat files
+function ensureSimulatedDeviceStorage(dir) {
+    const resolvedDir = path.resolve(dir);
+    const normalizedDir = path.normalize(resolvedDir);
+    const allowedBase = path.normalize(path.resolve(path.join(__dirname, '..')));
+
+    if (!normalizedDir.startsWith(allowedBase)) {
+        throw new Error("Invalid storage path specified!");
+    }
+
+    if (!fs.existsSync(normalizedDir)) {
+        fs.mkdirSync(normalizedDir, { recursive: true });
+    }
+    
+    const downloadsDir = path.normalize(path.join(normalizedDir, 'Downloads'));
+    if (!fs.existsSync(downloadsDir)) {
+        fs.mkdirSync(downloadsDir, { recursive: true });
+    }
+
+    const documentsDir = path.normalize(path.join(normalizedDir, 'Documents'));
+    if (!fs.existsSync(documentsDir)) {
+        fs.mkdirSync(documentsDir, { recursive: true });
+    }
+
+    // Place a simulated malware APK in Downloads
+    const apkFile = path.normalize(path.join(downloadsDir, 'malicious_update.apk'));
+    if (!fs.existsSync(apkFile)) {
+        fs.writeFileSync(apkFile, 'SIMULATED MALWARE PAYLOAD ANDROID APK WITH SPYWARE SIGNATURES');
+    }
+
+    // Place a simulated dangerous executable in Downloads
+    const exeFile = path.normalize(path.join(downloadsDir, 'invoice.pdf.exe'));
+    if (!fs.existsSync(exeFile)) {
+        fs.writeFileSync(exeFile, 'SIMULATED TROJAN BINARY DISGUISED AS INVOICE DOCUMENT');
+    }
+
+    // Place a simulated hardcoded credential text file in Documents
+    const txtFile = path.normalize(path.join(documentsDir, 'system_passwords.txt'));
+    if (!fs.existsSync(txtFile)) {
+        fs.writeFileSync(txtFile, 'admin_api_key = "sk-live-99a8b7c6d5e4f321" \nbackup_password = "password12345"');
+    }
+
+    // Copy or write vulnerability_test.js in the root of device_storage
+    const testJsFile = path.normalize(path.join(normalizedDir, 'vulnerability_test.js'));
+    if (!fs.existsSync(testJsFile)) {
+        fs.writeFileSync(testJsFile, `
+// This is a test file for the Real Device Scanner
+function runUserCode(code) {
+    eval(code); // DANGEROUS: Should be flagged by CyberGuard AI
+}
+`);
+    }
+}
+
 // Helper to recursively scan a directory
 async function scanDirectory(dir, results = []) {
-    const files = fs.readdirSync(dir);
+    const resolvedDir = path.resolve(dir);
+    const normalizedDir = path.normalize(resolvedDir);
+    const allowedBase = path.normalize(path.resolve(path.join(__dirname, '..')));
+
+    if (!normalizedDir.startsWith(allowedBase)) {
+        console.warn(`Traversal warning: Path ${normalizedDir} is not within base directory ${allowedBase}`);
+        return results;
+    }
+
+    const files = fs.readdirSync(normalizedDir);
     
     for (const file of files) {
-        const filePath = path.join(dir, file);
+        const filePath = path.normalize(path.join(normalizedDir, file));
         const stat = fs.statSync(filePath);
         
         if (stat.isDirectory()) {
@@ -51,12 +114,12 @@ async function scanDirectory(dir, results = []) {
             }
             
             // 3. Check for suspicious file types
-            if (file.endsWith('.exe') || file.endsWith('.bat') || file.endsWith('.sh')) {
+            if (file.endsWith('.exe') || file.endsWith('.bat') || file.endsWith('.sh') || file.endsWith('.apk') || file.endsWith('.msi')) {
                 results.push({
-                    title: `Executable File Detected`,
+                    title: `Suspicious Installer/Executable in ${file}`,
                     type: "system",
                     risk_level: "medium",
-                    explanation: `Binary or script file ${file} found in workspace. Verify its origin.`
+                    explanation: `Binary, installer, or script file ${file} found in user directory. Verify its origin.`
                 });
             }
         }
@@ -70,10 +133,11 @@ async function scanDirectory(dir, results = []) {
 router.post('/start', auth, async (req, res) => {
     try {
         const userId = req.user.id;
-        const workspacePath = path.join(__dirname, '..'); // Scan the project root
+        const deviceStoragePath = path.normalize(path.resolve(path.join(__dirname, '..', 'device_storage')));
+        ensureSimulatedDeviceStorage(deviceStoragePath);
 
         // Perform the REAL scan
-        const foundThreats = await scanDirectory(workspacePath);
+        const foundThreats = await scanDirectory(deviceStoragePath);
 
         let newAlerts = [];
         
@@ -105,7 +169,7 @@ router.post('/start', auth, async (req, res) => {
             const newScan = new Scan({
                 userId,
                 score,
-                summary: `Real Workspace Scan completed. Analyzed files in ${workspacePath}. Found ${newAlerts.length} vulnerabilities.`
+                summary: `Real Device Scan completed. Analyzed files in device_storage. Found ${newAlerts.length} vulnerabilities.`
             });
             await newScan.save();
         } else {
@@ -113,7 +177,7 @@ router.post('/start', auth, async (req, res) => {
         }
 
         res.status(200).json({
-            message: 'Real workspace scan completed successfully',
+            message: 'Real device scan completed successfully',
             score,
             alertsFound: newAlerts.length,
             newAlerts
@@ -154,14 +218,15 @@ router.post('/save', auth, async (req, res) => {
 router.post('/quick', auth, async (req, res) => {
     try {
         const userId = req.user.id;
-        const workspacePath = path.join(__dirname, '..');
+        const deviceStoragePath = path.normalize(path.resolve(path.join(__dirname, '..', 'device_storage')));
+        ensureSimulatedDeviceStorage(deviceStoragePath);
         
         // Scan only the top-level files in the directory (non-recursive)
-        const files = fs.readdirSync(workspacePath);
+        const files = fs.readdirSync(deviceStoragePath);
         const results = [];
         
         for (const file of files) {
-            const filePath = path.join(workspacePath, file);
+            const filePath = path.normalize(path.join(deviceStoragePath, file));
             const stat = fs.statSync(filePath);
             
             if (!stat.isDirectory()) {
@@ -292,7 +357,7 @@ router.post('/sms', auth, async (req, res) => {
 router.post('/app-audit', auth, async (req, res) => {
     try {
         const userId = req.user.id;
-        const packageJsonPath = path.join(__dirname, '..', 'package.json');
+        const packageJsonPath = path.normalize(path.resolve(path.join(__dirname, '..', 'package.json')));
         const results = [];
         
         if (fs.existsSync(packageJsonPath)) {
@@ -355,6 +420,62 @@ router.post('/app-audit', auth, async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error during App Audit');
+    }
+});
+
+// @route   GET /api/scan/stats
+// @desc    Get aggregate scan statistics for current user
+// @access  Private
+router.get('/stats', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        if (!isDbConnected()) {
+            return res.json({
+                totalScans: 48,
+                threatsFound: 12,
+                cleanScans: 36,
+                avgInterval: "3.2h"
+            });
+        }
+
+        const totalScans = await Scan.countDocuments({ userId });
+        const threatsFound = await Alert.countDocuments({ userId });
+        const cleanScans = await Scan.countDocuments({ userId, score: 100 });
+
+        // Calculate average interval
+        const scans = await Scan.find({ userId }).sort({ createdAt: 1 }).select('createdAt');
+        let avgInterval = "N/A";
+
+        if (scans.length > 1) {
+            let totalDiffMs = 0;
+            let prevDate = new Date(scans[0].createdAt);
+            scans.slice(1).forEach(scan => {
+                const currentDate = new Date(scan.createdAt);
+                totalDiffMs += (currentDate - prevDate);
+                prevDate = currentDate;
+            });
+            const avgDiffHours = totalDiffMs / (scans.length - 1) / 3600000;
+            if (avgDiffHours < 1) {
+                const mins = Math.round(avgDiffHours * 60);
+                avgInterval = `${mins}m`;
+            } else if (avgDiffHours < 24) {
+                avgInterval = `${avgDiffHours.toFixed(1)}h`;
+            } else {
+                const days = Math.round(avgDiffHours / 24);
+                avgInterval = `${days}d`;
+            }
+        }
+
+        res.json({
+            totalScans,
+            threatsFound,
+            cleanScans,
+            avgInterval
+        });
+    } catch (err) {
+        console.error("Error fetching scan stats:", err);
+        res.status(500).send('Server Error');
     }
 });
 

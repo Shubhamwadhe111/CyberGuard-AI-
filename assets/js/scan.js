@@ -96,6 +96,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     loadScanHistory();
 
+    // ─── FETCH SCAN STATISTICS ──────────────────────────────────────
+    async function loadScanStats() {
+        if (!token) return;
+        try {
+            const res = await fetch('/api/scan/stats', {
+                method: 'GET',
+                headers: { 'x-auth-token': token }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                const statBoxes = document.querySelectorAll('.scan-stat-box');
+                if (statBoxes && statBoxes.length >= 4) {
+                    statBoxes.forEach(box => {
+                        const lbl = box.querySelector('.scan-stat-lbl')?.textContent;
+                        const valEl = box.querySelector('.scan-stat-val');
+                        if (valEl && lbl) {
+                            if (lbl.includes('Total Scans')) {
+                                valEl.textContent = data.totalScans;
+                            } else if (lbl.includes('Threats Found')) {
+                                valEl.textContent = data.threatsFound;
+                            } else if (lbl.includes('Clean Scans')) {
+                                valEl.textContent = data.cleanScans;
+                            } else if (lbl.includes('Avg. Interval')) {
+                                valEl.textContent = data.avgInterval;
+                            }
+                        }
+                    });
+                }
+            }
+        } catch (err) { console.error("Stats load error:", err); }
+    }
+    loadScanStats();
+
     // ─── Toast ───────────────────────────────────────────────────
     function showToast(message, type = 'success') {
         const container = document.getElementById('toastContainer');
@@ -539,6 +572,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             lastScanDate = new Date();
                             updateLastScanTimeDisplay();
                             loadScanHistory(); // Refresh history list
+                            loadScanStats(); // Refresh stats values
                         }, 1000);
 
                     } catch (err) {
